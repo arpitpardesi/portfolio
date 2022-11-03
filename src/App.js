@@ -6,14 +6,14 @@ function App() {
   return (
     <div className="App">
       {/* Header */}
-      <Header/>
+      <Header />
       <h1>Hello!!</h1>
-        <p>
-          Arpit Pardesi
-        </p>
+      <p>
+        Arpit Pardesi
+      </p>
 
-        {/* Footer */}
-        <Footer/>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
