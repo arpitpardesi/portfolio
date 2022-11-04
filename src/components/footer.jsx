@@ -3,7 +3,7 @@ import "../css/footer.css"
 
 const Footer = () => {
     return(
-        <div className="container">
+        <div className="footer">
             <div>Footer</div>
         </div>
     )
