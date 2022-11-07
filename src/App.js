@@ -9,8 +9,8 @@ function App() {
       <Header />
       <h1>Hello!!</h1>
       <p>
-        My name is Arpit Pardesi.<br>
-          This site is currently under construction. 
+        My name is Arpit Pardesi.<br/><br/>
+          This site is currently under development. 
       </p>
 
       {/* Footer */}
