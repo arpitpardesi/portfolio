@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       {/* Header */}
       <Header />
-      <h1>Hello!!</h1>
+      <h1>Hi!</h1>
       <p>
         My name is Arpit Pardesi.<br/><br/>
           This site is currently under development. 
