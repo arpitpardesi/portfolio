@@ -26,7 +26,7 @@ const themes = [
 
 const ThemeSwitcher = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [activeTheme, setActiveTheme] = useState(themes[0].name);
+    const [activeTheme, setActiveTheme] = useState(themes[4].name);
     const [hoveredTheme, setHoveredTheme] = useState(null);
 
     useEffect(() => {
