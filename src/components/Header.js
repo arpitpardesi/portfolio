@@ -236,7 +236,7 @@ const Header = () => {
                                                     padding: '0.5rem 0',
                                                 }}
                                             >
-                                                <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>0{index + 1}.</span>
+                                                {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>{index + 1}.</span> */}
                                                 {item}
                                             </a>
                                         ) : (
@@ -251,13 +251,13 @@ const Header = () => {
                                                     padding: '0.5rem 0',
                                                 }}
                                             >
-                                                <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>0{index + 1}.</span>
+                                                {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>0{index + 1}.</span> */}
                                                 {item}
                                             </Link>
                                         )}
                                     </motion.li>
                                 ))}
-                                <motion.li
+                                {/* <motion.li
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.3 }}
@@ -299,7 +299,7 @@ const Header = () => {
                                         <FaRocket style={{ color: 'var(--accent-color)' }} />
                                         Playground
                                     </Link>
-                                </motion.li>
+                                </motion.li> */}
                             </ul>
                         </nav>
 
