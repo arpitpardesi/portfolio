@@ -1,0 +1,91 @@
+import React from 'react';
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
+
+const Footer = () => {
+    const socialLinks = [
+        { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
+        { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
+        { icon: <FaXTwitter />, href: 'https://twitter.com' },
+        { icon: <FaInstagram />, href: 'https://instagram.com' },
+    ];
+
+    return (
+        <footer className="footer" style={{ padding: '2rem 0', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem' }} className="mobile-socials">
+                {socialLinks.map((link, index) => (
+                    <a
+                        key={index}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
+                    >
+                        {link.icon}
+                    </a>
+                ))}
+            </div>
+            <div className="footer-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <a
+                    href="https://github.com/arpitpardesi"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="footer-link"
+                    style={{
+                        fontFamily: 'var(--font-mono)',
+                        transition: 'color 0.3s ease'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+                    onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                >
+                    Designed & Built by Arpit Pardesi
+                </a>
+                <span className="footer-divider" style={{ opacity: 0.5 }}>|</span>
+                <span className="footer-copyright" style={{ fontSize: '0.85rem', opacity: 0.7 }}>
+                    © {new Date().getFullYear()} All rights reserved.
+                </span>
+            </div>
+
+            <style>
+                {`
+            @media (max-width: 768px) {
+                .mobile-socials {
+                    display: flex !important;
+                }
+                .footer {
+                    padding: 1.5rem 1rem !important;
+                }
+                .footer-content {
+                    flex-direction: column !important;
+                    gap: 0.5rem !important;
+                }
+                .footer-divider {
+                    display: none !important;
+                }
+                .footer-link {
+                    font-size: 0.85rem !important;
+                }
+                .footer-copyright {
+                    font-size: 0.8rem !important;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                .footer {
+                    padding: 1.25rem 0.75rem !important;
+                }
+                .footer-link {
+                    font-size: 0.8rem !important;
+                }
+                .footer-copyright {
+                    font-size: 0.75rem !important;
+                }
+            }
+          `}
+            </style>
+        </footer>
+    );
+};
+
+export default Footer;
+
