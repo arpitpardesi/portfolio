@@ -38,8 +38,7 @@ const About = () => {
                             {/* Hello! My name is Arpit and I enjoy creating things that live on the internet and making sense of data. My journey started with a curiosity for how things work, which led me to the world of software engineering. */}
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            My journey began with small sparks of curiosity:<br></br>
-                            Why does this work? What happens if I change that? Can I build something new?<br></br>
+                            My journey began with small sparks of curiosity: Why does this work? What happens if I change that? Can I build something new?<br></br>
                             Those questions carried me into the world of software, where creativity and precision dance together.
                             {/* My journey started with curiosity for how systems interact with each other, which eventually led me into software engineering. Fast-forward to today, I work at Accenture as a Software Engineer (Application Development Analyst), focusing on data-driven platforms, scalable pipelines, automations, and full-stack applications. */}
                             {/* Fast-forward to today, and I've had the privilege of working at <span style={{ color: 'var(--accent-color)' }}>Accenture</span> as an Application Development Analyst. My main focus these days is building data-driven solutions and scalable web applications. */}
