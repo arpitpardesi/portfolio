@@ -121,7 +121,7 @@ const Hero = () => {
                                 fontWeight: '700',
                                 lineHeight: '1.1',
                                 display: 'inline-block',
-                                background: 'linear-gradient(to right, #ffffff, #a5b4fc)',
+                                background: 'linear-gradient(to right, #ffffff, var(--accent-color)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 // Fallback for non-webkit
@@ -243,4 +243,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
