@@ -45,12 +45,11 @@ const About = () => {
                             {/* Fast-forward to today, and I've had the privilege of working at <span style={{ color: 'var(--accent-color)' }}>Accenture</span> as an Application Development Analyst. My main focus these days is building data-driven solutions and scalable web applications. */}
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            Today, I craft data-driven architectures, develop scalable applications, and design meaningful digital experiences.
-                            I love blending structure with art — from orchestrating cloud pipelines to writing code that feels elegant and alive.
+                            Today, I craft data-driven solutions, develop applications, and design meaningful digital experiences.
+                            I love blending structure with art — from orchestrating raw ideas and data into solutions to writing code that feels elegant and alive.
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            When I’m not engineering solutions, you’ll find me experimenting:<br></br>
-                            building IoT gadgets, teaching machines to see and talk, or creating playful interfaces powered by AI.
+                            When I’m not engineering solutions, you’ll find me experimenting: building IoT gadgets, teaching machines to see and talk, or creating playful interfaces powered by AI.
                             {/* Outside of work, I explore hands-on projects with ESP32, Raspberry Pi, and embedded electronics. I enjoy experimenting with AI/ML, including projects like PixMob LED wristband control, real-time object detection using YOLO, AI companion apps, and hardware-integrated automation. */}
                         </p>
 
