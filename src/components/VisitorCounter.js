@@ -6,44 +6,50 @@ import { FaStar } from 'react-icons/fa';
 
 const VisitorCounter = () => {
     const [count, setCount] = useState(null);
-    const [isVisible, setIsVisible] = useState(false);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         const statsRef = doc(db, 'stats', 'visitors');
 
         const updateCounter = async () => {
             try {
-                const docSnap = await getDoc(statsRef);
-
                 // Increment only once per session
                 if (!sessionStorage.getItem('nebula_visited')) {
-                    if (docSnap.exists()) {
-                        await updateDoc(statsRef, { count: increment(1) });
-                    } else {
-                        await setDoc(statsRef, { count: 1 });
-                    }
+                    await updateDoc(statsRef, { count: increment(1) }).catch(async (err) => {
+                        // If doc doesn't exist, create it
+                        if (err.code === 'not-found') {
+                            await setDoc(statsRef, { count: 1 });
+                        } else {
+                            throw err;
+                        }
+                    });
                     sessionStorage.setItem('nebula_visited', 'true');
                 }
-            } catch (error) {
-                console.error("Error updating star count:", error);
+            } catch (err) {
+                console.error("Firebase Connection Error:", err.message);
+                if (err.message.includes("Authorized Domains") || err.message.includes("permission-denied")) {
+                    setError(true);
+                }
             }
         };
 
         updateCounter();
 
-        // Real-time listener for the count
+        // Real-time listener
         const unsubscribe = onSnapshot(statsRef, (doc) => {
             if (doc.exists()) {
                 setCount(doc.data().count);
-                setIsVisible(true);
             }
+        }, (err) => {
+            console.error("Firestore Listen Error:", err.code);
+            setError(true);
         });
 
         return () => unsubscribe();
     }, []);
 
-    if (!isVisible || count === null) return null;
-
+    // We always return the container so the star pulses while loading
+    // but the text only shows when data arrives.
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}

@@ -33,7 +33,7 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
                     backdropFilter: 'blur(5px)',
                     border: '1px solid var(--border-color)'
                 }}>
-                    <FaArrowLeft /> Back to Cosmos
+                    <FaArrowLeft /> Back
                 </Link>
             </motion.div>
 
