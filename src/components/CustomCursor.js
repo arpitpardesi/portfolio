@@ -105,7 +105,7 @@ const CustomCursor = () => {
                     width: 400,
                     height: 400,
                     borderRadius: "50%",
-                    zIndex: 9998,
+                    zIndex: 999998,
                     pointerEvents: "none",
                     background: "radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, rgba(var(--accent-rgb), 0) 60%)"
                 }}
@@ -126,7 +126,7 @@ const CustomCursor = () => {
                     left: 0,
                     borderRadius: "50%",
                     pointerEvents: "none",
-                    zIndex: 9999,
+                    zIndex: 999999,
                 }}
             />
             {/* Center Pointer - follows instantly */}
@@ -143,7 +143,7 @@ const CustomCursor = () => {
                     left: 0,
                     borderRadius: "50%",
                     pointerEvents: "none",
-                    zIndex: 9999,
+                    zIndex: 999999,
                 }}
             />
             <style>

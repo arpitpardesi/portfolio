@@ -117,9 +117,9 @@ const Hero = () => {
                             key={index}
                             variants={letterVariants}
                             whileHover={{
-                                scale: 1.2,
-                                color: 'var(--accent-color)',
-                                textShadow: '0 0 20px var(--accent-glow)',
+                                scale: 1.25,
+                                color: '#ffffff',
+                                textShadow: '0 0 20px #fff, 0 0 40px var(--accent-color)',
                                 transition: { duration: 0.2 }
                             }}
                             style={{
@@ -127,13 +127,12 @@ const Hero = () => {
                                 fontWeight: '700',
                                 lineHeight: '1.1',
                                 display: 'inline-block',
-                                background: 'linear-gradient(to right, #ffffff, var(--accent-color))',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                filter: 'drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.3))',
+                                color: '#ffffff',
+                                textShadow: '0 0 10px rgba(255, 255, 255, 0.4)',
+                                filter: 'drop-shadow(0 0 8px var(--accent-glow))',
                                 cursor: 'default',
-                                // Fallback
-                                color: 'var(--text-primary)'
+                                letterSpacing: '2px',
+                                transition: 'text-shadow 0.3s ease, filter 0.3s ease'
                             }}
                         >
                             {char === " " ? "\u00A0" : char}

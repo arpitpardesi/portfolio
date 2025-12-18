@@ -4,9 +4,12 @@ import { doc, getDoc, updateDoc, increment, setDoc, onSnapshot } from 'firebase/
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
 
+import StarFieldOverlay from './StarFieldOverlay';
+
 const VisitorCounter = () => {
     const [count, setCount] = useState(null);
     const [error, setError] = useState(false);
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
     useEffect(() => {
         const statsRef = doc(db, 'stats', 'visitors');
@@ -27,9 +30,7 @@ const VisitorCounter = () => {
                 }
             } catch (err) {
                 console.error("Firebase Connection Error:", err.message);
-                if (err.message.includes("Authorized Domains") || err.message.includes("permission-denied")) {
-                    setError(true);
-                }
+                setError(true);
             }
         };
 
@@ -48,47 +49,83 @@ const VisitorCounter = () => {
         return () => unsubscribe();
     }, []);
 
-    // We always return the container so the star pulses while loading
-    // but the text only shows when data arrives.
+    const getOrdinal = (n) => {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return s[(v - 20) % 10] || s[v] || s[0];
+    };
+
+    if (error || count === null) return null;
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            style={{
-                marginTop: '1.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '8px',
-                color: 'var(--text-secondary)',
-                fontSize: '0.85rem',
-                fontFamily: 'var(--font-mono)'
-            }}
-        >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, delay: 0.5 }}
+                style={{
+                    marginTop: '0.75rem',
+                    display: 'flex',
+                    justifyContent: 'center'
+                }}
+            >
                 <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.5, 1, 0.5]
+                    onClick={() => setIsOverlayOpen(true)}
+                    whileHover={{
+                        scale: 1.05,
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        borderColor: 'rgba(255, 255, 255, 0.1)'
                     }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut"
+                    whileTap={{ scale: 0.95 }}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        padding: '6px 16px',
+                        background: 'rgba(255, 255, 255, 0.01)',
+                        backdropFilter: 'blur(5px)',
+                        borderRadius: '20px',
+                        border: '1px solid rgba(255, 255, 255, 0.03)',
+                        color: 'var(--text-secondary)',
+                        fontSize: '0.75rem',
+                        fontFamily: 'var(--font-mono)',
+                        letterSpacing: '0.5px',
+                        cursor: 'pointer',
+                        transition: 'background 0.3s ease, border-color 0.3s ease'
                     }}
-                    style={{ color: 'var(--accent-color)', fontSize: '1rem' }}
                 >
-                    <FaStar />
+                    <motion.div
+                        animate={{
+                            opacity: [0.3, 0.8, 0.3],
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        style={{ color: 'var(--accent-color)', display: 'flex' }}
+                    >
+                        <FaStar size={10} />
+                    </motion.div>
+                    <span>
+                        You are the <span style={{ color: 'var(--accent-color)', fontWeight: '600' }}>{count}</span>
+                        <sup style={{ fontSize: '0.55rem', opacity: 0.8, marginLeft: '1px' }}>
+                            {getOrdinal(count)}
+                        </sup> star to drift through this digital nebula
+                        {/* star in this nebula */}
+                    </span>
                 </motion.div>
-                <span>
-                    You are the <span style={{ color: 'var(--accent-color)', fontWeight: '700' }}>{count}th</span> star
-                </span>
-            </div>
-            <div style={{ opacity: 0.6, fontSize: '0.75rem', fontStyle: 'italic' }}>
-                to drift through this digital nebula
-            </div>
-        </motion.div>
+            </motion.div>
+
+            <AnimatePresence>
+                {isOverlayOpen && (
+                    <StarFieldOverlay
+                        count={count}
+                        onClose={() => setIsOverlayOpen(false)}
+                    />
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 

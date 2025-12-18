@@ -279,7 +279,7 @@ const Header = () => {
                                             padding: '0.5rem 0',
                                         }}
                                     >
-                                        <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>04.</span>
+                                        {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>04.</span> */}
                                         Beyond Work
                                     </Link>
 

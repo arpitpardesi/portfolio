@@ -4,9 +4,10 @@
   --bg-color: #0a0a0a;
   --text-primary: #ffffff;
   --text-secondary: #a3a3a3;
-  --accent-color: #ef4444;
-  --accent-rgb: 239, 68, 68;
-  --accent-glow: rgba(239, 68, 68, 0.5);
+  --accent-color: #6366f1;
+  /* Indigo-500 */
+  --accent-rgb: 99, 102, 241;
+  --accent-glow: rgba(99, 102, 241, 0.5);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --border-color: rgba(255, 255, 255, 0.1);
   --font-main: 'Outfit', sans-serif;

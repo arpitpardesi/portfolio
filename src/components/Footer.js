@@ -12,7 +12,7 @@ const Footer = () => {
     ];
 
     return (
-        <footer className="footer" style={{ padding: '2rem 0', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+        <footer className="footer" style={{ padding: '1.25rem 0', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem' }} className="mobile-socials">
                 {socialLinks.map((link, index) => (
                     <a
@@ -39,7 +39,7 @@ const Footer = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                 >
-                    Designed & Built by Arpit Pardesi
+                    Designed & Developed by Arpit Pardesi
                 </a>
                 <span className="footer-divider" style={{ opacity: 0.5 }}>|</span>
                 <span className="footer-copyright" style={{ fontSize: '0.85rem', opacity: 0.7 }}>
@@ -56,7 +56,7 @@ const Footer = () => {
                     display: flex !important;
                 }
                 .footer {
-                    padding: 1.5rem 1rem !important;
+                    padding: 1rem 1rem !important;
                 }
                 .footer-content {
                     flex-direction: column !important;
