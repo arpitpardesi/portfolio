@@ -167,9 +167,9 @@ const Header = () => {
                             ))}
                             {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
                                 <Link
-                                    to={currentUser ? "/admin" : "/login"}
+                                    to="/login"
                                     style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.5rem', opacity: 0.5 }}
-                                    title={currentUser ? "Dashboard" : "Admin Login"}
+                                    title="Admin Login"
                                 >
                                     <FaUserLock />
                                 </Link>
@@ -316,12 +316,12 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
-                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                            {!currentUser && location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
                                 <Link
-                                    to={currentUser ? "/admin" : "/login"}
+                                    to="/login"
                                     onClick={() => setMobileMenuOpen(false)}
                                     style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
-                                    title={currentUser ? "Dashboard" : "Admin Login"}
+                                    title="Admin Login"
                                 >
                                     <FaUserLock />
                                 </Link>
