@@ -1,40 +1,52 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { getMoonPhase } from '../utils/moonCalc';
 
 const Moon = () => {
-    const [moonData, setMoonData] = useState({ phase: 0, stage: '' });
+    const [moonData, setMoonData] = useState({ phase: 0, stage: '', illumination: 0 });
     const [isSouthern, setIsSouthern] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
-        // 1. Calculate Phase
         const data = getMoonPhase();
         setMoonData(data);
 
-        // 2. Detect Location (Hemisphere)
-        // Try to get from API
         fetch('https://ipapi.co/json/')
             .then(res => res.json())
             .then(data => {
-                if (data.latitude && data.latitude < 0) {
-                    setIsSouthern(true);
-                }
+                if (data.latitude && data.latitude < 0) setIsSouthern(true);
             })
-            .catch(err => {
-                console.warn("Could not fetch location for moon orientation:", err);
-            });
+            .catch(err => console.warn("Moon orientation warning:", err));
     }, []);
 
     const size = 100;
     const { phase, stage, illumination } = moonData;
 
+    const reflections = {
+        "New Moon": "The silent observer, waiting in the shadows.",
+        "Waxing Crescent": "A sliver of hope, emerging from the dark.",
+        "First Quarter": "Balanced in the void, half-seen, half-dreamed.",
+        "Waxing Gibbous": "Swelling with the light of ancient stars.",
+        "Full Moon": "A beacon of silver, illuminating the digital aether.",
+        "Waning Gibbous": "A gentle retreat, returning to the silence.",
+        "Last Quarter": "A fading echo of the peak, yet steady and strong.",
+        "Waning Crescent": "Preparing to sleep, the cycle prepares to restart."
+    };
+
     return (
         <>
             <motion.div
                 className="moon-container"
-                title={`Phase: ${stage} (${Math.round((illumination || 0) * 100)}% Lit)`}
-                animate={{ y: [0, -15, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                animate={{
+                    y: [0, -15, 0],
+                    scale: isHovered ? 1.1 : 1
+                }}
+                transition={{
+                    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    scale: { duration: 0.3 }
+                }}
                 style={{
                     position: 'fixed',
                     top: '120px',
@@ -42,8 +54,7 @@ const Moon = () => {
                     width: `${size}px`,
                     height: `${size}px`,
                     zIndex: 100,
-                    opacity: 0.9,
-                    // Glow varies with illumination
+                    cursor: 'help',
                     filter: `drop-shadow(0 0 ${10 + (illumination || 0) * 20}px rgba(255, 255, 255, ${0.2 + (illumination || 0) * 0.3}))`,
                     transform: isSouthern ? 'scaleX(-1)' : 'none'
                 }}
@@ -51,28 +62,65 @@ const Moon = () => {
                 <div style={{
                     width: '100%', height: '100%',
                     borderRadius: '50%',
-                    background: '#050505', // Base: Dark (Shadow)
+                    background: '#050505',
                     position: 'relative',
                     overflow: 'hidden',
-                    // Subtle dark glow for the "new moon" part to separate from space
                     boxShadow: '0 0 5px rgba(255,255,255,0.05)'
                 }}>
-                    {/* Lit Part */}
                     <MoonPhaseSVG size={size} phase={phase} />
-
-                    {/* Texture Overlay (always on top of light and dark) */}
                     <div style={{
                         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
                         borderRadius: '50%',
-                        background: 'radial-gradient(circle at 30% 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%)', // Sphere shading
+                        background: 'radial-gradient(circle at 30% 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%)',
                         pointerEvents: 'none'
                     }}></div>
-                    {/* Craters - simplistic */}
-                    <div style={{
-                        position: 'absolute', top: '20%', left: '30%', width: '20%', height: '20%',
-                        borderRadius: '50%', background: 'rgba(0,0,0,0.1)', filter: 'blur(1px)'
-                    }}></div>
                 </div>
+
+                <AnimatePresence>
+                    {isHovered && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -size, scale: 0.9 }}
+                            animate={{ opacity: 1, x: -size - 120, scale: 1 }}
+                            exit={{ opacity: 0, x: -size, scale: 0.9 }}
+                            style={{
+                                position: 'absolute',
+                                top: '50%',
+                                translateY: '-50%',
+                                width: '180px',
+                                padding: '15px',
+                                background: 'rgba(0, 0, 0, 0.4)',
+                                backdropFilter: 'blur(10px)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 255, 255, 0.05)',
+                                color: 'white',
+                                pointerEvents: 'none',
+                                textAlign: 'center'
+                            }}
+                        >
+                            <div style={{
+                                color: 'var(--accent-color)',
+                                fontSize: '0.7rem',
+                                letterSpacing: '1px',
+                                textTransform: 'uppercase',
+                                marginBottom: '4px',
+                                opacity: 0.8
+                            }}>
+                                {stage}
+                            </div>
+                            <div style={{ fontSize: '0.9rem', fontWeight: '500', marginBottom: '8px' }}>
+                                {Math.round(illumination * 100)}% Lit
+                            </div>
+                            <div style={{
+                                fontStyle: 'italic',
+                                color: 'var(--text-secondary)',
+                                fontSize: '0.8rem',
+                                lineHeight: '1.4'
+                            }}>
+                                "{reflections[stage] || "Surrounded by stars."}"
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </motion.div>
 
             <style>

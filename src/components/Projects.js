@@ -1,88 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaFolder } from 'react-icons/fa';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Projects = () => {
-    const projects = [{
-            title: 'Project 1',
-            description: 'Description of Project 1',
-            tech: ['A', 'B', 'C'],
-            github: '#',
-            external: '#'
-        },
-        {
-            title: 'Project 2',
-            description: 'Description of Project 2',
-            tech: ['A', 'B', 'C'],
-            github: '#',
-            external: '#'
-        },
-        {
-            title: 'Project 3',
-            description: 'Description of Project 3',
-            tech: ['A', 'B', 'C'],
-            github: '#',
-            external: '#'
-        },
-        {
-            title: 'Project 4',
-            description: 'Description of Project 4',
-            tech: ['A', 'B', 'C'],
-            github: '#',
-            external: '#'
-        },
-        {
-            title: 'Project 5',
-            description: 'Description of Project 5',
-            tech: ['A', 'B', 'C'],
-            github: '#',
-            external: '#'
-        },
-    ];
-    // const projects = [
-    //     {
-    //         title: 'E-Commerce Dashboard',
-    //         description: 'A comprehensive dashboard for managing online stores, featuring real-time analytics and inventory management.',
-    //         tech: ['React', 'D3.js', 'Firebase'],
-    //         github: '#',
-    //         external: '#'
-    //     },
-    //     {
-    //         title: 'Task Management App',
-    //         description: 'A collaborative task manager that lets teams organize and prioritize work with Kanban boards.',
-    //         tech: ['Vue.js', 'Vuex', 'Node.js'],
-    //         github: '#',
-    //         external: '#'
-    //     },
-    //     {
-    //         title: 'Weather Visualizer',
-    //         description: 'An interactive weather application using OpenWeatherMap API to visualize global weather patterns.',
-    //         tech: ['React', 'Chart.js', 'API'],
-    //         github: '#',
-    //         external: '#'
-    //     },
-    //     {
-    //         title: 'Portfolio v1',
-    //         description: 'My first portfolio website built with simple HTML/CSS and vanilla JavaScript.',
-    //         tech: ['HTML', 'CSS', 'JS'],
-    //         github: '#',
-    //         external: '#'
-    //     },
-    //     {
-    //         title: 'Chat Application',
-    //         description: 'Real-time chat application with room support and private messaging.',
-    //         tech: ['Socket.io', 'Express', 'React'],
-    //         github: '#',
-    //         external: '#'
-    //     },
-    //     {
-    //         title: 'Recipe Finder',
-    //         description: 'Search for recipes based on ingredients you have in your fridge.',
-    //         tech: ['React', 'API', 'Sass'],
-    //         github: '#',
-    //         external: '#'
-    //     }
-    // ];
+    // Fallback data
+    const initialProjects = [{
+        title: 'Project 1',
+        description: 'Description of Project 1',
+        tech: ['A', 'B', 'C'],
+        github: '#',
+        external: '#'
+    },
+    {
+        title: 'Project 2',
+        description: 'Description of Project 2',
+        tech: ['A', 'B', 'C'],
+        github: '#',
+        external: '#'
+    },
+    {
+        title: 'Project 3',
+        description: 'Description of Project 3',
+        tech: ['A', 'B', 'C'],
+        github: '#',
+        external: '#'
+    },
+    {
+        title: 'Project 4',
+        description: 'Description of Project 4',
+        tech: ['A', 'B', 'C'],
+        github: '#',
+        external: '#'
+    },
+    {
+        title: 'Project 5',
+        description: 'Description of Project 5',
+        tech: ['A', 'B', 'C'],
+        github: '#',
+        external: '#'
+    }];
+
+    const [projects, setProjects] = useState(initialProjects);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'projects'));
+                if (!querySnapshot.empty) {
+                    const items = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        // Ensure tech is an array if stored as string, though CollectionManager handles it
+                        tech: Array.isArray(doc.data().tech) ? doc.data().tech : (doc.data().tags || [])
+                    }));
+                    setProjects(items);
+                }
+            } catch (error) {
+                console.error("Error fetching projects:", error);
+            }
+        };
+        fetchProjects();
+    }, []);
 
     return (
         <section id="projects" className="projects-section" style={{ padding: '100px 20px', position: 'relative', zIndex: 1 }}>
@@ -128,7 +108,10 @@ const Projects = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            whileHover={{ y: -7 }}
+                            whileHover={{
+                                y: -10,
+                                boxShadow: '0 20px 30px -15px rgba(2, 12, 27, 0.7)'
+                            }}
                             className="project-card"
                             style={{
                                 background: '#112240',
@@ -136,15 +119,40 @@ const Projects = () => {
                                 borderRadius: '4px',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                transition: 'all 0.25s ease',
-                                cursor: 'default'
+                                transition: 'all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1)',
+                                cursor: 'default',
+                                height: '100%',
+                                position: 'relative',
+                                overflow: 'hidden'
                             }}
                         >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', zIndex: 2, position: 'relative' }}>
                                 <FaFolder style={{ fontSize: '2.5rem', color: 'var(--accent-color)' }} />
                                 <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <a href={project.github} style={{ color: 'var(--text-secondary)' }}><FaGithub size={20} /></a>
-                                    <a href={project.external} style={{ color: 'var(--text-secondary)' }}><FaExternalLinkAlt size={18} /></a>
+                                    {project.github && (
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            style={{ color: 'var(--text-secondary)', transition: 'color 0.3s ease' }}
+                                            onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+                                            onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                                        >
+                                            <FaGithub size={20} />
+                                        </a>
+                                    )}
+                                    {project.external && (
+                                        <a
+                                            href={project.external}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            style={{ color: 'var(--text-secondary)', transition: 'color 0.3s ease' }}
+                                            onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
+                                            onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                                        >
+                                            <FaExternalLinkAlt size={18} />
+                                        </a>
+                                    )}
                                 </div>
                             </div>
 
@@ -152,23 +160,45 @@ const Projects = () => {
                                 marginBottom: '0.75rem',
                                 fontSize: '1.35rem',
                                 fontWeight: '600',
-                                color: 'var(--text-primary)'
+                                color: 'var(--text-primary)',
+                                zIndex: 2,
+                                position: 'relative'
                             }}>
-                                {project.title}
+                                <span style={{
+                                    background: 'linear-gradient(to right, var(--text-primary), var(--text-primary))',
+                                    backgroundSize: '0% 1px',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'left bottom',
+                                    transition: 'background-size 0.3s ease'
+                                }}
+                                    onMouseOver={(e) => e.currentTarget.style.backgroundSize = '100% 1px'}
+                                    onMouseOut={(e) => e.currentTarget.style.backgroundSize = '0% 1px'}
+                                >
+                                    {project.title}
+                                </span>
                             </h3>
 
                             <p className="project-description" style={{
                                 color: 'var(--text-secondary)',
                                 marginBottom: '2rem',
-                                fontSize: '0.9rem'
+                                fontSize: '0.9rem',
+                                zIndex: 2,
+                                position: 'relative'
                             }}>
                                 {project.description}
                             </p>
 
-                            <div style={{ marginTop: 'auto' }}>
-                                <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+                            <div style={{ marginTop: 'auto', zIndex: 2, position: 'relative' }}>
+                                <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
                                     {project.tech.map((t, index) => (
-                                        <li key={index}>{t}</li>
+                                        <li key={index} style={{
+                                            background: 'rgba(var(--accent-rgb), 0.1)',
+                                            color: 'var(--accent-color)',
+                                            padding: '4px 10px',
+                                            borderRadius: '12px'
+                                        }}>
+                                            {t}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>

@@ -53,23 +53,43 @@ const About = () => {
                         </p>
 
                         <p style={{ marginBottom: '2rem' }}>
-                            Every project is a chance to explore, to improve, to understand a little more.                        
-                            </p>
+                            Every project is a chance to explore, to improve, to understand a little more.
+                        </p>
 
                         <p style={{ marginBottom: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>Here are a few technologies I've been working with recently:</p>
 
                         <ul className="skills-list" style={{
                             display: 'grid',
-                            gap: '0 10px',
+                            gap: '12px',
                             listStyle: 'none',
                             fontFamily: 'var(--font-mono)',
                             fontSize: '0.9rem'
                         }}>
-                            {['Python', 'FastAPI', 'LLM', 'SQL', 'Git', 'Github', 'Linux', 'Docker', 'React', 'Machine Learning'].map((skill) => (
-                                <li key={skill} style={{ position: 'relative', paddingLeft: '20px', marginBottom: '10px' }}>
-                                    <span style={{ position: 'absolute', left: 0, color: 'var(--accent-color)' }}>▹</span>
+                            {['Python', 'FastAPI', 'LLM', 'SQL', 'Git', 'Github', 'Linux', 'Docker', 'React', 'Machine Learning'].map((skill, index) => (
+                                <motion.li
+                                    key={skill}
+                                    style={{
+                                        position: 'relative',
+                                        padding: '8px 16px',
+                                        background: 'rgba(255, 255, 255, 0.03)',
+                                        borderRadius: '4px',
+                                        border: '1px solid var(--border-color)',
+                                        cursor: 'default',
+                                        overflow: 'hidden'
+                                    }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 * index }}
+                                    viewport={{ once: true }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        borderColor: 'var(--accent-color)',
+                                        background: 'rgba(var(--accent-rgb), 0.1)',
+                                    }}
+                                >
+                                    <span style={{ color: 'var(--accent-color)', marginRight: '8px' }}>▹</span>
                                     {skill}
-                                </li>
+                                </motion.li>
                             ))}
                         </ul>
                     </div>
@@ -83,13 +103,19 @@ const About = () => {
                     style={{ position: 'relative', height: '100%' }}
                     className="about-image-section"
                 >
-                    <div className="profile-image-wrapper" style={{
-                        position: 'relative',
-                        width: '100%',
-                        maxWidth: '300px',
-                        margin: '0 auto',
-                        aspectRatio: '1/1'
-                    }}>
+                    <motion.div
+                        className="profile-image-wrapper"
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            maxWidth: '300px',
+                            margin: '0 auto',
+                            aspectRatio: '1/1',
+                            cursor: 'pointer'
+                        }}
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
                         <div style={{
                             position: 'absolute',
                             top: '20px',
@@ -100,7 +126,8 @@ const About = () => {
                             borderRadius: '4px',
                             zIndex: 0,
                             transition: 'all 0.3s ease'
-                        }} />
+                        }} className="image-border" />
+
                         <div style={{
                             position: 'relative',
                             width: '100%',
@@ -112,19 +139,18 @@ const About = () => {
                             transition: 'all 0.3s ease',
                             zIndex: 1
                         }}
+                            className="image-container"
                             onMouseOver={(e) => {
                                 e.currentTarget.style.filter = 'none';
-                                e.currentTarget.parentElement.children[0].style.top = '15px';
-                                e.currentTarget.parentElement.children[0].style.left = '15px';
+                                e.currentTarget.parentElement.querySelector('.image-border').style.transform = 'translate(-10px, -10px)';
                             }}
                             onMouseOut={(e) => {
                                 e.currentTarget.style.filter = 'grayscale(100%) contrast(1)';
-                                e.currentTarget.parentElement.children[0].style.top = '20px';
-                                e.currentTarget.parentElement.children[0].style.left = '20px';
+                                e.currentTarget.parentElement.querySelector('.image-border').style.transform = 'translate(0, 0)';
                             }}
                         >
                             {/* Profile Image linked to LinkedIn */}
-                            
+                            <a href="https://www.linkedin.com/in/arpitpardesi/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
                                 <img
                                     src="https://github.com/arpitpardesi.png"
                                     alt="Arpit Pardesi"
@@ -132,15 +158,12 @@ const About = () => {
                                         width: '100%',
                                         height: '100%',
                                         objectFit: 'cover',
-                                        filter: 'grayscale(100%)',
-                                        transition: 'filter 0.3s ease'
+                                        transition: 'transform 0.5s ease',
                                     }}
-                                    onMouseOver={(e) => e.currentTarget.style.filter = 'none'}
-                                    onMouseOut={(e) => e.currentTarget.style.filter = 'grayscale(100%)'}
                                 />
-                            
+                            </a>
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
             </div>
 

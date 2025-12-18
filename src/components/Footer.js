@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import VisitorCounter from './VisitorCounter';
 
 const Footer = () => {
     const socialLinks = [
@@ -45,6 +46,8 @@ const Footer = () => {
                     © {new Date().getFullYear()} All rights reserved.
                 </span>
             </div>
+
+            <VisitorCounter />
 
             <style>
                 {`

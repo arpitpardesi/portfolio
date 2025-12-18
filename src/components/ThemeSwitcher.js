@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPalette, FaTimes } from 'react-icons/fa';
+import { FaPalette, FaTimes, FaRocket } from 'react-icons/fa';
 
 const themes = [
     // Original space themes
@@ -240,7 +240,35 @@ const ThemeSwitcher = () => {
                 >
                     {isOpen ? <FaTimes /> : <FaPalette />}
                 </motion.button>
-            </div>
+            </div >
+            <motion.button
+                onClick={() => window.location.hash = '#/playground'}
+                className="playground-btn"
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
+                style={{
+                    position: 'fixed',
+                    bottom: '40px',
+                    left: '110px',
+                    width: '55px',
+                    height: '55px',
+                    borderRadius: '50%',
+                    background: 'rgba(10, 10, 10, 0.8)',
+                    backdropFilter: 'blur(10px)',
+                    border: '2px solid var(--accent-color)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--accent-color)',
+                    fontSize: '1.3rem',
+                    cursor: 'pointer',
+                    zIndex: 10000,
+                    boxShadow: '0 0 30px var(--accent-glow)'
+                }}
+                title="Physics Playground"
+            >
+                <FaRocket />
+            </motion.button>
 
             <style>
                 {`
@@ -248,6 +276,13 @@ const ThemeSwitcher = () => {
                         .theme-switcher-container {
                             bottom: 25px !important;
                             left: 25px !important;
+                        }
+                        .playground-btn {
+                            bottom: 25px !important;
+                            left: 85px !important;
+                            width: 48px !important;
+                            height: 48px !important;
+                            font-size: 1.1rem !important;
                         }
                         .theme-toggle-btn {
                             width: 48px !important;
@@ -264,6 +299,13 @@ const ThemeSwitcher = () => {
                         .theme-switcher-container {
                             bottom: 20px !important;
                             left: 20px !important;
+                        }
+                        .playground-btn {
+                            bottom: 20px !important;
+                            left: 75px !important;
+                            width: 44px !important;
+                            height: 44px !important;
+                            font-size: 1rem !important;
                         }
                         .theme-toggle-btn {
                             width: 44px !important;

@@ -48,28 +48,32 @@ const Contact = () => {
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                 >
-                    <a
+                    <motion.a
                         href="mailto:arpit.pardesi6@gmail.com"
                         className="contact-btn"
                         style={{
-                            padding: '1.25rem 2.8rem',
+                            padding: '1.25rem 3rem',
                             border: '1px solid var(--accent-color)',
                             borderRadius: '4px',
                             color: 'var(--accent-color)',
                             fontWeight: '500',
                             fontSize: '1rem',
-                            transition: 'all 0.3s ease',
+                            textDecoration: 'none',
                             display: 'inline-block',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            background: 'transparent',
+                            zIndex: 1
                         }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
+                        whileHover={{
+                            scale: 1.05,
+                            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                            boxShadow: '0 0 20px rgba(var(--accent-rgb), 0.4)'
                         }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                        }}
+                        whileTap={{ scale: 0.95 }}
                     >
                         Say Hello
-                    </a>
+                    </motion.a>
                 </motion.div>
             </motion.div>
 

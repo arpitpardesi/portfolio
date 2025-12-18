@@ -13,31 +13,56 @@ import ThemeSwitcher from './components/ThemeSwitcher';
 import Moon from './components/Moon';
 import Photography from './components/Photography';
 import PhysicsPlayground from './components/PhysicsPlayground';
+import BeyondWork from './components/BeyondWork';
+import IOT from './components/IOT';
+import AI from './components/AI';
+import RaspberryPi from './components/RaspberryPi';
+import DynamicHobbyPage from './components/DynamicHobbyPage';
+import Login from './components/Login';
+import AdminDashboard from './components/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <CustomCursor />
-        <Background />
-        <Moon />
-        <ThemeSwitcher />
-        <Header />
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero />
-              <About />
-              <Projects />
-              <Contact />
-            </>
-          } />
-          <Route path="/photography" element={<Photography />} />
-          <Route path="/playground" element={<PhysicsPlayground />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <CustomCursor />
+          <Background />
+          <Moon />
+          <ThemeSwitcher />
+          <Header />
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero />
+                <About />
+                <Projects />
+                <Contact />
+              </>
+            } />
+            <Route path="/beyond-work" element={<BeyondWork />} />
+            <Route path="/beyond-work/photography" element={<Photography />} />
+            <Route path="/beyond-work/iot" element={<IOT />} />
+            <Route path="/beyond-work/ai" element={<AI />} />
+            <Route path="/beyond-work/raspberry-pi" element={<RaspberryPi />} />
+            {/* Dynamic Hobbies Route */}
+            <Route path="/beyond-work/:slug" element={<DynamicHobbyPage />} />
+            <Route path="/photography" element={<Photography />} />
+            <Route path="/playground" element={<PhysicsPlayground />} />
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } />
+          </Routes>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

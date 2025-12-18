@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaRocket } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaRocket, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -74,9 +74,26 @@ const Header = () => {
                 }}
             >
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <a href="#" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001 }}>
-                        ARPIT<span style={{ color: 'var(--accent-color)' }}>.</span>
-                    </a>
+                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex' }}>
+                        {['A', 'R', 'P', 'I', 'T'].map((letter, index) => (
+                            <motion.span
+                                key={index}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
+                            >
+                                {letter}
+                            </motion.span>
+                        ))}
+                        <motion.span
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 1.1, type: 'spring' }}
+                            style={{ color: 'var(--accent-color)' }}
+                        >
+                            .
+                        </motion.span>
+                    </Link>
 
                     {/* Desktop Navigation */}
                     <nav className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
@@ -116,10 +133,10 @@ const Header = () => {
                                     )}
                                 </li>
                             ))}
-                            {/* <li>
+                            <li>
                                 <Link
-                                    to="/photography"
-                                    className={location.pathname === '/photography' ? 'active-link' : ''}
+                                    to="/beyond-work"
+                                    className={location.pathname.includes('/beyond-work') ? 'active-link' : ''}
                                     style={{
                                         fontSize: '0.9rem',
                                         fontWeight: '500',
@@ -128,28 +145,10 @@ const Header = () => {
                                     onMouseOver={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
                                     onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
                                 >
-                                    Photography
+                                    Beyond Work
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    to="/playground"
-                                    className={location.pathname === '/playground' ? 'active-link' : ''}
-                                    style={{
-                                        fontSize: '0.9rem',
-                                        fontWeight: '500',
-                                        color: 'var(--text-secondary)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '0.4rem',
-                                    }}
-                                    onMouseOver={(e) => (e.currentTarget.style.color = 'var(--accent-color)')}
-                                    onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
-                                >
-                                    <FaRocket style={{ fontSize: '0.8rem' }} />
-                                    Playground
-                                </Link>
-                            </li> */}
+
                         </ul>
 
                         <div style={{ display: 'flex', gap: '1rem', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '2rem' }}>
@@ -164,6 +163,13 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
+                            <Link
+                                to="/login"
+                                style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.5rem', opacity: 0.5 }}
+                                title="Admin Login"
+                            >
+                                <FaUserLock />
+                            </Link>
                         </div>
                     </nav>
 
@@ -257,13 +263,13 @@ const Header = () => {
                                         )}
                                     </motion.li>
                                 ))}
-                                {/* <motion.li
+                                <motion.li
                                     initial={{ opacity: 0, x: 20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.3 }}
                                 >
                                     <Link
-                                        to="/photography"
+                                        to="/beyond-work"
                                         onClick={() => setMobileMenuOpen(false)}
                                         style={{
                                             fontSize: '1.2rem',
@@ -274,32 +280,10 @@ const Header = () => {
                                         }}
                                     >
                                         <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>04.</span>
-                                        Photography
+                                        Beyond Work
                                     </Link>
+
                                 </motion.li>
-                                <motion.li
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.4 }}
-                                >
-                                    <Link
-                                        to="/playground"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        style={{
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            color: 'var(--text-secondary)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            padding: '0.5rem 0',
-                                        }}
-                                    >
-                                        <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>05.</span>
-                                        <FaRocket style={{ color: 'var(--accent-color)' }} />
-                                        Playground
-                                    </Link>
-                                </motion.li> */}
                             </ul>
                         </nav>
 
@@ -328,13 +312,21 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
+                            <Link
+                                to="/login"
+                                onClick={() => setMobileMenuOpen(false)}
+                                style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
+                                title="Admin Login"
+                            >
+                                <FaUserLock />
+                            </Link>
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence >
 
             {/* Backdrop for mobile menu */}
-            <AnimatePresence>
+            < AnimatePresence >
                 {mobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -351,8 +343,9 @@ const Header = () => {
                             zIndex: 998,
                         }}
                     />
-                )}
-            </AnimatePresence>
+                )
+                }
+            </AnimatePresence >
 
             <style>
                 {`

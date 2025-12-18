@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 // Placeholder images for now - using generic nature/space/abstract themes
-const images = [
+const initialImages = [
     { id: 1, src: 'https://picsum.photos/id/1015/800/600', title: 'Mountain River' },
     { id: 2, src: 'https://picsum.photos/id/1036/800/1200', title: 'Snowy Peak' },
     { id: 3, src: 'https://picsum.photos/id/1022/800/500', title: 'Deep Forest' },
@@ -15,6 +17,26 @@ const images = [
 
 const Photography = () => {
     const [selectedId, setSelectedId] = useState(null);
+    const [images, setImages] = useState(initialImages);
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'photography'));
+                if (!querySnapshot.empty) {
+                    const items = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        src: doc.data().image, // Map 'image' field to 'src'
+                        title: doc.data().title
+                    }));
+                    setImages(items);
+                }
+            } catch (error) {
+                console.error("Error fetching photos:", error);
+            }
+        };
+        fetchImages();
+    }, []);
 
     return (
         <section className="photography-section" style={{
@@ -24,6 +46,31 @@ const Photography = () => {
             position: 'relative',
             zIndex: 1
         }}>
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                className="back-nav"
+            >
+                <a href="#/beyond-work" style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    color: 'var(--text-secondary)',
+                    textDecoration: 'none',
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    padding: '8px 16px',
+                    borderRadius: '50px',
+                    background: 'rgba(10, 10, 10, 0.5)',
+                    backdropFilter: 'blur(5px)',
+                    border: '1px solid var(--border-color)'
+                }}>
+                    <span style={{ fontSize: '1.2rem' }}>←</span> Back to Cosmos
+                </a>
+            </motion.div>
+
             <motion.div
                 className="container"
                 style={{ maxWidth: '1200px', margin: '0 auto' }}
@@ -151,12 +198,10 @@ const Photography = () => {
             </motion.div>
 
             <style>{`
-                .section-title {
                     font-size: 2.5rem;
                     margin-bottom: 1rem;
-                    background: linear-gradient(to right, #ffffff, var(--accent-color));
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
+                    color: var(--accent-color);
+                    text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);
                 }
                 
                 @media (max-width: 768px) {

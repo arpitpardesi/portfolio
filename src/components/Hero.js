@@ -116,15 +116,23 @@ const Hero = () => {
                         <motion.span
                             key={index}
                             variants={letterVariants}
+                            whileHover={{
+                                scale: 1.2,
+                                color: 'var(--accent-color)',
+                                textShadow: '0 0 20px var(--accent-glow)',
+                                transition: { duration: 0.2 }
+                            }}
                             style={{
                                 fontSize: 'clamp(3rem, 8vw, 6rem)',
                                 fontWeight: '700',
                                 lineHeight: '1.1',
                                 display: 'inline-block',
-                                background: 'linear-gradient(to right, #ffffff, var(--accent-color)',
+                                background: 'linear-gradient(to right, #ffffff, var(--accent-color))',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
-                                // Fallback for non-webkit
+                                filter: 'drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.3))',
+                                cursor: 'default',
+                                // Fallback
                                 color: 'var(--text-primary)'
                             }}
                         >
@@ -169,8 +177,15 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.9, duration: 0.5 }}
                 >
-                    {/* <motion.a
+                    <motion.a
                         href="#projects"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            const projects = document.getElementById('projects');
+                            if (projects) {
+                                projects.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }}
                         className="hero-cta"
                         style={{
                             padding: '1rem 2.5rem',
@@ -186,13 +201,13 @@ const Hero = () => {
                         }}
                         whileHover={{
                             scale: 1.05,
-                            boxShadow: "0px 0px 8px rgb(99, 102, 241)",
-                            backgroundColor: "rgba(99, 102, 241, 0.1)"
+                            boxShadow: "0px 0px 8px var(--accent-color)",
+                            backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                         }}
                         whileTap={{ scale: 0.95 }}
                     >
                         Check out my work
-                    </motion.a> */}
+                    </motion.a>
                 </motion.div>
 
             </motion.div>
