@@ -241,7 +241,7 @@ const ThemeSwitcher = () => {
                     {isOpen ? <FaTimes /> : <FaPalette />}
                 </motion.button>
             </div >
-            <motion.button
+            {/* <motion.button
                 onClick={() => window.location.hash = '#/playground'}
                 className="playground-btn"
                 whileHover={{ scale: 1.15 }}
@@ -268,7 +268,7 @@ const ThemeSwitcher = () => {
                 title="Physics Playground"
             >
                 <FaRocket />
-            </motion.button>
+            </motion.button> */}
 
             <style>
                 {`
