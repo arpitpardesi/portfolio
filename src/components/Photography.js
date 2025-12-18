@@ -67,7 +67,7 @@ const Photography = () => {
                     backdropFilter: 'blur(5px)',
                     border: '1px solid var(--border-color)'
                 }}>
-                    <span style={{ fontSize: '1.2rem' }}>←</span> Back to Cosmos
+                    <span style={{ fontSize: '1.2rem' }}>←</span> Back
                 </a>
             </motion.div>
 
