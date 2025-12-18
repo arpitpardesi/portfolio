@@ -158,71 +158,84 @@ const CollectionManager = ({ collectionName, title }) => {
 
     return (
         <div style={{ color: 'var(--text-primary)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <h2>{title} Manager</h2>
-                    {selectedItems.length > 0 && (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+                marginBottom: '2rem'
+            }} className="collection-header">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <h2 style={{ fontSize: 'min(1.5rem, 5vw)' }}>{title}</h2>
+                        {selectedItems.length > 0 && (
+                            <button
+                                onClick={confirmBulkDelete}
+                                style={{
+                                    padding: '8px 16px',
+                                    background: 'rgba(255, 107, 107, 0.2)',
+                                    color: '#ff6b6b',
+                                    border: '1px solid #ff6b6b',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 'bold'
+                                }}
+                            >
+                                Delete ({selectedItems.length})
+                            </button>
+                        )}
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        {collectionName === 'hobbies' && (
+                            <button
+                                onClick={() => setShowSeedConfirm(true)}
+                                style={{
+                                    padding: '8px 16px',
+                                    background: 'var(--border-color)',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem'
+                                }}
+                            >
+                                + Load Defaults
+                            </button>
+                        )}
                         <button
-                            onClick={confirmBulkDelete}
+                            onClick={handleAddNew}
                             style={{
                                 padding: '8px 16px',
-                                background: 'rgba(255, 107, 107, 0.2)',
-                                color: '#ff6b6b',
-                                border: '1px solid #ff6b6b',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem',
-                                fontWeight: 'bold'
-                            }}
-                        >
-                            Delete Selected ({selectedItems.length})
-                        </button>
-                    )}
-                </div>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    {collectionName === 'hobbies' && (
-                        <button
-                            onClick={() => setShowSeedConfirm(true)}
-                            style={{
-                                padding: '10px 20px',
-                                background: 'var(--border-color)',
+                                background: 'var(--accent-color)',
                                 color: '#fff',
                                 border: 'none',
                                 borderRadius: '4px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                fontSize: '0.9rem'
                             }}
                         >
-                            + Load Defaults
+                            <FaPlus /> Add New
                         </button>
-                    )}
-                    <button
-                        onClick={handleAddNew}
-                        style={{
-                            padding: '10px 20px',
-                            background: 'var(--accent-color)',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem'
-                        }}
-                    >
-                        <FaPlus /> Add New
-                    </button>
+                    </div>
                 </div>
             </div>
 
             {loading ? (
-                <div>Loading...</div>
+                <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>Loading Nebula Data...</div>
             ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                    gap: '1rem'
+                }}>
                     {items.map(item => (
                         <div key={item.id} style={{
-                            background: selectedItems.includes(item.id) ? 'rgba(99, 102, 241, 0.1)' : '#1a1a1a',
-                            padding: '1.5rem',
-                            borderRadius: '8px',
+                            background: selectedItems.includes(item.id) ? 'rgba(var(--accent-rgb), 0.1)' : 'rgba(255,255,255,0.03)',
+                            padding: '1.25rem',
+                            borderRadius: '12px',
                             border: selectedItems.includes(item.id) ? '1px solid var(--accent-color)' : '1px solid var(--border-color)',
                             position: 'relative',
                             transition: 'all 0.2s ease'

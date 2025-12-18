@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaTimes } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 
 const AdminDashboard = () => {
@@ -9,6 +9,7 @@ const AdminDashboard = () => {
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState('projects');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const handleLogout = async () => {
         try {
@@ -44,35 +45,66 @@ const AdminDashboard = () => {
             minHeight: '100vh',
             paddingTop: '80px',
             background: 'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)',
-            color: 'var(--text-primary)'
+            color: 'var(--text-primary)',
+            position: 'relative'
         }}>
+            {/* Mobile Sidebar Toggle */}
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                style={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    right: '2rem',
+                    zIndex: 100,
+                    width: '60px',
+                    height: '60px',
+                    borderRadius: '50%',
+                    background: 'var(--accent-color)',
+                    border: 'none',
+                    color: 'white',
+                    boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.4)',
+                    display: 'none',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.5rem',
+                    cursor: 'pointer'
+                }}
+                className="admin-mobile-toggle"
+            >
+                {isSidebarOpen ? <FaTimes /> : <FaFolder />}
+            </button>
+
             {/* Sidebar */}
-            <aside style={{
-                width: '260px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                padding: '2rem',
-                borderRight: '1px solid rgba(255, 255, 255, 0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'fixed',
-                height: 'calc(100vh - 80px)',
-                left: 0,
-                top: 80,
-                backdropFilter: 'blur(10px)',
-                zIndex: 10
-            }}>
+            <aside
+                className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}
+                style={{
+                    width: '260px',
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    padding: '2rem',
+                    borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'fixed',
+                    height: 'calc(100vh - 80px)',
+                    left: 0,
+                    top: 80,
+                    backdropFilter: 'blur(10px)',
+                    zIndex: 90,
+                    transition: 'transform 0.3s ease'
+                }}
+            >
                 <div style={{ marginBottom: '2rem', color: 'var(--text-secondary)', paddingBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                     <div style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>Logged in as</div>
                     <div style={{ color: 'var(--accent-color)', fontWeight: '500', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentUser?.email}</div>
                 </div>
 
                 <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-                    <button onClick={() => setSelectedSection('hobbies')} style={navBtnStyle(selectedSection === 'hobbies')}><FaFolder /> Manage Hobbies (Hub)</button>
-                    <button onClick={() => setSelectedSection('projects')} style={navBtnStyle(selectedSection === 'projects')}><FaFolder /> Projects</button>
-                    <button onClick={() => setSelectedSection('photography')} style={navBtnStyle(selectedSection === 'photography')}><FaCamera /> Photography</button>
-                    <button onClick={() => setSelectedSection('iot')} style={navBtnStyle(selectedSection === 'iot')}><FaMicrochip /> IOT</button>
-                    <button onClick={() => setSelectedSection('ai')} style={navBtnStyle(selectedSection === 'ai')}><FaBrain /> AI</button>
-                    <button onClick={() => setSelectedSection('rpi')} style={navBtnStyle(selectedSection === 'rpi')}><FaRaspberryPi /> Raspberry Pi</button>
+                    <button onClick={() => { setSelectedSection('hobbies'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'hobbies')}><FaFolder /> Manage Hobbies (Hub)</button>
+                    <button onClick={() => { setSelectedSection('projects'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'projects')}><FaFolder /> Projects</button>
+                    <button onClick={() => { setSelectedSection('photography'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'photography')}><FaCamera /> Photography</button>
+                    <button onClick={() => { setSelectedSection('iot'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'iot')}><FaMicrochip /> IOT</button>
+                    <button onClick={() => { setSelectedSection('ai'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'ai')}><FaBrain /> AI</button>
+                    <button onClick={() => { setSelectedSection('rpi'); setIsSidebarOpen(false); }} style={navBtnStyle(selectedSection === 'rpi')}><FaRaspberryPi /> Raspberry Pi</button>
                 </nav>
 
                 <button
@@ -102,8 +134,9 @@ const AdminDashboard = () => {
                 flex: 1,
                 padding: '2rem',
                 marginLeft: '260px',
-                background: 'transparent'
-            }}>
+                background: 'transparent',
+                transition: 'margin-left 0.3s ease'
+            }} className="admin-main">
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{
                         background: 'rgba(255, 255, 255, 0.02)',
@@ -117,6 +150,31 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </main>
+
+            <style>{`
+                @media (max-width: 1024px) {
+                    .admin-sidebar {
+                        transform: translateX(-100%);
+                    }
+                    .admin-sidebar.open {
+                        transform: translateX(0);
+                    }
+                    .admin-main {
+                        margin-left: 0 !important;
+                        padding: 1rem !important;
+                    }
+                    .admin-mobile-toggle {
+                        display: flex !important;
+                    }
+                }
+                @media (max-width: 480px) {
+                    .admin-sidebar {
+                        width: 100% !important;
+                        top: 0 !important;
+                        height: 100vh !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 };
