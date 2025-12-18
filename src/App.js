@@ -54,7 +54,9 @@ function App() {
 
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={
-              <AdminDashboard />
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
             } />
           </Routes>
           <Footer />

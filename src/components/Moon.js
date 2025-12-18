@@ -1,11 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { getMoonPhase } from '../utils/moonCalc';
+import { useLocation } from 'react-router-dom';
 
 const Moon = () => {
     const [moonData, setMoonData] = useState({ phase: 0, stage: '', illumination: 0 });
     const [isSouthern, setIsSouthern] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         const data = getMoonPhase();
@@ -32,6 +34,9 @@ const Moon = () => {
         "Last Quarter": "A fading echo of the peak, yet steady and strong.",
         "Waning Crescent": "Preparing to sleep, the cycle prepares to restart."
     };
+
+    // Hide moon on admin pages
+    if (location.pathname.startsWith('/admin')) return null;
 
     return (
         <>

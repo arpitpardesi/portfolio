@@ -33,7 +33,7 @@ const Login = () => {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            zIndex: 10
+            zIndex: 10,
         }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -42,7 +42,7 @@ const Login = () => {
                 style={{
                     background: 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
                     padding: '3rem',
                     borderRadius: '24px',
                     width: '100%',
@@ -56,14 +56,14 @@ const Login = () => {
                     transition={{ delay: 0.2 }}
                     style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem', fontWeight: '700' }}
                 >
-                    <span style={{ color: 'var(--text-primary)' }}>Admin</span> <span style={{ color: 'var(--accent-color)' }}>Login</span>
+                    <span style={{ color: '#fff' }}>Admin</span> <span style={{ color: 'var(--accent-color)' }}>Login</span>
                 </motion.h2>
 
                 {error && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
-                        style={{ color: '#ff6b6b', marginBottom: '1.5rem', textAlign: 'center', background: 'rgba(255, 107, 107, 0.1)', padding: '10px', borderRadius: '8px' }}
+                        style={{ color: '#ff6b6b', marginBottom: '1.5rem', textAlign: 'center', background: 'rgba(255, 107, 107, 0.1)', padding: '12px', borderRadius: '8px', fontSize: '0.9rem' }}
                     >
                         {error}
                     </motion.div>
@@ -75,25 +75,13 @@ const Login = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
                     >
-                        <label style={{ display: 'block', marginBottom: '0.8rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Email Address</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', color: '#a3a3a3', fontSize: '0.9rem' }}>Email Address</label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                borderRadius: '12px',
-                                border: '1px solid var(--border-color)',
-                                background: 'rgba(0,0,0,0.2)',
-                                color: '#fff',
-                                fontSize: '1rem',
-                                outline: 'none',
-                                transition: 'all 0.3s'
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = 'var(--accent-color)'}
-                            onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
+                            style={inputStyle}
                         />
                     </motion.div>
 
@@ -103,7 +91,7 @@ const Login = () => {
                         transition={{ delay: 0.4 }}
                         style={{ position: 'relative' }}
                     >
-                        <label style={{ display: 'block', marginBottom: '0.8rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Password</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', color: '#a3a3a3', fontSize: '0.9rem' }}>Password</label>
                         <div style={{ position: 'relative' }}>
                             <input
                                 type={showPassword ? 'text' : 'password'}
@@ -111,19 +99,9 @@ const Login = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 style={{
-                                    width: '100%',
-                                    padding: '12px 16px',
-                                    paddingRight: '45px',
-                                    borderRadius: '12px',
-                                    border: '1px solid var(--border-color)',
-                                    background: 'rgba(0,0,0,0.2)',
-                                    color: '#fff',
-                                    fontSize: '1rem',
-                                    outline: 'none',
-                                    transition: 'all 0.3s'
+                                    ...inputStyle,
+                                    paddingRight: '45px'
                                 }}
-                                onFocus={(e) => e.target.style.borderColor = 'var(--accent-color)'}
-                                onBlur={(e) => e.target.style.borderColor = 'var(--border-color)'}
                             />
                             <button
                                 type="button"
@@ -135,7 +113,7 @@ const Login = () => {
                                     transform: 'translateY(-50%)',
                                     background: 'transparent',
                                     border: 'none',
-                                    color: 'var(--text-secondary)',
+                                    color: '#a3a3a3',
                                     cursor: 'pointer',
                                     fontSize: '1.2rem',
                                     display: 'flex',
@@ -166,7 +144,7 @@ const Login = () => {
                             fontWeight: '600',
                             cursor: loading ? 'not-allowed' : 'pointer',
                             opacity: loading ? 0.7 : 1,
-                            boxShadow: '0 4px 15px rgba(var(--accent-rgb), 0.3)'
+                            boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)'
                         }}
                     >
                         {loading ? 'Authenticating...' : 'Sign In'}
@@ -175,6 +153,18 @@ const Login = () => {
             </motion.div>
         </section>
     );
+};
+
+const inputStyle = {
+    width: '100%',
+    padding: '12px 16px',
+    borderRadius: '12px',
+    border: '1px solid rgba(255,255,255,0.1)',
+    background: 'rgba(0,0,0,0.3)',
+    color: '#fff',
+    fontSize: '1rem',
+    outline: 'none',
+    transition: 'all 0.3s'
 };
 
 export default Login;

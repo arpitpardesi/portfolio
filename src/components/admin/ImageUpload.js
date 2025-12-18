@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { FaCloudUploadAlt, FaCheck, FaSpinner } from 'react-icons/fa';
+import { FaCloudUploadAlt, FaSpinner } from 'react-icons/fa';
+import './Admin.css';
 
 const ImageUpload = ({ onUpload, currentImage }) => {
     const [uploading, setUploading] = useState(false);
@@ -30,27 +31,17 @@ const ImageUpload = ({ onUpload, currentImage }) => {
     };
 
     return (
-        <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--text-secondary)' }}>Image</label>
+        <div className="form-group">
+            <label className="form-label">Image</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <label style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '8px 16px',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: '1px solid var(--border-color)',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    color: 'var(--text-primary)'
-                }}>
+                <label className="image-upload-label">
                     {uploading ? <FaSpinner className="spin" /> : <FaCloudUploadAlt />}
                     {uploading ? 'Uploading...' : 'Choose File'}
                     <input type="file" onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
                 </label>
 
                 {preview && (
-                    <div style={{ position: 'relative', width: '50px', height: '50px', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ position: 'relative', width: '50px', height: '50px', borderRadius: '4px', overflow: 'hidden', border: '1px solid var(--border-color)' }}>
                         <img src={preview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                 )}

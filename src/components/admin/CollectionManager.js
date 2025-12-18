@@ -4,6 +4,7 @@ import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase
 import { FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
 import ImageUpload from './ImageUpload';
 import { motion, AnimatePresence } from 'framer-motion';
+import './Admin.css';
 
 const CollectionManager = ({ collectionName, title }) => {
     const [items, setItems] = useState([]);
@@ -158,64 +159,31 @@ const CollectionManager = ({ collectionName, title }) => {
 
     return (
         <div style={{ color: 'var(--text-primary)' }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                marginBottom: '2rem'
-            }} className="collection-header">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <h2 style={{ fontSize: 'min(1.5rem, 5vw)' }}>{title}</h2>
+            <div className="collection-header">
+                <div className="collection-header-top">
+                    <div className="collection-title-group">
+                        <h2 className="collection-title">{title}</h2>
                         {selectedItems.length > 0 && (
                             <button
                                 onClick={confirmBulkDelete}
-                                style={{
-                                    padding: '8px 16px',
-                                    background: 'rgba(255, 107, 107, 0.2)',
-                                    color: '#ff6b6b',
-                                    border: '1px solid #ff6b6b',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '0.8rem',
-                                    fontWeight: 'bold'
-                                }}
+                                className="btn btn-danger"
                             >
                                 Delete ({selectedItems.length})
                             </button>
                         )}
                     </div>
-                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <div className="collection-actions">
                         {collectionName === 'hobbies' && (
                             <button
                                 onClick={() => setShowSeedConfirm(true)}
-                                style={{
-                                    padding: '8px 16px',
-                                    background: 'var(--border-color)',
-                                    color: '#fff',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '0.9rem'
-                                }}
+                                className="btn btn-outline"
                             >
                                 + Load Defaults
                             </button>
                         )}
                         <button
                             onClick={handleAddNew}
-                            style={{
-                                padding: '8px 16px',
-                                background: 'var(--accent-color)',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                fontSize: '0.9rem'
-                            }}
+                            className="btn btn-primary"
                         >
                             <FaPlus /> Add New
                         </button>
@@ -226,45 +194,31 @@ const CollectionManager = ({ collectionName, title }) => {
             {loading ? (
                 <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>Loading Nebula Data...</div>
             ) : (
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
-                    gap: '1rem'
-                }}>
+                <div className="collection-grid">
                     {items.map(item => (
-                        <div key={item.id} style={{
-                            background: selectedItems.includes(item.id) ? 'rgba(var(--accent-rgb), 0.1)' : 'rgba(255,255,255,0.03)',
-                            padding: '1.25rem',
-                            borderRadius: '12px',
-                            border: selectedItems.includes(item.id) ? '1px solid var(--accent-color)' : '1px solid var(--border-color)',
-                            position: 'relative',
-                            transition: 'all 0.2s ease'
-                        }}>
+                        <div key={item.id} className={`collection-item ${selectedItems.includes(item.id) ? 'selected' : ''}`}>
                             <input
                                 type="checkbox"
                                 checked={selectedItems.includes(item.id)}
                                 onChange={() => toggleSelection(item.id)}
-                                style={{
-                                    position: 'absolute',
-                                    top: '1rem',
-                                    left: '1rem',
-                                    width: '18px',
-                                    height: '18px',
-                                    cursor: 'pointer',
-                                    accentColor: 'var(--accent-color)',
-                                    zIndex: 10
-                                }}
+                                className="item-checkbox"
                             />
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', paddingLeft: '2rem' }}>
-                                <h3 style={{ margin: '0 0 0.5rem 0', color: item.color }}>{item.title}</h3>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <button onClick={() => handleEdit(item)} style={{ background: 'transparent', border: 'none', color: '#ccc', cursor: 'pointer' }}><FaEdit /></button>
-                                    <button onClick={() => confirmDelete(item.id)} style={{ background: 'transparent', border: 'none', color: '#ff6b6b', cursor: 'pointer' }}><FaTrash /></button>
+                            <div className="item-header">
+                                <h3 className="item-title" style={{ color: item.color }}>{item.title}</h3>
+                                <div className="item-actions">
+                                    <button onClick={() => handleEdit(item)} className="icon-btn edit"><FaEdit /></button>
+                                    <button onClick={() => confirmDelete(item.id)} className="icon-btn delete"><FaTrash /></button>
                                 </div>
                             </div>
-                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', paddingLeft: '2rem' }}>{item.description}</p>
-                            {item.image && <div style={{ paddingLeft: '2rem' }}>
-                                <img src={item.image} alt={item.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} />
+                            <p className="item-desc">{item.description}</p>
+                            {/* Tags display (if available) - optional enhancement */}
+                            {item.tags && item.tags.length > 0 && <div style={{ paddingLeft: '2rem', fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>
+                                {Array.isArray(item.tags) ? item.tags.slice(0, 3).join(', ') : item.tags}
+                                {Array.isArray(item.tags) && item.tags.length > 3 ? '...' : ''}
+                            </div>}
+
+                            {item.image && <div>
+                                <img src={item.image} alt={item.title} className="item-image" />
                             </div>}
                         </div>
                     ))}
@@ -274,20 +228,13 @@ const CollectionManager = ({ collectionName, title }) => {
             {/* Delete Confirmation Modal */}
             <AnimatePresence>
                 {itemsToDelete.length > 0 && (
-                    <div style={{
-                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-                        background: 'rgba(0,0,0,0.8)', zIndex: 1100,
-                        display: 'flex', justifyContent: 'center', alignItems: 'center'
-                    }}>
+                    <div className="modal-overlay">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            style={{
-                                background: '#222', padding: '2rem', borderRadius: '8px',
-                                width: '100%', maxWidth: '400px', textAlign: 'center',
-                                border: '1px solid var(--border-color)'
-                            }}
+                            className="modal-content"
+                            style={{ maxWidth: '400px', textAlign: 'center' }}
                         >
                             <h3 style={{ marginBottom: '1rem' }}>Confirm Delete</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
@@ -297,13 +244,13 @@ const CollectionManager = ({ collectionName, title }) => {
                             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                                 <button
                                     onClick={() => setItemsToDelete([])}
-                                    style={{ padding: '10px 20px', background: 'transparent', border: '1px solid #555', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}
+                                    className="btn btn-outline"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={executeDelete}
-                                    style={{ padding: '10px 20px', background: '#ff6b6b', border: 'none', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}
+                                    className="btn btn-danger-solid"
                                 >
                                     Delete {itemsToDelete.length > 1 ? `(${itemsToDelete.length})` : ''}
                                 </button>
@@ -316,20 +263,13 @@ const CollectionManager = ({ collectionName, title }) => {
             {/* Seed Confirmation Modal */}
             <AnimatePresence>
                 {showSeedConfirm && (
-                    <div style={{
-                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-                        background: 'rgba(0,0,0,0.8)', zIndex: 1100,
-                        display: 'flex', justifyContent: 'center', alignItems: 'center'
-                    }}>
+                    <div className="modal-overlay">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
-                            style={{
-                                background: '#222', padding: '2rem', borderRadius: '8px',
-                                width: '100%', maxWidth: '400px', textAlign: 'center',
-                                border: '1px solid var(--border-color)'
-                            }}
+                            className="modal-content"
+                            style={{ maxWidth: '400px', textAlign: 'center' }}
                         >
                             <h3 style={{ marginBottom: '1rem' }}>Load Default Hobbies?</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
@@ -340,13 +280,13 @@ const CollectionManager = ({ collectionName, title }) => {
                             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                                 <button
                                     onClick={() => setShowSeedConfirm(false)}
-                                    style={{ padding: '10px 20px', background: 'transparent', border: '1px solid #555', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}
+                                    className="btn btn-outline"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleSeedDefaults}
-                                    style={{ padding: '10px 20px', background: 'var(--accent-color)', border: 'none', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}
+                                    className="btn btn-primary"
                                 >
                                     Yes, Load Them
                                 </button>
@@ -359,93 +299,108 @@ const CollectionManager = ({ collectionName, title }) => {
             {/* Edit/Add Modal */}
             <AnimatePresence>
                 {isEditing && (
-                    <div style={{
-                        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-                        background: 'rgba(0,0,0,0.8)', zIndex: 1000,
-                        display: 'flex', justifyContent: 'center', alignItems: 'center'
-                    }}>
+                    <div className="modal-overlay">
                         <motion.div
                             initial={{ y: 50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: 50, opacity: 0 }}
-                            style={{
-                                background: '#222', padding: '2rem', borderRadius: '8px',
-                                width: '100%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto',
-                                position: 'relative'
-                            }}
+                            className="modal-content"
                         >
                             <button
                                 onClick={() => setIsEditing(false)}
-                                style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: '#fff', fontSize: '1.2rem', cursor: 'pointer' }}
+                                className="close-modal-btn"
                             >
                                 <FaTimes />
                             </button>
-                            <h3 style={{ marginBottom: '1.5rem' }}>{currentItem ? 'Edit Item' : 'Add New Item'}</h3>
+                            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>{currentItem ? 'Edit Item' : 'Add New Item'}</h3>
 
                             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <input
-                                    placeholder="Title"
-                                    value={formData.title}
-                                    onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    style={inputStyle}
-                                    required
-                                />
+                                <div className="form-group">
+                                    <label className="form-label">Title</label>
+                                    <input
+                                        placeholder="Title"
+                                        value={formData.title}
+                                        onChange={e => setFormData({ ...formData, title: e.target.value })}
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
                                 <ImageUpload
                                     currentImage={formData.image}
                                     onUpload={(url) => setFormData({ ...formData, image: url })}
                                 />
-                                <textarea
-                                    placeholder="Short Description"
-                                    value={formData.description}
-                                    onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                    style={{ ...inputStyle, minHeight: '80px' }}
-                                    required
-                                />
-                                <textarea
-                                    placeholder="Full Description (Markdown supported)"
-                                    value={formData.fullDesc}
-                                    onChange={e => setFormData({ ...formData, fullDesc: e.target.value })}
-                                    style={{ ...inputStyle, minHeight: '150px' }}
-                                />
-                                <input
-                                    placeholder="Tags (comma separated)"
-                                    value={formData.tags}
-                                    onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                                    style={inputStyle}
-                                />
-                                <div style={{ display: 'flex', gap: '1rem' }}>
-                                    <input
-                                        type="color"
-                                        value={formData.color}
-                                        onChange={e => setFormData({ ...formData, color: e.target.value })}
-                                        style={{ height: '45px', width: '60px', padding: '0', border: 'none', cursor: 'pointer' }}
+                                <div className="form-group">
+                                    <label className="form-label">Short Description</label>
+                                    <textarea
+                                        placeholder="Short Description"
+                                        value={formData.description}
+                                        onChange={e => setFormData({ ...formData, description: e.target.value })}
+                                        className="form-textarea"
+                                        style={{ minHeight: '80px' }}
+                                        required
                                     />
-                                    <input
-                                        placeholder="GitHub URL"
-                                        value={formData.github}
-                                        onChange={e => setFormData({ ...formData, github: e.target.value })}
-                                        style={inputStyle}
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Full Description (Markdown)</label>
+                                    <textarea
+                                        placeholder="# Full Description using Markdown..."
+                                        value={formData.fullDesc}
+                                        onChange={e => setFormData({ ...formData, fullDesc: e.target.value })}
+                                        className="form-textarea"
+                                        style={{ minHeight: '150px' }}
                                     />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Tags (comma separated)</label>
                                     <input
-                                        placeholder="External Link"
+                                        placeholder="e.g. react, space, photography"
+                                        value={formData.tags}
+                                        onChange={e => setFormData({ ...formData, tags: e.target.value })}
+                                        className="form-input"
+                                    />
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '1rem', alignItems: 'end' }}>
+                                    <div className="form-group" style={{ margin: 0 }}>
+                                        <label className="form-label">Color</label>
+                                        <input
+                                            type="color"
+                                            value={formData.color}
+                                            onChange={e => setFormData({ ...formData, color: e.target.value })}
+                                            className="color-input"
+                                        />
+                                    </div>
+                                    <div className="form-group" style={{ margin: 0 }}>
+                                        <label className="form-label">GitHub URL</label>
+                                        <input
+                                            placeholder="https://github.com/..."
+                                            value={formData.github}
+                                            onChange={e => setFormData({ ...formData, github: e.target.value })}
+                                            className="form-input"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">External Link</label>
+                                    <input
+                                        placeholder="https://..."
                                         value={formData.link}
                                         onChange={e => setFormData({ ...formData, link: e.target.value })}
-                                        style={inputStyle}
+                                        className="form-input"
                                     />
                                 </div>
-                                <input
-                                    placeholder="Category / Slug (e.g. 'gardening' - required for new hobbies)"
-                                    value={formData.category || ''}
-                                    onChange={e => setFormData({ ...formData, category: e.target.value })}
-                                    style={inputStyle}
-                                />
-                                <div style={{ fontSize: '0.8rem', color: '#888', fontStyle: 'italic' }}>
-                                    Tip: For Hobbies, use this as the URL ID. For Projects, match this to the Hobby ID.
+                                <div className="form-group">
+                                    <label className="form-label">Category / Slug (required for new hobbies)</label>
+                                    <input
+                                        placeholder="e.g. gardening"
+                                        value={formData.category || ''}
+                                        onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                        className="form-input"
+                                    />
+                                    <div style={{ fontSize: '0.8rem', color: '#888', fontStyle: 'italic', marginTop: '0.5rem' }}>
+                                        Tip: For Hobbies, use this as the URL ID. For Projects, match this to the Hobby ID.
+                                    </div>
                                 </div>
-                                <button type="submit" style={{
-                                    marginTop: '1rem', padding: '12px', background: 'var(--accent-color)',
-                                    color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold'
-                                }}>
+                                <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', width: '100%', padding: '14px' }}>
                                     Save Item
                                 </button>
                             </form>
@@ -455,16 +410,6 @@ const CollectionManager = ({ collectionName, title }) => {
             </AnimatePresence>
         </div>
     );
-};
-
-const inputStyle = {
-    width: '100%',
-    padding: '10px',
-    background: '#333',
-    border: '1px solid #444',
-    borderRadius: '4px',
-    color: '#fff',
-    fontFamily: 'inherit'
 };
 
 export default CollectionManager;

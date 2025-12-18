@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaRocket, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
+    const { currentUser } = useAuth();
 
     // Check if we are on the home page
     const isHome = location.pathname === '/';
@@ -163,13 +165,15 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
-                            <Link
-                                to="/login"
-                                style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.5rem', opacity: 0.5 }}
-                                title="Admin Login"
-                            >
-                                <FaUserLock />
-                            </Link>
+                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                                <Link
+                                    to={currentUser ? "/admin" : "/login"}
+                                    style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.5rem', opacity: 0.5 }}
+                                    title={currentUser ? "Dashboard" : "Admin Login"}
+                                >
+                                    <FaUserLock />
+                                </Link>
+                            )}
                         </div>
                     </nav>
 
@@ -312,21 +316,23 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
-                            <Link
-                                to="/login"
-                                onClick={() => setMobileMenuOpen(false)}
-                                style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
-                                title="Admin Login"
-                            >
-                                <FaUserLock />
-                            </Link>
+                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                                <Link
+                                    to={currentUser ? "/admin" : "/login"}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
+                                    title={currentUser ? "Dashboard" : "Admin Login"}
+                                >
+                                    <FaUserLock />
+                                </Link>
+                            )}
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence >
+            </AnimatePresence>
 
             {/* Backdrop for mobile menu */}
-            < AnimatePresence >
+            <AnimatePresence>
                 {mobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -343,9 +349,8 @@ const Header = () => {
                             zIndex: 998,
                         }}
                     />
-                )
-                }
-            </AnimatePresence >
+                )}
+            </AnimatePresence>
 
             <style>
                 {`
@@ -357,6 +362,12 @@ const Header = () => {
                             display: block !important;
                         }
                     }
+
+                    @media (max-height: 500px) and (orientation: landscape) {
+                        header {
+                            padding: 0.5rem 1rem !important;
+                        }
+                    }
                 `}
             </style>
         </>
@@ -364,4 +375,3 @@ const Header = () => {
 };
 
 export default Header;
-
