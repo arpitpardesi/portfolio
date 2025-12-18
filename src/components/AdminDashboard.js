@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaTimes } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaTimes, FaChartLine } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
+import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
     const [error, setError] = useState('');
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
-    const [selectedSection, setSelectedSection] = useState('projects');
+    const [selectedSection, setSelectedSection] = useState('analytics');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const handleLogout = async () => {
@@ -23,6 +24,8 @@ const AdminDashboard = () => {
 
     const renderContent = () => {
         switch (selectedSection) {
+            case 'analytics':
+                return <AnalyticsDashboard />;
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
             case 'hobbies':
@@ -41,6 +44,7 @@ const AdminDashboard = () => {
     };
 
     const navItems = [
+        { id: 'analytics', label: 'Analytics', icon: <FaChartLine /> },
         { id: 'hobbies', label: 'Manage Hobbies (Hub)', icon: <FaFolder /> },
         { id: 'projects', label: 'Projects', icon: <FaFolder /> },
         { id: 'photography', label: 'Photography', icon: <FaCamera /> },

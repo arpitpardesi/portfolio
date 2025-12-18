@@ -359,7 +359,7 @@ const CollectionManager = ({ collectionName, title }) => {
                                         className="form-input"
                                     />
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '1rem', alignItems: 'end' }}>
+                                <div className="form-row-responsive">
                                     <div className="form-group" style={{ margin: 0 }}>
                                         <label className="form-label">Color</label>
                                         <input
