@@ -14,7 +14,10 @@ const CustomCursor = () => {
         };
 
         const handleMouseOver = (e) => {
-            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button')) {
+            const tagName = e.target.tagName;
+            if (tagName === 'A' || tagName === 'BUTTON' ||
+                tagName === 'INPUT' || tagName === 'TEXTAREA' ||
+                e.target.closest('a') || e.target.closest('button')) {
                 setCursorVariant("text");
             } else {
                 setCursorVariant("default");
@@ -105,7 +108,7 @@ const CustomCursor = () => {
                     width: 400,
                     height: 400,
                     borderRadius: "50%",
-                    zIndex: 999998,
+                    zIndex: 99999998,
                     pointerEvents: "none",
                     background: "radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, rgba(var(--accent-rgb), 0) 60%)"
                 }}
@@ -126,7 +129,7 @@ const CustomCursor = () => {
                     left: 0,
                     borderRadius: "50%",
                     pointerEvents: "none",
-                    zIndex: 999999,
+                    zIndex: 99999999,
                 }}
             />
             {/* Center Pointer - follows instantly */}
@@ -143,7 +146,7 @@ const CustomCursor = () => {
                     left: 0,
                     borderRadius: "50%",
                     pointerEvents: "none",
-                    zIndex: 999999,
+                    zIndex: 99999999,
                 }}
             />
             <style>
@@ -151,12 +154,12 @@ const CustomCursor = () => {
                     body {
                         cursor: none; /* Hide default cursor */
                     }
-                    a, button {
-                        cursor: none; /* Ensure links don't show default cursor */
+                    a, button, input, textarea, label {
+                        cursor: none; /* Ensure interactive elements don't show default cursor */
                     }
                     @media (hover: none) and (pointer: coarse) {
                         .cursor-follower { display: none; }
-                        body, a, button { cursor: auto; }
+                        body, a, button, input, textarea, label { cursor: auto; }
                     }
                 `}
             </style>
