@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaGithub, FaLinkedin, FaInstagram, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import VisitorCounter from './VisitorCounter';
 
@@ -13,18 +14,33 @@ const Footer = () => {
 
     return (
         <footer className="footer" style={{ padding: '1.25rem 0', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem' }} className="mobile-socials">
+            <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem', alignItems: 'center' }} className="mobile-socials">
                 {socialLinks.map((link, index) => (
                     <a
                         key={index}
                         href={link.href}
                         target="_blank"
                         rel="noreferrer"
-                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
+                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', transition: 'color 0.3s ease' }}
                     >
                         {link.icon}
                     </a>
                 ))}
+                <Link
+                    to="/login"
+                    style={{
+                        color: 'var(--text-secondary)',
+                        fontSize: '1.3rem',
+                        transition: 'all 0.3s ease',
+                        display: 'flex',
+                        alignItems: 'center',
+                        opacity: 0.5
+                    }}
+                    className="admin-login-btn"
+                    title="Admin Login"
+                >
+                    <FaUserLock />
+                </Link>
             </div>
             <div className="footer-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <a
@@ -51,6 +67,12 @@ const Footer = () => {
 
             <style>
                 {`
+            .mobile-socials a:hover,
+            .mobile-socials .admin-login-btn:hover {
+                color: var(--accent-color) !important;
+                transform: translateY(-2px);
+            }
+            
             @media (max-width: 768px) {
                 .mobile-socials {
                     display: flex !important;

@@ -316,7 +316,7 @@ const Header = () => {
                                     {link.icon}
                                 </a>
                             ))}
-                            {!currentUser && location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
                                 <Link
                                     to="/login"
                                     onClick={() => setMobileMenuOpen(false)}
