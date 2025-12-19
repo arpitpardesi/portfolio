@@ -56,10 +56,19 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
                         fontSize: '3.5rem',
                         fontWeight: '800',
                         marginBottom: '1.5rem',
-                        color: color,
-                        textShadow: color.includes('var(') ? `0 0 20px rgba(var(--accent-rgb), 0.25)` : `0 0 20px ${color}40`
+                        lineHeight: '1.2'
                     }} className="hobby-title">
-                        {title}
+                        <span style={{
+                            color: color,
+                            textShadow: color.includes('var(') ? `0 0 40px rgba(var(--accent-rgb), 0.5)` : `0 0 40px ${color}60`
+                        }}>
+                            {title.split(' ')[0]}{' '}
+                        </span>
+                        <span style={{
+                            color: 'var(--text-primary)'
+                        }}>
+                            {title.split(' ').slice(1).join(' ')}
+                        </span>
                     </h1>
                     <p style={{
                         color: 'var(--text-secondary)',

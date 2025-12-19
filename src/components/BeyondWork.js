@@ -95,9 +95,14 @@ const BeyondWork = () => {
                 <h2 style={{ fontSize: '3rem', marginBottom: '1rem', fontWeight: '700' }}>
                     <span style={{
                         color: 'var(--accent-color)',
-                        textShadow: '0 0 20px rgba(var(--accent-rgb), 0.3)'
+                        textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)'
                     }}>
-                        Beyond Work
+                        Beyond{' '}
+                    </span>
+                    <span style={{
+                        color: 'var(--text-primary)'
+                    }}>
+                        Work
                     </span>
                 </h2>
                 <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '1.2rem' }}>

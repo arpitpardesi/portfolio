@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaExternalLinkAlt, FaFolder } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaFolder, FaArrowRight } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import { Link } from 'react-router-dom';
 
 const Projects = () => {
     // Fallback data
@@ -55,7 +56,15 @@ const Projects = () => {
                         // Ensure tech is an array if stored as string, though CollectionManager handles it
                         tech: Array.isArray(doc.data().tech) ? doc.data().tech : (doc.data().tags || [])
                     }));
-                    setProjects(items);
+                    // Filter to show only pinned projects on homepage
+                    const pinnedProjects = items.filter(item => item.isPinned);
+                    // Sort to show pinned projects first (redundant here but for consistency)
+                    const sortedItems = pinnedProjects.sort((a, b) => {
+                        if (a.isPinned && !b.isPinned) return -1;
+                        if (!a.isPinned && b.isPinned) return 1;
+                        return 0;
+                    });
+                    setProjects(sortedItems);
                 }
             } catch (error) {
                 console.error("Error fetching projects:", error);
@@ -205,6 +214,50 @@ const Projects = () => {
                         </motion.div>
                     ))}
                 </div>
+
+                {/* More Projects Button */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '3rem'
+                    }}
+                >
+                    <Link
+                        to="/projects"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.75rem',
+                            padding: '1rem 2rem',
+                            background: 'transparent',
+                            border: '2px solid var(--accent-color)',
+                            borderRadius: '4px',
+                            color: 'var(--accent-color)',
+                            fontSize: '1rem',
+                            fontWeight: '600',
+                            textDecoration: 'none',
+                            transition: 'all 0.3s ease',
+                            position: 'relative',
+                            overflow: 'hidden'
+                        }}
+                        onMouseOver={(e) => {
+                            e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                        }}
+                        onMouseOut={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        View All Projects
+                        <FaArrowRight />
+                    </Link>
+                </motion.div>
             </motion.div>
 
             <style>

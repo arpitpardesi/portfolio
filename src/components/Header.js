@@ -50,7 +50,8 @@ const Header = () => {
 
     const handleNavClick = (item) => {
         setMobileMenuOpen(false);
-        if (isHome) {
+        // Only scroll for About and Contact on homepage
+        if (isHome && item !== 'Projects') {
             const element = document.getElementById(item.toLowerCase());
             if (element) element.scrollIntoView({ behavior: 'smooth' });
         }
@@ -102,7 +103,20 @@ const Header = () => {
                         <ul className="nav-links" style={{ display: 'flex', gap: '2rem' }}>
                             {navItems.map((item) => (
                                 <li key={item}>
-                                    {isHome ? (
+                                    {item === 'Projects' ? (
+                                        <Link
+                                            to="/projects"
+                                            style={{
+                                                fontSize: '0.9rem',
+                                                fontWeight: '500',
+                                                color: 'var(--text-secondary)',
+                                            }}
+                                            onMouseOver={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                                            onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                                        >
+                                            {item}
+                                        </Link>
+                                    ) : isHome ? (
                                         <a
                                             href={`#${item.toLowerCase()}`}
                                             onClick={(e) => {
@@ -231,7 +245,21 @@ const Header = () => {
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.1 }}
                                     >
-                                        {isHome ? (
+                                        {item === 'Projects' ? (
+                                            <Link
+                                                to="/projects"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                                style={{
+                                                    fontSize: '1.2rem',
+                                                    fontWeight: '500',
+                                                    color: 'var(--text-secondary)',
+                                                    display: 'block',
+                                                    padding: '0.5rem 0',
+                                                }}
+                                            >
+                                                {item}
+                                            </Link>
+                                        ) : isHome ? (
                                             <a
                                                 href={`#${item.toLowerCase()}`}
                                                 onClick={(e) => {

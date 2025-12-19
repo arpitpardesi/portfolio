@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
-import ImageUpload from './ImageUpload';
+import MultiMediaUpload from './MultiMediaUpload';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Admin.css';
 
@@ -21,7 +21,9 @@ const CollectionManager = ({ collectionName, title }) => {
         color: '#6366f1',
         github: '',
         link: '',
-        image: ''
+        image: '',
+        isPinned: false,
+        mediaItems: []
     });
 
     const fetchItems = async () => {
@@ -109,7 +111,9 @@ const CollectionManager = ({ collectionName, title }) => {
             color: item.color || '#6366f1',
             github: item.github || '',
             link: item.link || '',
-            image: item.image || ''
+            image: item.image || '',
+            isPinned: item.isPinned || false,
+            mediaItems: item.mediaItems || []
         });
         setIsEditing(true);
     };
@@ -124,7 +128,9 @@ const CollectionManager = ({ collectionName, title }) => {
             color: '#6366f1',
             github: '',
             link: '',
-            image: ''
+            image: '',
+            isPinned: false,
+            mediaItems: []
         });
         setIsEditing(true);
     };
@@ -204,7 +210,10 @@ const CollectionManager = ({ collectionName, title }) => {
                                 className="item-checkbox"
                             />
                             <div className="item-header">
-                                <h3 className="item-title" style={{ color: item.color }}>{item.title}</h3>
+                                <h3 className="item-title" style={{ color: item.color }}>
+                                    {item.isPinned && <span style={{ color: '#fbbf24', marginRight: '0.5rem' }}>⭐</span>}
+                                    {item.title}
+                                </h3>
                                 <div className="item-actions">
                                     <button onClick={() => handleEdit(item)} className="icon-btn edit"><FaEdit /></button>
                                     <button onClick={() => confirmDelete(item.id)} className="icon-btn delete"><FaTrash /></button>
@@ -315,6 +324,17 @@ const CollectionManager = ({ collectionName, title }) => {
                             <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>{currentItem ? 'Edit Item' : 'Add New Item'}</h3>
 
                             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div className="form-group" style={{ marginBottom: '0.5rem' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.95rem' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.isPinned}
+                                            onChange={e => setFormData({ ...formData, isPinned: e.target.checked })}
+                                            style={{ cursor: 'pointer', width: '18px', height: '18px' }}
+                                        />
+                                        <span style={{ color: 'var(--text-primary)' }}>⭐ Pin this project (featured)</span>
+                                    </label>
+                                </div>
                                 <div className="form-group">
                                     <label className="form-label">Title</label>
                                     <input
@@ -325,9 +345,9 @@ const CollectionManager = ({ collectionName, title }) => {
                                         required
                                     />
                                 </div>
-                                <ImageUpload
-                                    currentImage={formData.image}
-                                    onUpload={(url) => setFormData({ ...formData, image: url })}
+                                <MultiMediaUpload
+                                    currentMediaItems={formData.mediaItems}
+                                    onUpload={(mediaItems) => setFormData({ ...formData, mediaItems })}
                                 />
                                 <div className="form-group">
                                     <label className="form-label">Short Description</label>
