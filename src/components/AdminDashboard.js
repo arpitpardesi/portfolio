@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaTimes, FaChartLine, FaCog } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes, FaChartLine, FaCog, FaTimes } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import SettingsPage from './admin/SettingsPage';

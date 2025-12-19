@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { FaEdit, FaTrash, FaPlus, FaTimes } from 'react-icons/fa';
@@ -26,7 +26,7 @@ const CollectionManager = ({ collectionName, title }) => {
         mediaItems: []
     });
 
-    const fetchItems = async () => {
+    const fetchItems = useCallback(async () => {
         setLoading(true);
         try {
             const querySnapshot = await getDocs(collection(db, collectionName));
@@ -39,11 +39,11 @@ const CollectionManager = ({ collectionName, title }) => {
             console.error("Error fetching items: ", error);
         }
         setLoading(false);
-    };
+    }, [collectionName]);
 
     useEffect(() => {
         fetchItems();
-    }, [collectionName]);
+    }, [fetchItems]);
 
     const [selectedItems, setSelectedItems] = useState([]);
     const [itemsToDelete, setItemsToDelete] = useState([]); // Array of IDs to delete (single or bulk)

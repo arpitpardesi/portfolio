@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaRocket, FaUserLock } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -9,7 +9,6 @@ const Header = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
-    const { currentUser } = useAuth();
 
     // Check if we are on the home page
     const isHome = location.pathname === '/';

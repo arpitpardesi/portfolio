@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 
 const StarFieldOverlay = ({ count, onClose }) => {

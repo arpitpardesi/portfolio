@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     FaRocket, FaCircle, FaSquare, FaStar, FaTrash, FaMagic,
     FaArrowLeft, FaGamepad, FaBolt, FaGlobeAmericas, FaPuzzlePiece,
-    FaLink, FaBomb, FaDna, FaInfinity, FaTint
+    FaLink, FaDna, FaInfinity, FaTint
 } from 'react-icons/fa';
 
 // ===================== SHARED STYLES & UTILS =====================

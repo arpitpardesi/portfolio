@@ -37,7 +37,6 @@ const Login = () => {
         return errors;
     };
 
-    const validationErrors = getValidationErrors();
     const isFormValid = email && password && validateEmail(email) && password.length >= 6;
 
     const handleSubmit = async (e) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { FaTimes, FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaExpand, FaStar } from 'react-icons/fa';
@@ -11,13 +11,13 @@ const ProjectModal = ({ project, onClose }) => {
     const hasMediaItems = project?.mediaItems && project.mediaItems.length > 0;
     const mediaItems = hasMediaItems ? project.mediaItems : (project?.image ? [{ url: project.image, type: 'image' }] : []);
 
-    const nextMedia = () => {
+    const nextMedia = useCallback(() => {
         setCurrentMediaIndex((prev) => (prev + 1) % mediaItems.length);
-    };
+    }, [mediaItems.length]);
 
-    const prevMedia = () => {
+    const prevMedia = useCallback(() => {
         setCurrentMediaIndex((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
-    };
+    }, [mediaItems.length]);
 
     const techStack = project?.techStack || project?.tech || project?.tags || [];
 
@@ -37,7 +37,7 @@ const ProjectModal = ({ project, onClose }) => {
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [project, mediaItems.length, onClose]);
+    }, [project, mediaItems.length, onClose, nextMedia, prevMedia]);
 
     if (!project) return null;
 
