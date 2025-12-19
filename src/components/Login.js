@@ -47,7 +47,7 @@ const Login = () => {
 
         // Check for validation errors
         if (!isFormValid) {
-            setError('Please fix the errors above');
+            setError('Please check your email and password');
             return;
         }
 
@@ -68,12 +68,14 @@ const Login = () => {
             // Detailed Firebase error handling
             let errorMessage = 'Failed to sign in';
 
+            console.error("Login Error:", err.code, err.message); // Debugging
+
             switch (err.code) {
                 case 'auth/user-not-found':
-                    errorMessage = 'No account found with this email address';
-                    break;
                 case 'auth/wrong-password':
-                    errorMessage = 'Incorrect password. Please try again';
+                case 'auth/invalid-credential':
+                case 'auth/invalid-login-credentials': // New standard error
+                    errorMessage = 'Invalid email or password';
                     break;
                 case 'auth/invalid-email':
                     errorMessage = 'Invalid email format';
@@ -82,16 +84,13 @@ const Login = () => {
                     errorMessage = 'This account has been disabled';
                     break;
                 case 'auth/too-many-requests':
-                    errorMessage = 'Too many failed attempts. Please try again later';
+                    errorMessage = 'Too many failed attempts. Try again later';
                     break;
                 case 'auth/network-request-failed':
                     errorMessage = 'Network error. Check your connection';
                     break;
-                case 'auth/invalid-credential':
-                    errorMessage = 'Invalid email or password';
-                    break;
                 default:
-                    errorMessage = err.message || 'An error occurred during login';
+                    errorMessage = 'An error occurred during login';
             }
 
             setError(errorMessage);
@@ -116,8 +115,18 @@ const Login = () => {
         }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, type: 'spring', stiffness: 100 }}
+                animate={{
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    x: error ? [0, -10, 10, -10, 10, 0] : 0 // Shake animation
+                }}
+                transition={{
+                    duration: 0.5,
+                    type: 'spring',
+                    stiffness: 100,
+                    x: { duration: 0.4 } // Shake duration
+                }}
                 style={{
                     background: 'rgba(255, 255, 255, 0.03)',
                     backdropFilter: 'blur(20px)',
@@ -141,8 +150,8 @@ const Login = () => {
                         fontWeight: '700',
                         marginBottom: 0
                     }}>
-                        <span style={{ color: '#fff' }}>Admin </span>
-                        <span style={{ color: 'var(--accent-color)' }}>Login</span>
+                        <span style={{ color: 'var(--accent-color)' }}>Admin </span>
+                        <span style={{ color: '#fff' }}>Login</span>
                     </h2>
                 </motion.div>
 
@@ -227,7 +236,7 @@ const Login = () => {
                         <input
                             type="email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => { setEmail(e.target.value); if (error) setError(''); }}
                             onBlur={() => handleBlur('email')}
                             disabled={loading || success}
                             placeholder="admin@example.com"
@@ -265,7 +274,7 @@ const Login = () => {
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => { setPassword(e.target.value); if (error) setError(''); }}
                                 onBlur={() => handleBlur('password')}
                                 disabled={loading || success}
                                 placeholder="Enter your password"
