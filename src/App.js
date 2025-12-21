@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Background from './components/Background';
 import CustomCursor from './components/CustomCursor';
+import DetailedAbout from './components/DetailedAbout';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import Moon from './components/Moon';
 import Photography from './components/Photography';
@@ -53,6 +54,7 @@ function App() {
                         <Route path="/projects" element={<AllProjectsPage />} />
                         <Route path="/photography" element={<Photography />} />
                         <Route path="/playground" element={<PhysicsPlayground />} />
+                        <Route path="/about" element={<DetailedAbout />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/admin" element={

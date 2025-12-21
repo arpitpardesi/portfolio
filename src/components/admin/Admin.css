@@ -291,8 +291,7 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.5rem;
-    padding-left: 2rem;
-    /* Space for checkbox */
+    /* No padding-left needed - collection-item already has padding */
 }
 
 .item-title {
@@ -337,7 +336,7 @@
     font-size: 0.95rem;
     margin-bottom: 1rem;
     flex: 1;
-    padding-left: 2rem;
+    /* No padding-left - aligns with content */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
@@ -350,7 +349,7 @@
     height: 60px;
     object-fit: cover;
     border-radius: 8px;
-    margin-left: 2rem;
+    /* No margin-left - aligns with content */
     background: #222;
 }
 

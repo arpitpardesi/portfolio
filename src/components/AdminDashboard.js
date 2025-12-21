@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes, FaChartLine, FaCog, FaTimes } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes, FaChartLine, FaCog, FaTimes, FaClock } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
+import TimelineManager from './admin/TimelineManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import SettingsPage from './admin/SettingsPage';
 import './admin/Admin.css';
@@ -41,6 +42,8 @@ const AdminDashboard = () => {
                 return <CollectionManager key="ai" collectionName="ai" title="AI Projects" />;
             case 'rpi':
                 return <CollectionManager key="rpi" collectionName="rpi" title="Raspberry Pi Projects" />;
+            case 'timeline':
+                return <TimelineManager />;
             default:
                 return <div>Select a section</div>;
         }
@@ -48,6 +51,7 @@ const AdminDashboard = () => {
 
     const navItems = [
         { id: 'analytics', label: 'Analytics', icon: <FaChartLine /> },
+        { id: 'timeline', label: 'Timeline', icon: <FaClock /> },
         { id: 'hobbies', label: 'Manage Hobbies (Hub)', icon: <FaFolder /> },
         { id: 'projects', label: 'Projects', icon: <FaFolder /> },
         { id: 'photography', label: 'Photography', icon: <FaCamera /> },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const About = () => {
 
@@ -92,6 +93,34 @@ const About = () => {
                                 </motion.li>
                             ))}
                         </ul>
+
+                        {/* <div style={{ marginTop: '2.5rem' }}>
+                            <Link to="/about" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '10px 20px',
+                                background: 'rgba(var(--accent-rgb), 0.1)',
+                                border: '1px solid var(--accent-color)',
+                                borderRadius: '4px',
+                                color: 'var(--accent-color)',
+                                fontWeight: '500',
+                                transition: 'all 0.3s ease',
+                                cursor: 'pointer',
+                                textDecoration: 'none'
+                            }}
+                                onMouseOver={(e) => {
+                                    e.target.style.background = 'var(--accent-color)';
+                                    e.target.style.color = '#fff';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.target.style.background = 'rgba(var(--accent-rgb), 0.1)';
+                                    e.target.style.color = 'var(--accent-color)';
+                                }}
+                            >
+                                Want to learn more about me? →
+                            </Link>
+                        </div> */}
                     </div>
                 </motion.div>
 
