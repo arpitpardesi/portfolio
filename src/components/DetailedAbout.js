@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import {
-    FaBriefcase, FaGraduationCap, FaDownload, FaCode, FaMicrochip,
-    FaCamera, FaRocket, FaLightbulb, FaArrowLeft
+    FaBriefcase, FaGraduationCap, FaDownload, FaArrowLeft
 } from 'react-icons/fa';
 
 const DetailedAbout = () => {

@@ -21,21 +21,7 @@ const Login = () => {
         return re.test(email);
     };
 
-    // Get validation errors
-    const getValidationErrors = () => {
-        const errors = [];
-        if (touched.email && !email) {
-            errors.push('Email is required');
-        } else if (touched.email && !validateEmail(email)) {
-            errors.push('Invalid email format');
-        }
-        if (touched.password && !password) {
-            errors.push('Password is required');
-        } else if (touched.password && password.length < 6) {
-            errors.push('Password must be at least 6 characters');
-        }
-        return errors;
-    };
+
 
     const isFormValid = email && password && validateEmail(email) && password.length >= 6;
 

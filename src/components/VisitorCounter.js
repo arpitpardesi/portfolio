@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { doc, getDoc, updateDoc, increment, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, increment, setDoc, onSnapshot } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
 

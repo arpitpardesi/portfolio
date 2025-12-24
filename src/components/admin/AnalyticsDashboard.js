@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { FaUsers, FaFolder, FaCamera, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
-import { LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import { motion } from 'framer-motion';
+import { AreaChart, Area, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 import './Admin.css';
 
 const AnalyticsDashboard = () => {

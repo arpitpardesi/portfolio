@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes, FaChartLine, FaCog, FaTimes, FaClock } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaCog, FaTimes, FaClock } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
@@ -9,7 +9,6 @@ import SettingsPage from './admin/SettingsPage';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
-    const [error, setError] = useState('');
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState('analytics');
@@ -20,7 +19,7 @@ const AdminDashboard = () => {
             await logout();
             navigate('/login');
         } catch {
-            setError('Failed to log out');
+            console.error('Failed to log out');
         }
     };
 

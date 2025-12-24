@@ -443,8 +443,6 @@ const SolarSystemSimulation = ({ onBack }) => {
         const resize = () => { canvas.width = container.clientWidth; canvas.height = container.clientHeight; };
         resize(); window.addEventListener('resize', resize);
 
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
         const G = 0.5;
         const sunMass = 8000;
         const focalLength = 800; // Determines perspective strength

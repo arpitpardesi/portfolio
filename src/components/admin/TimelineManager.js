@@ -51,22 +51,6 @@ const TimelineManager = () => {
 
     const handleEdit = (item) => {
         setCurrentItem(item);
-        // Parse dateRange back into dateFrom and dateTo
-        let dateFrom = '';
-        let dateTo = '';
-        let isPresent = false;
-
-        if (item.dateRange) {
-            const parts = item.dateRange.split(' - ');
-            dateFrom = parts[0] || '';
-            if (parts[1]) {
-                if (parts[1].toLowerCase() === 'present') {
-                    isPresent = true;
-                } else {
-                    dateTo = parts[1];
-                }
-            }
-        }
 
         setFormData({
             dateFrom: item.dateFrom || '',

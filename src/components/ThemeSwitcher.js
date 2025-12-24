@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPalette, FaTimes, FaRocket } from 'react-icons/fa';
+import { FaPalette, FaTimes } from 'react-icons/fa';
 
 const themes = [
     // Original space themes
