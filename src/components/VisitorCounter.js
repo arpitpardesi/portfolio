@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { doc, updateDoc, increment, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, updateDoc, increment, setDoc, onSnapshot, collection, addDoc } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
 
@@ -18,6 +18,26 @@ const VisitorCounter = () => {
             try {
                 // Increment only once per session
                 if (!sessionStorage.getItem('nebula_visited')) {
+                    // Fetch location data
+                    let locationData = null;
+                    try {
+                        const response = await fetch('https://ipapi.co/json/');
+                        if (response.ok) {
+                            const data = await response.json();
+                            locationData = {
+                                country: data.country_name || 'Unknown',
+                                countryCode: data.country_code || 'XX',
+                                city: data.city || 'Unknown',
+                                region: data.region || 'Unknown',
+                                ip: data.ip || 'Unknown',
+                                timestamp: new Date()
+                            };
+                        }
+                    } catch (err) {
+                        console.error("Location fetch error:", err);
+                    }
+
+                    // Update visitor count
                     await updateDoc(statsRef, { count: increment(1) }).catch(async (err) => {
                         // If doc doesn't exist, create it
                         if (err.code === 'not-found') {
@@ -26,6 +46,16 @@ const VisitorCounter = () => {
                             throw err;
                         }
                     });
+
+                    // Store location data in visitor_logs collection
+                    if (locationData) {
+                        try {
+                            await addDoc(collection(db, 'visitor_logs'), locationData);
+                        } catch (err) {
+                            console.error("Error storing location:", err);
+                        }
+                    }
+
                     sessionStorage.setItem('nebula_visited', 'true');
                 }
             } catch (err) {

@@ -6,44 +6,8 @@ import { db } from '../firebase';
 import { Link } from 'react-router-dom';
 
 const Projects = () => {
-    // Fallback data
-    const initialProjects = [{
-        title: 'Project 1',
-        description: 'Description of Project 1',
-        tech: ['A', 'B', 'C'],
-        github: '#',
-        external: '#'
-    },
-    {
-        title: 'Project 2',
-        description: 'Description of Project 2',
-        tech: ['A', 'B', 'C'],
-        github: '#',
-        external: '#'
-    },
-    {
-        title: 'Project 3',
-        description: 'Description of Project 3',
-        tech: ['A', 'B', 'C'],
-        github: '#',
-        external: '#'
-    },
-    {
-        title: 'Project 4',
-        description: 'Description of Project 4',
-        tech: ['A', 'B', 'C'],
-        github: '#',
-        external: '#'
-    },
-    {
-        title: 'Project 5',
-        description: 'Description of Project 5',
-        tech: ['A', 'B', 'C'],
-        github: '#',
-        external: '#'
-    }];
-
-    const [projects, setProjects] = useState(initialProjects);
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -68,6 +32,8 @@ const Projects = () => {
                 }
             } catch (error) {
                 console.error("Error fetching projects:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProjects();
@@ -108,9 +74,10 @@ const Projects = () => {
                 <div className="projects-grid" style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                    gap: '1.5rem'
+                    gap: '1.5rem',
+                    minHeight: loading ? '400px' : 'auto'
                 }}>
-                    {projects.map((project, i) => (
+                    {!loading && projects.map((project, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 20 }}
@@ -216,48 +183,50 @@ const Projects = () => {
                 </div>
 
                 {/* More Projects Button */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginTop: '3rem'
-                    }}
-                >
-                    <Link
-                        to="/projects"
+                {!loading && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
                         style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            padding: '1rem 2rem',
-                            background: 'transparent',
-                            border: '2px solid var(--accent-color)',
-                            borderRadius: '4px',
-                            color: 'var(--accent-color)',
-                            fontSize: '1rem',
-                            fontWeight: '600',
-                            textDecoration: 'none',
-                            transition: 'all 0.3s ease',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.background = 'transparent';
-                            e.currentTarget.style.transform = 'translateY(0)';
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '3rem'
                         }}
                     >
-                        View All Projects
-                        <FaArrowRight />
-                    </Link>
-                </motion.div>
+                        <Link
+                            to="/projects"
+                            style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '0.75rem',
+                                padding: '1rem 2rem',
+                                background: 'transparent',
+                                border: '2px solid var(--accent-color)',
+                                borderRadius: '4px',
+                                color: 'var(--accent-color)',
+                                fontSize: '1rem',
+                                fontWeight: '600',
+                                textDecoration: 'none',
+                                transition: 'all 0.3s ease',
+                                position: 'relative',
+                                overflow: 'hidden'
+                            }}
+                            onMouseOver={(e) => {
+                                e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                            }}
+                            onMouseOut={(e) => {
+                                e.currentTarget.style.background = 'transparent';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                            }}
+                        >
+                            View All Projects
+                            <FaArrowRight />
+                        </Link>
+                    </motion.div>
+                )}
             </motion.div>
 
             <style>
