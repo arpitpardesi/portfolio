@@ -83,32 +83,65 @@ const DetailedAbout = () => {
                 <div className="detailed-content">
                     {/* 2. The Story */}
                     <div className="content-block story-block">
-                        <motion.h3
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                        >
-                            The Origin Story
-                        </motion.h3>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="text-content"
-                        >
-                            <p>
-                                It started with a simple question: "How does this work?"
-                            </p>
-                            <p>
-                                From taking apart interactions to understanding the logic behind them, my fascination with technology has always been about discovery.
-                                What began as tinkering with electronics and code snippets evolved into a passion for building scalable systems and intuitive user experiences.
-                            </p>
-                            <p>
-                                I believe that great software is born at the intersection of robust engineering and thoughtful design. It's not just about writing code that works;
-                                it's about crafting solutions that feel seamless and solve real problems.
-                            </p>
-                        </motion.div>
+                        <div style={{ display: 'flex', gap: '3rem', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                            <div style={{ flex: 1, minWidth: '300px' }}>
+                                <motion.h3
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                >
+                                    The Origin Story
+                                </motion.h3>
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.2 }}
+                                >
+                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                        I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences,
+                                        architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy
+                                        of creating solutions that make a difference.
+                                    </p>
+                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                        Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with
+                                        hands-on experience in full-stack development, machine learning, and cloud technologies.
+                                    </p>
+                                    <p style={{ lineHeight: '1.8' }}>
+                                        When I'm not coding, you'll find me tinkering with IoT devices, exploring photography,
+                                        or diving deep into the latest AI research. Every project is an opportunity to learn,
+                                        grow, and push the boundaries of what's possible.
+                                    </p>
+                                </motion.div>
+                            </div>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                                style={{ flexShrink: 0 }}
+                            >
+                                <div style={{
+                                    width: '280px',
+                                    height: '280px',
+                                    borderRadius: '50%',
+                                    overflow: 'hidden',
+                                    border: '4px solid var(--accent-color)',
+                                    boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.6)',
+                                    position: 'relative'
+                                }}>
+                                    <img
+                                        src="https://github.com/arpitpardesi.png"
+                                        alt="Arpit Pardesi"
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
 
                     {/* 3. Journey Timeline - Experience */}

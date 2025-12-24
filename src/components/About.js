@@ -118,7 +118,7 @@ const About = () => {
                                     e.target.style.color = 'var(--accent-color)';
                                 }}
                             >
-                                Want to learn more about me? →
+                                Want to know more about me? →
                             </Link>
                         </div> */}
                     </div>
