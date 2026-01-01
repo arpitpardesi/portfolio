@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { FaUsers, FaFolder, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock, FaMapMarkedAlt, FaFire, FaTrophy } from 'react-icons/fa';
+import { FaUsers, FaFolder, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock, FaMapMarkedAlt, FaFire, FaTrophy, FaMobileAlt, FaDesktop, FaTabletAlt, FaCalendarAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
+import {
+    BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid,
+    LineChart, Line, AreaChart, Area, Legend
+} from 'recharts';
 import './Admin.css';
 
 const AnalyticsDashboard = () => {
@@ -20,6 +23,7 @@ const AnalyticsDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [autoRefresh, setAutoRefresh] = useState(true);
     const [countdown, setCountdown] = useState(30);
+    const [dateRange, setDateRange] = useState(30); // Days to show
 
     const fetchAnalytics = useCallback(async () => {
         setLoading(true);
@@ -112,7 +116,65 @@ const AnalyticsDashboard = () => {
             .slice(0, 10);
     };
 
-    // Get recent activity
+    // Get visitor trends
+    const getVisitorTrends = () => {
+        const trends = {};
+        const now = new Date();
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - dateRange);
+
+        // Initialize all dates in range with 0
+        for (let d = new Date(cutoff); d <= now; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0];
+            trends[dateStr] = 0;
+        }
+
+        visitorLocations.forEach(loc => {
+            if (loc.timestamp) {
+                const date = loc.timestamp.toDate ? loc.timestamp.toDate() : new Date(loc.timestamp);
+                if (date >= cutoff) {
+                    const dateStr = date.toISOString().split('T')[0];
+                    if (trends[dateStr] !== undefined) {
+                        trends[dateStr]++;
+                    }
+                }
+            }
+        });
+
+        return Object.entries(trends).map(([date, count]) => ({
+            date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            visitors: count
+        }));
+    };
+
+    // Get device stats
+    const getDeviceStats = () => {
+        const stats = { Desktop: 0, Mobile: 0, Tablet: 0, Unknown: 0 };
+        visitorLocations.forEach(loc => {
+            const type = loc.deviceType || 'Desktop'; // Default to Desktop for old data
+            stats[type] = (stats[type] || 0) + 1;
+        });
+
+        return Object.entries(stats)
+            .filter(([, value]) => value > 0)
+            .map(([name, value]) => ({ name, value }));
+    };
+
+    // Get browser stats
+    const getBrowserStats = () => {
+        const stats = {};
+        visitorLocations.forEach(loc => {
+            const browser = loc.browser || 'Unknown';
+            stats[browser] = (stats[browser] || 0) + 1;
+        });
+
+        return Object.entries(stats)
+            .map(([name, value]) => ({ name, value }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5);
+    };
+
+    // Get recently active visitors (keep existing functionality)
     const getRecentActivity = () => {
         return visitorLocations
             .filter(loc => loc.timestamp)
@@ -123,6 +185,28 @@ const AnalyticsDashboard = () => {
             })
             .slice(0, 5);
     };
+
+    // Get Peak Activity (Hourly)
+    const getPeakActivity = () => {
+        const hours = Array(24).fill(0).map((_, i) => ({
+            hour: i,
+            label: i === 0 ? '12am' : i === 12 ? '12pm' : i > 12 ? `${i - 12}pm` : `${i}am`,
+            visitors: 0
+        }));
+
+        visitorLocations.forEach(loc => {
+            if (loc.timestamp) {
+                const date = loc.timestamp.toDate ? loc.timestamp.toDate() : new Date(loc.timestamp);
+                const hour = date.getHours();
+                hours[hour].visitors++;
+            }
+        });
+
+        return hours;
+    };
+
+    const deviceColors = { Desktop: '#6366f1', Mobile: '#10b981', Tablet: '#f59e0b', Unknown: '#94a3b8' };
+    const browserColors = ['#0ea5e9', '#f43f5e', '#8b5cf6', '#f59e0b', '#10b981'];
 
     const geoDistribution = getGeographicDistribution();
     const topCities = getTopCities();
@@ -218,6 +302,27 @@ const AnalyticsDashboard = () => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', padding: '0 0.5rem' }}>
+                        <FaCalendarAlt style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
+                        <select
+                            value={dateRange}
+                            onChange={(e) => setDateRange(Number(e.target.value))}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                color: 'var(--text-primary)',
+                                padding: '0.5rem',
+                                outline: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.9rem'
+                            }}
+                        >
+                            <option value={7}>Last 7 Days</option>
+                            <option value={30}>Last 30 Days</option>
+                            <option value={90}>Last 90 Days</option>
+                        </select>
+                    </div>
+
                     <motion.button
                         onClick={() => setAutoRefresh(!autoRefresh)}
                         className={`btn ${autoRefresh ? 'btn-primary' : 'btn-outline'}`}
@@ -277,6 +382,118 @@ const AnalyticsDashboard = () => {
                         </div>
                     </motion.div>
                 ))}
+            </div>
+
+            {/* Visitor Trends Chart */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: '16px',
+                    padding: '1.5rem',
+                    backdropFilter: 'blur(10px)',
+                    marginBottom: '2rem'
+                }}
+            >
+                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                    <FaChartLine style={{ color: '#0ea5e9' }} />
+                    Visitor Trends
+                </h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={getVisitorTrends()}>
+                        <defs>
+                            <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
+                        <XAxis dataKey="date" stroke="var(--text-secondary)" style={{ fontSize: '0.8rem' }} />
+                        <YAxis stroke="var(--text-secondary)" style={{ fontSize: '0.8rem' }} />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Area type="monotone" dataKey="visitors" stroke="#6366f1" fillOpacity={1} fill="url(#colorVisitors)" />
+                    </AreaChart>
+                </ResponsiveContainer>
+            </motion.div>
+
+            {/* Device & Browser Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2.5rem' }}>
+                {/* Device Stats */}
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    style={{
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        borderRadius: '16px',
+                        padding: '1.5rem',
+                        backdropFilter: 'blur(10px)'
+                    }}
+                >
+                    <h3 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                        <FaMobileAlt style={{ color: '#f59e0b' }} />
+                        Device Distribution
+                    </h3>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Pie
+                                data={getDeviceStats()}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={80}
+                                paddingAngle={5}
+                                dataKey="value"
+                            >
+                                {getDeviceStats().map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={deviceColors[entry.name] || '#94a3b8'} />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<CustomTooltip />} />
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </motion.div>
+
+                {/* Browser Stats */}
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                    style={{
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                        borderRadius: '16px',
+                        padding: '1.5rem',
+                        backdropFilter: 'blur(10px)'
+                    }}
+                >
+                    <h3 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                        <FaDesktop style={{ color: '#8b5cf6' }} />
+                        Browser Distribution
+                    </h3>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Pie
+                                data={getBrowserStats()}
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={80}
+                                dataKey="value"
+                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                            >
+                                {getBrowserStats().map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={browserColors[index % browserColors.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<CustomTooltip />} />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </motion.div>
             </div>
 
             {/* Geographic Distribution & Top Cities */}
@@ -440,6 +657,38 @@ const AnalyticsDashboard = () => {
                         No recent activity
                     </div>
                 )}
+            </motion.div>
+
+            {/* Peak Activity (Hourly) */}
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+                style={{
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                    borderRadius: '16px',
+                    padding: '1.5rem',
+                    backdropFilter: 'blur(10px)',
+                    marginBottom: '2.5rem'
+                }}
+            >
+                <h3 style={{ color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                    <FaClock style={{ color: '#ec4899' }} />
+                    Peak Activity (Hourly)
+                </h3>
+                <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={getPeakActivity()}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" vertical={false} />
+                        <XAxis dataKey="label" stroke="var(--text-secondary)" style={{ fontSize: '0.7rem' }} interval={2} />
+                        <YAxis stroke="var(--text-secondary)" style={{ fontSize: '0.8rem' }} />
+                        <Tooltip
+                            contentStyle={{ background: 'rgba(10, 18, 36, 0.95)', border: '1px solid rgba(100, 255, 218, 0.2)' }}
+                            cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                        />
+                        <Bar dataKey="visitors" fill="#ec4899" radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
             </motion.div>
 
             {/* Portfolio Summary */}

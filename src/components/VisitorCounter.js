@@ -19,7 +19,9 @@ const VisitorCounter = () => {
                 // Increment only once per session
                 if (!sessionStorage.getItem('nebula_visited')) {
                     // Fetch location data
-                    let locationData = null;
+                    let locationData = {};
+
+                    // 1. Get Location
                     try {
                         const response = await fetch('https://ipapi.co/json/');
                         if (response.ok) {
@@ -30,12 +32,50 @@ const VisitorCounter = () => {
                                 city: data.city || 'Unknown',
                                 region: data.region || 'Unknown',
                                 ip: data.ip || 'Unknown',
-                                timestamp: new Date()
                             };
                         }
                     } catch (err) {
                         console.error("Location fetch error:", err);
                     }
+
+                    // 2. Get Device/Browser Info
+                    const ua = navigator.userAgent;
+                    let browser = 'Unknown';
+                    let os = 'Unknown';
+                    let deviceType = 'Desktop';
+
+                    // Simple Browser Detection
+                    if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+                    else if (ua.indexOf("SamsungBrowser") > -1) browser = "Samsung Internet";
+                    else if (ua.indexOf("Opera") > -1 || ua.indexOf("OPR") > -1) browser = "Opera";
+                    else if (ua.indexOf("Trident") > -1) browser = "Internet Explorer";
+                    else if (ua.indexOf("Edge") > -1) browser = "Edge";
+                    else if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+                    else if (ua.indexOf("Safari") > -1) browser = "Safari";
+
+                    // Simple OS Detection
+                    if (ua.indexOf("Win") > -1) os = "Windows";
+                    else if (ua.indexOf("Mac") > -1) os = "MacOS";
+                    else if (ua.indexOf("Linux") > -1) os = "Linux";
+                    else if (ua.indexOf("Android") > -1) os = "Android";
+                    else if (ua.indexOf("like Mac") > -1) os = "iOS";
+
+                    // Simple Device Type Detection
+                    if (/Mobi|Android/i.test(ua)) {
+                        deviceType = 'Mobile';
+                    } else if (/iPad|Tablet/i.test(ua)) {
+                        deviceType = 'Tablet';
+                    }
+
+                    const visitData = {
+                        ...locationData,
+                        browser,
+                        os,
+                        deviceType,
+                        screenResolution: `${window.screen.width}x${window.screen.height}`,
+                        timestamp: new Date(),
+                        path: window.location.hash || '/'
+                    };
 
                     // Update visitor count
                     await updateDoc(statsRef, { count: increment(1) }).catch(async (err) => {
@@ -48,12 +88,10 @@ const VisitorCounter = () => {
                     });
 
                     // Store location data in visitor_logs collection
-                    if (locationData) {
-                        try {
-                            await addDoc(collection(db, 'visitor_logs'), locationData);
-                        } catch (err) {
-                            console.error("Error storing location:", err);
-                        }
+                    try {
+                        await addDoc(collection(db, 'visitor_logs'), visitData);
+                    } catch (err) {
+                        console.error("Error storing visit log:", err);
                     }
 
                     sessionStorage.setItem('nebula_visited', 'true');

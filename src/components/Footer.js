@@ -14,7 +14,10 @@ const Footer = () => {
 
     return (
         <footer className="footer" style={{ padding: '1.25rem 0', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem', alignItems: 'center' }} className="mobile-socials">
+            
+            {/* for showing social links and admin login button */}
+            
+            {/* <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem', alignItems: 'center' }} className="mobile-socials">
                 {socialLinks.map((link, index) => (
                     <a
                         key={index}
@@ -41,7 +44,7 @@ const Footer = () => {
                 >
                     <FaUserLock />
                 </Link>
-            </div>
+            </div> */}
             <div className="footer-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <a
                     href="https://github.com/arpitpardesi"
