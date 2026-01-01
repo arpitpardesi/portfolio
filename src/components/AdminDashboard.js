@@ -6,7 +6,7 @@ import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
-import SettingsManager from './admin/SettingsManager';
+import SettingsPage from './admin/SettingsPage';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -29,7 +29,7 @@ const AdminDashboard = () => {
             case 'analytics':
                 return <AnalyticsDashboard />;
             case 'settings':
-                return <SettingsManager />;
+                return <SettingsPage />;
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
             case 'hobbies':
@@ -61,7 +61,7 @@ const AdminDashboard = () => {
         { id: 'iot', label: 'IOT', icon: <FaMicrochip /> },
         { id: 'ai', label: 'AI', icon: <FaBrain /> },
         { id: 'rpi', label: 'Raspberry Pi', icon: <FaRaspberryPi /> },
-        { id: 'settings', label: 'Global Settings', icon: <FaCog /> },
+        { id: 'settings', label: 'Settings', icon: <FaCog /> },
     ];
 
     return (

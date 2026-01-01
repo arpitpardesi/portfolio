@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { useSettings } from '../context/SettingsContext';
 import {
     FaBriefcase, FaGraduationCap, FaDownload, FaArrowLeft
 } from 'react-icons/fa';
@@ -69,9 +68,6 @@ const DetailedAbout = () => {
         fetchSkills();
     }, []);
 
-    const { settings } = useSettings();
-    const content = settings?.pages?.detailedAbout || {};
-
     return (
         <section className="section detailed-about-section">
             <div className="container">
@@ -95,10 +91,11 @@ const DetailedAbout = () => {
                     </motion.div>
                     <div className="hero-content">
                         <h1>
-                            <span className="highlight">{content.heroTitle || "About Me"}</span>
+                            <span className="highlight">About</span> Me
                         </h1>
                         <p className="hero-subtitle">
-                            <span style={{ whiteSpace: "pre-line" }}>{content.heroSubtitle || "Explorer. Engineer. Creator. \nTurning coffee into code and ideas into reality."}</span>
+                            Explorer. Engineer. Creator. <br />
+                            Turning coffee into code and ideas into reality.
                         </p>
                     </div>
                 </motion.div>
@@ -113,7 +110,7 @@ const DetailedAbout = () => {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                 >
-                                    {content.originTitle || "The Origin Story"}
+                                    The Origin Story
                                 </motion.h3>
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -122,13 +119,18 @@ const DetailedAbout = () => {
                                     transition={{ delay: 0.2 }}
                                 >
                                     <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        {content.originText1 || "I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences, architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy of creating solutions that make a difference."}
+                                        I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences,
+                                        architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy
+                                        of creating solutions that make a difference.
                                     </p>
                                     <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        {content.originText2 || "Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with hands-on experience in full-stack development, machine learning, and cloud technologies."}
+                                        Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with
+                                        hands-on experience in full-stack development, machine learning, and cloud technologies.
                                     </p>
                                     <p style={{ lineHeight: '1.8' }}>
-                                        {content.originText3 || "When I'm not coding, you'll find me tinkering with IoT devices, exploring photography, or diving deep into the latest AI research. Every project is an opportunity to learn, grow, and push the boundaries of what's possible."}
+                                        When I'm not coding, you'll find me tinkering with IoT devices, exploring photography,
+                                        or diving deep into the latest AI research. Every project is an opportunity to learn,
+                                        grow, and push the boundaries of what's possible.
                                     </p>
                                 </motion.div>
                             </div>
@@ -149,8 +151,8 @@ const DetailedAbout = () => {
                                     position: 'relative'
                                 }}>
                                     <img
-                                        src={settings?.home?.about?.image || "https://github.com/arpitpardesi.png"}
-                                        alt={settings?.profile?.name || "Arpit Pardesi"}
+                                        src="https://github.com/arpitpardesi.png"
+                                        alt="Arpit Pardesi"
                                         style={{
                                             width: '100%',
                                             height: '100%',
@@ -164,7 +166,7 @@ const DetailedAbout = () => {
 
                     {/* 3. Journey Timeline - Experience */}
                     <div className="content-block timeline-block">
-                        <h3>{content.journeyTitle || "Professional Journey"}</h3>
+                        <h3>Professional Journey</h3>
                         {loading ? (
                             <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Loading...</p>
                         ) : (
@@ -207,7 +209,7 @@ const DetailedAbout = () => {
 
                     {/* 4. Education Timeline */}
                     <div className="content-block timeline-block">
-                        <h3>{content.educationTitle || "Education"}</h3>
+                        <h3>Education</h3>
                         {loading ? (
                             <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Loading...</p>
                         ) : (
@@ -250,7 +252,7 @@ const DetailedAbout = () => {
 
                     {/* 5. Simple Elegant Skills */}
                     <div className="content-block skills-block">
-                        <h3>{content.skillsTitle || "Technical Arsenal"}</h3>
+                        <h3>Technical Arsenal</h3>
                         <motion.div
                             className="skills-elegant-grid"
                             initial={{ opacity: 0 }}
@@ -277,9 +279,10 @@ const DetailedAbout = () => {
 
                     {/* 6. Enhanced Beyond Code */}
                     <div className="content-block beyond-block">
-                        <h3>{content.beyondTitle || "Beyond Code"}</h3>
+                        <h3>Beyond Code</h3>
                         <p className="section-intro">
-                            {content.beyondText || "When I step away from the terminal, you'll find me exploring the intersection of technology and creativity — from capturing moments through photography to building smart IoT devices and experimenting with AI."}
+                            When I step away from the terminal, you'll find me exploring the intersection of technology and creativity —
+                            from capturing moments through photography to building smart IoT devices and experimenting with AI.
                         </p>
 
                         <motion.div

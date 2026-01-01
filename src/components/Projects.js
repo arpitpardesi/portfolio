@@ -4,14 +4,10 @@ import { FaGithub, FaExternalLinkAlt, FaFolder, FaArrowRight } from 'react-icons
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Link } from 'react-router-dom';
-import { useSettings } from '../context/SettingsContext';
 
 const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    const { settings } = useSettings();
-    const content = settings?.home?.projects || {};
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -65,7 +61,7 @@ const Projects = () => {
                     }}
                 >
                     <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem', fontSize: '1.5rem' }}></span>
-                    {content.title || "Some Things I've Built"}
+                    Some Things I've Built
                     <span className="title-line" style={{
                         height: '1px',
                         background: 'var(--border-color)',
@@ -226,7 +222,7 @@ const Projects = () => {
                                 e.currentTarget.style.transform = 'translateY(0)';
                             }}
                         >
-                            {content.viewAllText || "View All Projects"}
+                            View All Projects
                             <FaArrowRight />
                         </Link>
                     </motion.div>
