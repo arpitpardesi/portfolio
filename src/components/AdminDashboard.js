@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaCog, FaTimes, FaClock, FaCode } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
-import SettingsPage from './admin/SettingsPage';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -28,8 +27,6 @@ const AdminDashboard = () => {
         switch (selectedSection) {
             case 'analytics':
                 return <AnalyticsDashboard />;
-            case 'settings':
-                return <SettingsPage />;
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
             case 'hobbies':
@@ -61,7 +58,6 @@ const AdminDashboard = () => {
         { id: 'iot', label: 'IOT', icon: <FaMicrochip /> },
         { id: 'ai', label: 'AI', icon: <FaBrain /> },
         { id: 'rpi', label: 'Raspberry Pi', icon: <FaRaspberryPi /> },
-        { id: 'settings', label: 'Settings', icon: <FaCog /> },
     ];
 
     return (
