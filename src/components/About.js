@@ -117,7 +117,7 @@ const About = () => {
                             ))}
                         </ul>
 
-                        <div style={{ marginTop: '2.5rem' }}>
+                        {/* <div style={{ marginTop: '2.5rem' }}>
                             <Link to="/about" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
@@ -143,7 +143,7 @@ const About = () => {
                             >
                                 Want to know more about me? →
                             </Link>
-                        </div>
+                        </div> */}
                     </div>
                 </motion.div>
 
