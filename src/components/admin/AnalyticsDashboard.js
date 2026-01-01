@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db } from '../../firebase';
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { FaUsers, FaFolder, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock, FaMapMarkedAlt, FaFire, FaTrophy, FaMobileAlt, FaDesktop, FaTabletAlt, FaCalendarAlt } from 'react-icons/fa';
+import { FaUsers, FaFolder, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock, FaMapMarkedAlt, FaFire, FaTrophy, FaMobileAlt, FaDesktop, FaCalendarAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import {
     BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid,
-    LineChart, Line, AreaChart, Area, Legend
+     AreaChart, Area, Legend
 } from 'recharts';
 import './Admin.css';
 

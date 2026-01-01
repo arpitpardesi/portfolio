@@ -1,16 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaInstagram, FaUserLock } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
+// import { Link } from 'react-router-dom';
+// import { FaGithub, FaLinkedin, FaInstagram, FaUserLock } from 'react-icons/fa';
+// import { FaXTwitter } from 'react-icons/fa6';
 import VisitorCounter from './VisitorCounter';
 
 const Footer = () => {
-    const socialLinks = [
-        { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
-        { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
-        { icon: <FaXTwitter />, href: 'https://twitter.com' },
-        { icon: <FaInstagram />, href: 'https://instagram.com' },
-    ];
+    // const socialLinks = [
+    //     { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
+    //     { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
+    //     { icon: <FaXTwitter />, href: 'https://twitter.com' },
+    //     { icon: <FaInstagram />, href: 'https://instagram.com' },
+    // ];
 
     return (
         <footer className="footer" style={{ padding: '1.25rem 0', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
