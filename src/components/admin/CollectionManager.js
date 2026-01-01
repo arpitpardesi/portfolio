@@ -163,22 +163,42 @@ const CollectionManager = ({ collectionName, title }) => {
         }
     };
 
+    const handleSelectAll = () => {
+        if (items.length === 0) return;
+        if (selectedItems.length === items.length) {
+            setSelectedItems([]);
+        } else {
+            setSelectedItems(items.map(item => item.id));
+        }
+    };
+
     return (
         <div style={{ color: 'var(--text-primary)' }}>
             <div className="collection-header">
                 <div className="collection-header-top">
                     <div className="collection-title-group">
                         <h2 className="collection-title">{title}</h2>
+                    </div>
+                    <div className="collection-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <label className="select-all-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: '#aaa' }}>
+                            <input
+                                type="checkbox"
+                                checked={items.length > 0 && selectedItems.length === items.length}
+                                onChange={handleSelectAll}
+                                disabled={items.length === 0}
+                                style={{ cursor: 'pointer', width: '16px', height: '16px', accentColor: 'var(--accent-color)' }}
+                            />
+                            Select All
+                        </label>
                         {selectedItems.length > 0 && (
                             <button
                                 onClick={confirmBulkDelete}
                                 className="btn btn-danger"
+                                style={{ padding: '6px 12px', fontSize: '0.85rem' }}
                             >
-                                Delete ({selectedItems.length})
+                                <FaTrash /> Delete ({selectedItems.length})
                             </button>
                         )}
-                    </div>
-                    <div className="collection-actions">
                         {collectionName === 'hobbies' && (
                             <button
                                 onClick={() => setShowSeedConfirm(true)}
@@ -209,7 +229,7 @@ const CollectionManager = ({ collectionName, title }) => {
                                 onChange={() => toggleSelection(item.id)}
                                 className="item-checkbox"
                             />
-                            <div className="item-header">
+                            <div className="item-header" style={{ paddingLeft: '1.8rem' }}>
                                 <h3 className="item-title" style={{ color: item.color }}>
                                     {item.isPinned && <span style={{ color: '#fbbf24', marginRight: '0.5rem' }}>⭐</span>}
                                     {item.title}
@@ -310,9 +330,9 @@ const CollectionManager = ({ collectionName, title }) => {
                 {isEditing && (
                     <div className="modal-overlay">
                         <motion.div
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: 50, opacity: 0 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
                             className="modal-content"
                         >
                             <button

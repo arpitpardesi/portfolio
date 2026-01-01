@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaCog, FaTimes, FaClock } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaCog, FaTimes, FaClock, FaCode } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
+import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
-import SettingsPage from './admin/SettingsPage';
+import SettingsManager from './admin/SettingsManager';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
             case 'analytics':
                 return <AnalyticsDashboard />;
             case 'settings':
-                return <SettingsPage />;
+                return <SettingsManager />;
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
             case 'hobbies':
@@ -43,6 +44,8 @@ const AdminDashboard = () => {
                 return <CollectionManager key="rpi" collectionName="rpi" title="Raspberry Pi Projects" />;
             case 'timeline':
                 return <TimelineManager />;
+            case 'skills':
+                return <SkillsManager />;
             default:
                 return <div>Select a section</div>;
         }
@@ -51,13 +54,14 @@ const AdminDashboard = () => {
     const navItems = [
         { id: 'analytics', label: 'Analytics', icon: <FaChartLine /> },
         { id: 'timeline', label: 'Timeline', icon: <FaClock /> },
+        { id: 'skills', label: 'Skills', icon: <FaCode /> },
         { id: 'hobbies', label: 'Manage Hobbies (Hub)', icon: <FaFolder /> },
         { id: 'projects', label: 'Projects', icon: <FaFolder /> },
         { id: 'photography', label: 'Photography', icon: <FaCamera /> },
         { id: 'iot', label: 'IOT', icon: <FaMicrochip /> },
         { id: 'ai', label: 'AI', icon: <FaBrain /> },
         { id: 'rpi', label: 'Raspberry Pi', icon: <FaRaspberryPi /> },
-        { id: 'settings', label: 'Settings', icon: <FaCog /> },
+        { id: 'settings', label: 'Global Settings', icon: <FaCog /> },
     ];
 
     return (

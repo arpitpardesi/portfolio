@@ -1,23 +1,25 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
-// import { FaGithub, FaLinkedin, FaInstagram, FaUserLock } from 'react-icons/fa';
-// import { FaXTwitter } from 'react-icons/fa6';
+import { useSettings } from '../context/SettingsContext';
+import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import VisitorCounter from './VisitorCounter';
 
 const Footer = () => {
-    // const socialLinks = [
-    //     { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
-    //     { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
-    //     { icon: <FaXTwitter />, href: 'https://twitter.com' },
-    //     { icon: <FaInstagram />, href: 'https://instagram.com' },
-    // ];
+    const { settings } = useSettings();
+    const social = settings?.social || {};
+
+    const socialLinks = [
+        { icon: <FaGithub />, href: social.github, show: !!social.github },
+        { icon: <FaLinkedin />, href: social.linkedin, show: !!social.linkedin },
+        { icon: <FaXTwitter />, href: social.twitter, show: !!social.twitter },
+        { icon: <FaInstagram />, href: social.instagram, show: !!social.instagram },
+    ].filter(link => link.show);
 
     return (
         <footer className="footer" style={{ padding: '1.25rem 0', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            
-            {/* for showing social links and admin login button */}
-            
-            {/* <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem', alignItems: 'center' }} className="mobile-socials">
+
+            {/* Mobile Socials (Optional: hidden by default but can be toggled via CSS or feature flag) */}
+            <div style={{ display: 'none', gap: '1.5rem', justifyContent: 'center', marginBottom: '1rem', alignItems: 'center' }} className="mobile-socials">
                 {socialLinks.map((link, index) => (
                     <a
                         key={index}
@@ -29,22 +31,8 @@ const Footer = () => {
                         {link.icon}
                     </a>
                 ))}
-                <Link
-                    to="/login"
-                    style={{
-                        color: 'var(--text-secondary)',
-                        fontSize: '1.3rem',
-                        transition: 'all 0.3s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        opacity: 0.5
-                    }}
-                    className="admin-login-btn"
-                    title="Admin Login"
-                >
-                    <FaUserLock />
-                </Link>
-            </div> */}
+            </div>
+
             <div className="footer-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <a
                     href="https://github.com/arpitpardesi"
@@ -58,7 +46,7 @@ const Footer = () => {
                     onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-color)'}
                     onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
                 >
-                    Designed & Developed by Arpit Pardesi
+                    Designed & Developed by {settings?.profile?.name || "Arpit Pardesi"}
                 </a>
                 <span className="footer-divider" style={{ opacity: 0.5 }}>|</span>
                 <span className="footer-copyright" style={{ fontSize: '0.85rem', opacity: 0.7 }}>
@@ -70,8 +58,7 @@ const Footer = () => {
 
             <style>
                 {`
-            .mobile-socials a:hover,
-            .mobile-socials .admin-login-btn:hover {
+            .mobile-socials a:hover {
                 color: var(--accent-color) !important;
                 transform: translateY(-2px);
             }

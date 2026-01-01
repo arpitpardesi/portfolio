@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { useSettings } from '../context/SettingsContext';
 import {
     FaBriefcase, FaGraduationCap, FaDownload, FaArrowLeft
 } from 'react-icons/fa';
@@ -11,6 +12,7 @@ const DetailedAbout = () => {
     const [experienceTimeline, setExperienceTimeline] = useState([]);
     const [educationTimeline, setEducationTimeline] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [skills, setSkills] = useState([]);
 
     useEffect(() => {
         const fetchTimeline = async () => {
@@ -40,12 +42,35 @@ const DetailedAbout = () => {
         fetchTimeline();
     }, []);
 
-    const skills = [
-        "Python", "React", "FastAPI", "JavaScript", "TypeScript",
-        "Node.js", "PostgreSQL", "MySQL", "Docker", "AWS",
-        "Git", "Linux", "Tailwind CSS", "Framer Motion",
-        "LLMs & AI", "Machine Learning", "IoT", "Raspberry Pi"
-    ];
+    useEffect(() => {
+        const fetchSkills = async () => {
+            try {
+                const skillsCollection = collection(db, 'skills');
+                const snapshot = await getDocs(skillsCollection);
+
+                if (!snapshot.empty) {
+                    const fetchedSkills = snapshot.docs.map(doc => doc.data());
+                    setSkills(fetchedSkills.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)));
+                } else {
+                    setSkills([
+                        { name: 'Python', category: 'Backend', proficiency: 90, displayOrder: 1 },
+                        { name: 'React', category: 'Frontend', proficiency: 85, displayOrder: 2 },
+                        { name: 'FastAPI', category: 'Backend', proficiency: 85, displayOrder: 3 },
+                        { name: 'Tensorflow', category: 'AI/ML', proficiency: 80, displayOrder: 4 },
+                        { name: 'PostgreSQL', category: 'Database', proficiency: 75, displayOrder: 5 },
+                        { name: 'Docker', category: 'DevOps', proficiency: 70, displayOrder: 6 }
+                    ]);
+                }
+            } catch (error) {
+                console.error("Error fetching skills:", error);
+            }
+        };
+
+        fetchSkills();
+    }, []);
+
+    const { settings } = useSettings();
+    const content = settings?.pages?.detailedAbout || {};
 
     return (
         <section className="section detailed-about-section">
@@ -70,11 +95,10 @@ const DetailedAbout = () => {
                     </motion.div>
                     <div className="hero-content">
                         <h1>
-                            <span className="highlight">About</span> Me
+                            <span className="highlight">{content.heroTitle || "About Me"}</span>
                         </h1>
                         <p className="hero-subtitle">
-                            Explorer. Engineer. Creator. <br />
-                            Turning coffee into code and ideas into reality.
+                            <span style={{ whiteSpace: "pre-line" }}>{content.heroSubtitle || "Explorer. Engineer. Creator. \nTurning coffee into code and ideas into reality."}</span>
                         </p>
                     </div>
                 </motion.div>
@@ -89,7 +113,7 @@ const DetailedAbout = () => {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                 >
-                                    The Origin Story
+                                    {content.originTitle || "The Origin Story"}
                                 </motion.h3>
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -98,18 +122,13 @@ const DetailedAbout = () => {
                                     transition={{ delay: 0.2 }}
                                 >
                                     <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences,
-                                        architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy
-                                        of creating solutions that make a difference.
+                                        {content.originText1 || "I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences, architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy of creating solutions that make a difference."}
                                     </p>
                                     <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with
-                                        hands-on experience in full-stack development, machine learning, and cloud technologies.
+                                        {content.originText2 || "Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with hands-on experience in full-stack development, machine learning, and cloud technologies."}
                                     </p>
                                     <p style={{ lineHeight: '1.8' }}>
-                                        When I'm not coding, you'll find me tinkering with IoT devices, exploring photography,
-                                        or diving deep into the latest AI research. Every project is an opportunity to learn,
-                                        grow, and push the boundaries of what's possible.
+                                        {content.originText3 || "When I'm not coding, you'll find me tinkering with IoT devices, exploring photography, or diving deep into the latest AI research. Every project is an opportunity to learn, grow, and push the boundaries of what's possible."}
                                     </p>
                                 </motion.div>
                             </div>
@@ -121,8 +140,8 @@ const DetailedAbout = () => {
                                 style={{ flexShrink: 0 }}
                             >
                                 <div style={{
-                                    width: '280px',
-                                    height: '280px',
+                                    width: '380px',
+                                    height: '380px',
                                     borderRadius: '50%',
                                     overflow: 'hidden',
                                     border: '4px solid var(--accent-color)',
@@ -130,8 +149,8 @@ const DetailedAbout = () => {
                                     position: 'relative'
                                 }}>
                                     <img
-                                        src="https://github.com/arpitpardesi.png"
-                                        alt="Arpit Pardesi"
+                                        src={settings?.home?.about?.image || "https://github.com/arpitpardesi.png"}
+                                        alt={settings?.profile?.name || "Arpit Pardesi"}
                                         style={{
                                             width: '100%',
                                             height: '100%',
@@ -145,7 +164,7 @@ const DetailedAbout = () => {
 
                     {/* 3. Journey Timeline - Experience */}
                     <div className="content-block timeline-block">
-                        <h3>Professional Journey</h3>
+                        <h3>{content.journeyTitle || "Professional Journey"}</h3>
                         {loading ? (
                             <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Loading...</p>
                         ) : (
@@ -188,7 +207,7 @@ const DetailedAbout = () => {
 
                     {/* 4. Education Timeline */}
                     <div className="content-block timeline-block">
-                        <h3>Education</h3>
+                        <h3>{content.educationTitle || "Education"}</h3>
                         {loading ? (
                             <p style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>Loading...</p>
                         ) : (
@@ -231,34 +250,36 @@ const DetailedAbout = () => {
 
                     {/* 5. Simple Elegant Skills */}
                     <div className="content-block skills-block">
-                        <h3>Technical Arsenal</h3>
+                        <h3>{content.skillsTitle || "Technical Arsenal"}</h3>
                         <motion.div
                             className="skills-elegant-grid"
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
                         >
-                            {skills.map((skill, index) => (
-                                <motion.div
-                                    key={skill}
-                                    className="skill-tag"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.03 }}
-                                >
-                                    {skill}
-                                </motion.div>
-                            ))}
+                            <div className="skills-elegant-grid" style={{ justifyContent: 'center' }}>
+                                {skills.map((skill, index) => (
+                                    <motion.div
+                                        key={skill.name}
+                                        className="skill-tag"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.03 }}
+                                        title={`Proficiency: ${skill.proficiency}%`}
+                                    >
+                                        {skill.name}
+                                    </motion.div>
+                                ))}
+                            </div>
                         </motion.div>
                     </div>
 
                     {/* 6. Enhanced Beyond Code */}
                     <div className="content-block beyond-block">
-                        <h3>Beyond Code</h3>
+                        <h3>{content.beyondTitle || "Beyond Code"}</h3>
                         <p className="section-intro">
-                            When I step away from the terminal, you'll find me exploring the intersection of technology and creativity —
-                            from capturing moments through photography to building smart IoT devices and experimenting with AI.
+                            {content.beyondText || "When I step away from the terminal, you'll find me exploring the intersection of technology and creativity — from capturing moments through photography to building smart IoT devices and experimenting with AI."}
                         </p>
 
                         <motion.div
@@ -385,7 +406,7 @@ const DetailedAbout = () => {
 
                 /* Layout */
                 .detailed-content {
-                    max-width: 900px;
+                    max-width: 1200px;
                     margin: 0 auto;
                     display: grid;
                     gap: 7rem;

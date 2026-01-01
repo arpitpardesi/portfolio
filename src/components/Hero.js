@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 
 const Hero = () => {
-    const name = "Arpit Pardesi.";
+    const { settings } = useSettings();
+    const name = settings?.profile?.name || "Arpit Pardesi.";
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -152,7 +154,7 @@ const Hero = () => {
                         marginBottom: '2rem'
                     }}
                 >
-                    I turn curiosity into creation.
+                    {settings?.profile?.subtitle || "I turn curiosity into creation."}
                 </motion.h2>
 
                 <motion.p
@@ -167,8 +169,7 @@ const Hero = () => {
                         fontSize: '1.1rem'
                     }}
                 >
-                    I weave together data, design, and code to build experiences that feel intuitive and alive. As a Software Developer, I explore the space where logic meets imagination — architecting solutions, solving puzzles, and shaping ideas into something you can see, feel, and use.
-                    {/* I'm a Software Engineer at Accenture, specializing in Data Engineering and Full Stack Development. I build accessible, pixel-perfect, and performant web experiences while diving deep into data with Python and Cloud technologies. */}
+                    {settings?.profile?.description || "I weave together data, design, and code to build experiences that feel intuitive and alive."}
                 </motion.p>
 
                 <motion.div
@@ -196,7 +197,7 @@ const Hero = () => {
                             textDecoration: 'none',
                             display: 'inline-block',
                             position: 'relative',
-                            overflow: 'hidden' // For potential fill effect
+                            overflow: 'hidden'
                         }}
                         whileHover={{
                             scale: 1.05,

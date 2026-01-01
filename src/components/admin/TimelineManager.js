@@ -12,6 +12,10 @@ const TimelineManager = () => {
     const [currentItem, setCurrentItem] = useState(null);
     const [filterCategory, setFilterCategory] = useState('all');
 
+    // Selection State
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [itemsToDelete, setItemsToDelete] = useState([]); // Array of IDs to delete (single or bulk)
+
     const [formData, setFormData] = useState({
         dateFrom: '',
         dateTo: '',
@@ -31,7 +35,6 @@ const TimelineManager = () => {
                 id: doc.id,
                 ...doc.data()
             })).sort((a, b) => {
-                // Sort by dateFrom descending (most recent first)
                 const dateA = new Date(a.dateFrom || '1900-01-01');
                 const dateB = new Date(b.dateFrom || '1900-01-01');
                 return dateB - dateA;
@@ -47,11 +50,45 @@ const TimelineManager = () => {
         fetchItems();
     }, [fetchItems]);
 
-    const [itemToDelete, setItemToDelete] = useState(null);
+    // Selection Handlers
+    const toggleSelection = (id) => {
+        setSelectedItems(prev =>
+            prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id]
+        );
+    };
+
+    const handleSelectAll = () => {
+        if (filteredItems.length === 0) return;
+        if (selectedItems.length === filteredItems.length) {
+            setSelectedItems([]);
+        } else {
+            setSelectedItems(filteredItems.map(item => item.id));
+        }
+    };
+
+    const confirmDelete = (id) => {
+        setItemsToDelete([id]);
+    };
+
+    const confirmBulkDelete = () => {
+        setItemsToDelete([...selectedItems]);
+    };
+
+    const executeDelete = async () => {
+        if (itemsToDelete.length === 0) return;
+        try {
+            await Promise.all(itemsToDelete.map(id => deleteDoc(doc(db, 'timeline', id))));
+            fetchItems();
+            setItemsToDelete([]);
+            setSelectedItems(prev => prev.filter(id => !itemsToDelete.includes(id)));
+        } catch (error) {
+            console.error("Error deleting document(s): ", error);
+            alert("Error deleting item(s)");
+        }
+    };
 
     const handleEdit = (item) => {
         setCurrentItem(item);
-
         setFormData({
             dateFrom: item.dateFrom || '',
             dateTo: item.dateTo || '',
@@ -82,8 +119,6 @@ const TimelineManager = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Format dates for display in Indian format (DD MMM YYYY)
         const formatDate = (dateStr) => {
             if (!dateStr) return '';
             const date = new Date(dateStr);
@@ -93,14 +128,13 @@ const TimelineManager = () => {
             return `${day} ${month} ${year}`;
         };
 
-        // Construct dateRange from dateFrom, dateTo, and isPresent
         const dateRange = formData.isPresent
             ? `${formatDate(formData.dateFrom)} - Present`
             : `${formatDate(formData.dateFrom)} - ${formatDate(formData.dateTo)}`;
 
         const dataToSave = {
             dateRange,
-            dateFrom: formData.dateFrom,  // Store raw date for sorting
+            dateFrom: formData.dateFrom,
             dateTo: formData.isPresent ? null : formData.dateTo,
             isPresent: formData.isPresent,
             title: formData.title,
@@ -128,18 +162,6 @@ const TimelineManager = () => {
         }
     };
 
-    const handleDelete = async () => {
-        if (!itemToDelete) return;
-        try {
-            await deleteDoc(doc(db, 'timeline', itemToDelete));
-            fetchItems();
-            setItemToDelete(null);
-        } catch (error) {
-            console.error("Error deleting item: ", error);
-            alert("Error deleting item");
-        }
-    };
-
     const filteredItems = filterCategory === 'all'
         ? items
         : items.filter(item => item.category === filterCategory);
@@ -148,8 +170,29 @@ const TimelineManager = () => {
         <div style={{ color: 'var(--text-primary)' }}>
             <div className="collection-header">
                 <div className="collection-header-top">
-                    <h2 className="collection-title">Timeline Management</h2>
-                    <div className="collection-actions">
+                    <div className="collection-title-group">
+                        <h2 className="collection-title">Timeline Management</h2>
+                    </div>
+                    <div className="collection-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <label className="select-all-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: '#aaa' }}>
+                            <input
+                                type="checkbox"
+                                checked={filteredItems.length > 0 && selectedItems.length === filteredItems.length}
+                                onChange={handleSelectAll}
+                                disabled={filteredItems.length === 0}
+                                style={{ cursor: 'pointer', width: '16px', height: '16px', accentColor: 'var(--accent-color)' }}
+                            />
+                            Select All
+                        </label>
+                        {selectedItems.length > 0 && (
+                            <button
+                                onClick={confirmBulkDelete}
+                                className="btn btn-danger"
+                                style={{ padding: '6px 12px', fontSize: '0.85rem' }}
+                            >
+                                <FaTrash /> Delete ({selectedItems.length})
+                            </button>
+                        )}
                         <div style={{ display: 'flex', gap: '0.5rem', marginRight: '1rem' }}>
                             <button
                                 onClick={() => setFilterCategory('all')}
@@ -187,8 +230,14 @@ const TimelineManager = () => {
             ) : (
                 <div className="collection-grid">
                     {filteredItems.map(item => (
-                        <div key={item.id} className="collection-item">
-                            <div className="item-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <div key={item.id} className={`collection-item ${selectedItems.includes(item.id) ? 'selected' : ''}`}>
+                            <input
+                                type="checkbox"
+                                checked={selectedItems.includes(item.id)}
+                                onChange={() => toggleSelection(item.id)}
+                                className="item-checkbox"
+                            />
+                            <div className="item-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', paddingLeft: '1.8rem' }}>
                                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', flex: 1 }}>
                                     <div style={{ fontSize: '1.5rem', color: 'var(--accent-color)', paddingTop: '0.25rem', flexShrink: 0 }}>
                                         {item.category === 'experience' ? <FaBriefcase /> : <FaGraduationCap />}
@@ -206,7 +255,7 @@ const TimelineManager = () => {
                                     <button onClick={() => handleEdit(item)} className="icon-btn edit">
                                         <FaEdit />
                                     </button>
-                                    <button onClick={() => setItemToDelete(item.id)} className="icon-btn delete">
+                                    <button onClick={() => confirmDelete(item.id)} className="icon-btn delete">
                                         <FaTrash />
                                     </button>
                                 </div>
@@ -258,7 +307,7 @@ const TimelineManager = () => {
 
             {/* Delete Confirmation */}
             <AnimatePresence>
-                {itemToDelete && (
+                {itemsToDelete.length > 0 && (
                     <div className="modal-overlay">
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
@@ -269,15 +318,15 @@ const TimelineManager = () => {
                         >
                             <h3 style={{ marginBottom: '1rem' }}>Confirm Delete</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                                Are you sure you want to delete this timeline entry?
+                                Are you sure you want to delete {itemsToDelete.length} item{itemsToDelete.length > 1 ? 's' : ''}?
                                 <br />This action cannot be undone.
                             </p>
                             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                                <button onClick={() => setItemToDelete(null)} className="btn btn-outline">
+                                <button onClick={() => setItemsToDelete([])} className="btn btn-outline">
                                     Cancel
                                 </button>
-                                <button onClick={handleDelete} className="btn btn-danger-solid">
-                                    Delete
+                                <button onClick={executeDelete} className="btn btn-danger-solid">
+                                    Delete {itemsToDelete.length > 1 ? `(${itemsToDelete.length})` : ''}
                                 </button>
                             </div>
                         </motion.div>
@@ -290,9 +339,9 @@ const TimelineManager = () => {
                 {isEditing && (
                     <div className="modal-overlay">
                         <motion.div
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: 50, opacity: 0 }}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
                             className="modal-content"
                         >
                             <button onClick={() => setIsEditing(false)} className="close-modal-btn">
