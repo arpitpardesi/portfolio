@@ -24,16 +24,21 @@ import Login from './components/Login';
 import AdminDashboard from './components/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+import { SettingsProvider, useSettings } from './context/SettingsContext';
 
-function App() {
+import { MotionConfig } from 'framer-motion';
+
+function AppContent() {
+    const { settings } = useSettings();
+
     return (
-        <AuthProvider>
+        <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
             <Router>
                 <div className="App">
-                    <CustomCursor />
-                    <Background />
-                    <Moon />
-                    <ThemeSwitcher />
+                    {settings.enableCustomCursor && <CustomCursor />}
+                    {settings.enableBackground && <Background />}
+                    {settings.enableMoon && <Moon />}
+                    {settings.enableThemeSwitcher && <ThemeSwitcher />}
                     <Header />
                     <Routes>
                         <Route path="/" element={
@@ -66,6 +71,16 @@ function App() {
                     <Footer />
                 </div>
             </Router>
+        </MotionConfig>
+    );
+}
+
+function App() {
+    return (
+        <AuthProvider>
+            <SettingsProvider>
+                <AppContent />
+            </SettingsProvider>
         </AuthProvider>
     );
 }

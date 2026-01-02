@@ -1213,3 +1213,49 @@
         font-size: 1.75rem;
     }
 }
+
+/* Settings Tabs */
+.settings-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--admin-card-border);
+}
+
+.settings-tab {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.settings-tab:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.settings-tab.active {
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.settings-tab-icon {
+    font-size: 1.1rem;
+}
+
+/* Hide sections that are not active */
+.settings-section.hidden {
+    display: none;
+}

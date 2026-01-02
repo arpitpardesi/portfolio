@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaPalette, FaTimes } from 'react-icons/fa';
+import { FaPalette, FaTimes, FaRocket } from 'react-icons/fa';
+import { useSettings } from '../context/SettingsContext';
 
 const themes = [
     // Original space themes
@@ -25,6 +26,7 @@ const themes = [
 ];
 
 const ThemeSwitcher = () => {
+    const { settings } = useSettings();
     const [isOpen, setIsOpen] = useState(false);
     const [activeTheme, setActiveTheme] = useState(themes[4].name);
     const [hoveredTheme, setHoveredTheme] = useState(null);
@@ -241,34 +243,36 @@ const ThemeSwitcher = () => {
                     {isOpen ? <FaTimes /> : <FaPalette />}
                 </motion.button>
             </div >
-            {/* <motion.button
-                onClick={() => window.location.hash = '#/playground'}
-                className="playground-btn"
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.9 }}
-                style={{
-                    position: 'fixed',
-                    bottom: '40px',
-                    left: '110px',
-                    width: '55px',
-                    height: '55px',
-                    borderRadius: '50%',
-                    background: 'rgba(10, 10, 10, 0.8)',
-                    backdropFilter: 'blur(10px)',
-                    border: '2px solid var(--accent-color)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent-color)',
-                    fontSize: '1.3rem',
-                    cursor: 'pointer',
-                    zIndex: 10000,
-                    boxShadow: '0 0 30px var(--accent-glow)'
-                }}
-                title="Physics Playground"
-            >
-                <FaRocket />
-            </motion.button> */}
+            {settings.enablePlayground && (
+                <motion.button
+                    onClick={() => window.location.hash = '#/playground'}
+                    className="playground-btn"
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.9 }}
+                    style={{
+                        position: 'fixed',
+                        bottom: '40px',
+                        left: '110px',
+                        width: '55px',
+                        height: '55px',
+                        borderRadius: '50%',
+                        background: 'rgba(10, 10, 10, 0.8)',
+                        backdropFilter: 'blur(10px)',
+                        border: '2px solid var(--accent-color)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'var(--accent-color)',
+                        fontSize: '1.3rem',
+                        cursor: 'pointer',
+                        zIndex: 10000,
+                        boxShadow: '0 0 30px var(--accent-glow)'
+                    }}
+                    title="Physics Playground"
+                >
+                    <FaRocket />
+                </motion.button>
+            )}
 
             <style>
                 {`

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import { useSettings } from '../context/SettingsContext';
 
 const About = () => {
+    const { settings } = useSettings();
     const [skills, setSkills] = useState([]);
 
     useEffect(() => {
@@ -51,7 +53,7 @@ const About = () => {
                         fontWeight: '700'
                     }}>
                         <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem', fontSize: '1.5rem' }}></span>
-                        About Me
+                        {settings.aboutTitle || "About Me"}
                         <span style={{
                             height: '1px',
                             background: 'var(--border-color)',
@@ -63,26 +65,24 @@ const About = () => {
 
                     <div className="about-text" style={{ flex: 1, fontSize: '1.1rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
                         <p style={{ marginBottom: '1rem' }}>
-                            Hello! I’m Arpit — a builder at heart, a learner by nature, and a firm believer that technology is just another form of storytelling.
+                            {settings.aboutText1 || "Hello! I’m Arpit — a builder at heart, a learner by nature, and a firm believer that technology is just another form of storytelling."}
                             {/* Hello! My name is Arpit and I enjoy creating things that live on the internet and making sense of data. My journey started with a curiosity for how things work, which led me to the world of software engineering. */}
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            My journey began with small sparks of curiosity: Why does this work? What happens if I change that? Can I build something new?<br></br>
-                            Those questions carried me into the world of software, where creativity and precision dance together.
+                            {settings.aboutText2 || "My journey began with small sparks of curiosity: Why does this work? What happens if I change that? Can I build something new? Those questions carried me into the world of software, where creativity and precision dance together."}
                             {/* My journey started with curiosity for how systems interact with each other, which eventually led me into software engineering. Fast-forward to today, I work at Accenture as a Software Engineer (Application Development Analyst), focusing on data-driven platforms, scalable pipelines, automations, and full-stack applications. */}
                             {/* Fast-forward to today, and I've had the privilege of working at <span style={{ color: 'var(--accent-color)' }}>Accenture</span> as an Application Development Analyst. My main focus these days is building data-driven solutions and scalable web applications. */}
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            Today, I craft data-driven solutions, develop applications, and design meaningful digital experiences.
-                            I love blending structure with art — from orchestrating raw ideas and data into solutions to writing code that feels elegant and alive.
+                            {settings.aboutText3 || "Today, I craft data-driven solutions, develop applications, and design meaningful digital experiences. I love blending structure with art — from orchestrating raw ideas and data into solutions to writing code that feels elegant and alive."}
                         </p>
                         <p style={{ marginBottom: '1rem' }}>
-                            When I’m not engineering solutions, you’ll find me experimenting: building IoT gadgets, teaching machines to see and talk, or creating playful interfaces powered by AI.
+                            {settings.aboutText4 || "When I’m not engineering solutions, you’ll find me experimenting: building IoT gadgets, teaching machines to see and talk, or creating playful interfaces powered by AI."}
                             {/* Outside of work, I explore hands-on projects with ESP32, Raspberry Pi, and embedded electronics. I enjoy experimenting with AI/ML, including projects like PixMob LED wristband control, real-time object detection using YOLO, AI companion apps, and hardware-integrated automation. */}
                         </p>
 
                         <p style={{ marginBottom: '2rem' }}>
-                            Every project is a chance to explore, to improve, to understand a little more.
+                            {settings.aboutFooter || "Every project is a chance to explore, to improve, to understand a little more."}
                         </p>
 
                         <p style={{ marginBottom: '1rem', fontFamily: 'var(--font-mono)', fontSize: '0.9rem' }}>Here are a few technologies I've been working with recently:</p>
@@ -207,9 +207,9 @@ const About = () => {
                             }}
                         >
                             {/* Profile Image linked to LinkedIn */}
-                            <a href="https://www.linkedin.com/in/arpitpardesi/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
+                            <a href={settings.linkedinUrl || "https://www.linkedin.com/in/arpitpardesi/"} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
                                 <img
-                                    src="https://github.com/arpitpardesi.png"
+                                    src={settings.profileImage || "https://github.com/arpitpardesi.png"}
                                     alt="Arpit Pardesi"
                                     style={{
                                         width: '100%',

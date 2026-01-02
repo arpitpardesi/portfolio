@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaInstagram, FaRegCopy, FaCheck, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import { useSettings } from '../context/SettingsContext';
 
 const Contact = () => {
+    const { settings } = useSettings();
     const [copied, setCopied] = useState(false);
 
     const handleCopyEmail = () => {
-        navigator.clipboard.writeText('arpit.pardesi6@gmail.com');
+        navigator.clipboard.writeText(settings.contactEmail || 'arpit.pardesi6@gmail.com');
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
 
     const socialLinks = [
-        { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
-        { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
-        { icon: <FaXTwitter />, href: 'https://x.com/arpit_pardesi' },
-        { icon: <FaInstagram />, href: 'https://www.instagram.com/arpitpardesi' },
+        { icon: <FaGithub />, href: settings.githubUrl || 'https://github.com/arpitpardesi' },
+        { icon: <FaLinkedin />, href: settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/' },
+        { icon: <FaXTwitter />, href: settings.twitterUrl || 'https://x.com/arpit_pardesi' },
+        { icon: <FaInstagram />, href: settings.instagramUrl || 'https://www.instagram.com/arpitpardesi' },
     ];
 
     return (
@@ -67,7 +69,7 @@ const Contact = () => {
                         letterSpacing: '1px'
                     }}
                 >
-                    What's Next?
+                    {settings.contactSubtitle || "What's Next?"}
                 </motion.p>
 
                 <motion.h2
@@ -84,7 +86,7 @@ const Contact = () => {
                         letterSpacing: '-1px'
                     }}
                 >
-                    Get In Touch
+                    {settings.contactTitle || 'Get In Touch'}
                 </motion.h2>
 
                 <motion.p
@@ -103,7 +105,7 @@ const Contact = () => {
                         marginRight: 'auto'
                     }}
                 >
-                    I'm currently looking for new opportunities, and my inbox is always open. Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!
+                    {settings.contactText || "I'm currently looking for new opportunities, and my inbox is always open. Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!"}
                 </motion.p>
 
                 <motion.div
@@ -122,7 +124,7 @@ const Contact = () => {
                     }}
                 >
                     <motion.a
-                        href="mailto:arpit.pardesi6@gmail.com"
+                        href={`mailto:${settings.contactEmail || 'arpit.pardesi6@gmail.com'}`}
                         className="contact-btn primary"
                         style={{
                             padding: '1rem 2.5rem',
@@ -148,7 +150,7 @@ const Contact = () => {
                         whileTap={{ scale: 0.95 }}
                     >
                         <FaEnvelope />
-                        Say Hello
+                        {settings.contactCta || 'Say Hello'}
                     </motion.a>
 
                     <div style={{ position: 'relative' }}>

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode, FaCog } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
+import SettingsManager from './admin/SettingsManager';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -43,6 +44,8 @@ const AdminDashboard = () => {
                 return <TimelineManager />;
             case 'skills':
                 return <SkillsManager />;
+            case 'settings':
+                return <SettingsManager />;
             default:
                 return <div>Select a section</div>;
         }
@@ -58,6 +61,7 @@ const AdminDashboard = () => {
         { id: 'iot', label: 'IOT', icon: <FaMicrochip /> },
         { id: 'ai', label: 'AI', icon: <FaBrain /> },
         { id: 'rpi', label: 'Raspberry Pi', icon: <FaRaspberryPi /> },
+        { id: 'settings', label: 'Settings', icon: <FaCog /> },
     ];
 
     return (

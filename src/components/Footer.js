@@ -3,8 +3,10 @@ import React from 'react';
 // import { FaGithub, FaLinkedin, FaInstagram, FaUserLock } from 'react-icons/fa';
 // import { FaXTwitter } from 'react-icons/fa6';
 import VisitorCounter from './VisitorCounter';
+import { useSettings } from '../context/SettingsContext';
 
 const Footer = () => {
+    const { settings } = useSettings();
     // const socialLinks = [
     //     { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
     //     { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
@@ -47,7 +49,7 @@ const Footer = () => {
             </div> */}
             <div className="footer-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <a
-                    href="https://github.com/arpitpardesi"
+                    href={settings.githubUrl || "https://github.com/arpitpardesi"}
                     target="_blank"
                     rel="noreferrer"
                     className="footer-link"
@@ -62,7 +64,7 @@ const Footer = () => {
                 </a>
                 <span className="footer-divider" style={{ opacity: 0.5 }}>|</span>
                 <span className="footer-copyright" style={{ fontSize: '0.85rem', opacity: 0.7 }}>
-                    © {new Date().getFullYear()} All rights reserved.
+                    {settings.footerText || `© ${new Date().getFullYear()} All rights reserved.`}
                 </span>
             </div>
 

@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 
 const Hero = () => {
-    const name = "Arpit Pardesi.";
+    const { settings } = useSettings();
+    const name = settings.heroName || "Arpit Pardesi.";
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -95,7 +97,7 @@ const Hero = () => {
                         animation: 'blink-caret 0.75s step-end infinite'
                     }}
                 >
-                    Hi, my name is
+                    {settings.heroIntro || "Hi, my name is"}
                 </motion.p>
                 <style>
                     {`
@@ -152,7 +154,7 @@ const Hero = () => {
                         marginBottom: '2rem'
                     }}
                 >
-                    I turn curiosity into creation.
+                    {settings.heroSubtitle || "I turn curiosity into creation."}
                 </motion.h2>
 
                 <motion.p
@@ -167,7 +169,7 @@ const Hero = () => {
                         fontSize: '1.1rem'
                     }}
                 >
-                    I weave together data, design, and code to build experiences that feel intuitive and alive. As a Software Developer, I explore the space where logic meets imagination — architecting solutions, solving puzzles, and shaping ideas into something you can see, feel, and use.
+                    {settings.heroDescription || "I weave together data, design, and code to build experiences that feel intuitive and alive. As a Software Developer, I explore the space where logic meets imagination — architecting solutions, solving puzzles, and shaping ideas into something you can see, feel, and use."}
                     {/* I'm a Software Engineer at Accenture, specializing in Data Engineering and Full Stack Development. I build accessible, pixel-perfect, and performant web experiences while diving deep into data with Python and Cloud technologies. */}
                 </motion.p>
 
@@ -177,7 +179,7 @@ const Hero = () => {
                     transition={{ delay: 1.9, duration: 0.5 }}
                 >
                     <motion.a
-                        href="#projects"
+                        href={settings.heroCtaLink || "#projects"}
                         onClick={(e) => {
                             e.preventDefault();
                             const projects = document.getElementById('projects');
@@ -205,7 +207,7 @@ const Hero = () => {
                         }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        Check out my work
+                        {settings.heroCtaText || "Check out my work"}
                     </motion.a>
                 </motion.div>
 

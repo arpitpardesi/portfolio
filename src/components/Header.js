@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const Header = () => {
+    const { settings } = useSettings();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
@@ -38,10 +40,10 @@ const Header = () => {
     }, [mobileMenuOpen]);
 
     const socialLinks = [
-        { icon: <FaGithub />, href: 'https://github.com/arpitpardesi' },
-        { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/arpitpardesi/' },
-        { icon: <FaXTwitter />, href: 'https://x.com/arpit_pardesi' },
-        { icon: <FaInstagram />, href: 'https://www.instagram.com/arpitpardesi' },
+        { icon: <FaGithub />, href: settings.githubUrl || 'https://github.com/arpitpardesi' },
+        { icon: <FaLinkedin />, href: settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/' },
+        { icon: <FaXTwitter />, href: settings.twitterUrl || 'https://x.com/arpit_pardesi' },
+        { icon: <FaInstagram />, href: settings.instagramUrl || 'https://www.instagram.com/arpitpardesi' },
     ];
 
     const navItems = ['About', 'Projects', 'Contact'];
@@ -76,7 +78,7 @@ const Header = () => {
             >
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex' }}>
-                        {['A', 'R', 'P', 'I', 'T'].map((letter, index) => (
+                        {(settings.logoText || 'ARPIT').split('').map((letter, index) => (
                             <motion.span
                                 key={index}
                                 initial={{ opacity: 0, y: -20 }}
