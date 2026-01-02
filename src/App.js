@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Background from './components/Background';
 import CustomCursor from './components/CustomCursor';
 import DetailedAbout from './components/DetailedAbout';
+import Resume from './components/Resume';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import Moon from './components/Moon';
 import Photography from './components/Photography';
@@ -60,6 +61,7 @@ function AppContent() {
                         <Route path="/photography" element={<Photography />} />
                         <Route path="/playground" element={<PhysicsPlayground />} />
                         <Route path="/about" element={<DetailedAbout />} />
+                        <Route path="/resume" element={<Resume />} />
 
                         <Route path="/login" element={<Login />} />
                         <Route path="/admin" element={

@@ -300,9 +300,7 @@ const DetailedAbout = () => {
             </div>
 
             {/* Floating Resume Button */}
-            <motion.a
-                href="/resume.pdf"
-                target="_blank"
+            <motion.div
                 className="floating-resume-btn"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -310,9 +308,11 @@ const DetailedAbout = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 1 }}
             >
-                <FaDownload />
-                <span>Resume</span>
-            </motion.a>
+                <Link to="/resume" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'inherit', textDecoration: 'none' }}>
+                    <FaDownload />
+                    <span>Resume</span>
+                </Link>
+            </motion.div>
 
             <style>{`
                 .detailed-about-section {
