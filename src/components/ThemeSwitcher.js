@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaPalette, FaTimes, FaRocket } from 'react-icons/fa';
 import { useSettings } from '../context/SettingsContext';
 
-const themes = [
+export const themes = [
     // Original space themes
     { name: 'Void Purple', color: '#6366f1', rgb: '99, 102, 241', glow: 'rgba(99, 102, 241, 0.5)', background: '#6366f1' },
     { name: 'Nebula Blue', color: '#0ea5e9', rgb: '14, 165, 233', glow: 'rgba(14, 165, 233, 0.5)', background: '#0ea5e9' },
@@ -32,14 +32,21 @@ const ThemeSwitcher = () => {
     const [hoveredTheme, setHoveredTheme] = useState(null);
 
     useEffect(() => {
+        const allThemes = [...themes, ...(settings.customThemes || [])];
         const savedTheme = localStorage.getItem('cosmos-theme');
+
         if (savedTheme) {
-            const theme = themes.find(t => t.name === savedTheme);
+            const theme = allThemes.find(t => t.name === savedTheme);
+            if (theme) {
+                applyTheme(theme);
+            }
+        } else if (settings.defaultTheme && settings.defaultTheme !== 'custom') {
+            const theme = allThemes.find(t => t.name === settings.defaultTheme);
             if (theme) {
                 applyTheme(theme);
             }
         }
-    }, []);
+    }, [settings.defaultTheme, settings.customThemes]);
 
     const applyTheme = (theme) => {
         document.documentElement.style.setProperty('--accent-color', theme.color);

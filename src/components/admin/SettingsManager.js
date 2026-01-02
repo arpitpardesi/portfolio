@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { FaSave, FaCog, FaGlobe, FaLink, FaServer, FaHome, FaUser, FaInstagram } from 'react-icons/fa';
+import { FaSave, FaCog, FaGlobe, FaLink, FaServer, FaHome, FaUser, FaInstagram, FaPalette, FaPlus, FaTrash } from 'react-icons/fa';
+import { themes } from '../ThemeSwitcher';
 import './Admin.css';
 
 const SettingsManager = () => {
@@ -9,6 +10,59 @@ const SettingsManager = () => {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState({ text: '', type: '' });
     const [activeTab, setActiveTab] = useState('content');
+
+    // Custom Theme State
+    const [showAddTheme, setShowAddTheme] = useState(false);
+    const [newTheme, setNewTheme] = useState({ name: '', color: '#6366f1' });
+
+    // Helper to convert hex to rgb string "r, g, b"
+    const hexToRgb = (hex) => {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ?
+            `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+            : '255, 255, 255';
+    };
+
+    const handleAddTheme = () => {
+        if (!newTheme.name || !newTheme.color) {
+            setMessage({ text: 'Please provide both name and color.', type: 'error' });
+            return;
+        }
+
+        const rgb = hexToRgb(newTheme.color);
+        const themeObj = {
+            name: newTheme.name,
+            color: newTheme.color,
+            rgb: rgb,
+            glow: `rgba(${rgb}, 0.5)`,
+            background: newTheme.color
+        };
+
+        setSettings(prev => ({
+            ...prev,
+            customThemes: [...(prev.customThemes || []), themeObj],
+            // Optionally select it immediately
+            defaultTheme: themeObj.name,
+            accentColor: themeObj.color
+        }));
+
+        setNewTheme({ name: '', color: '#6366f1' });
+        setShowAddTheme(false);
+        setMessage({ text: 'Custom theme added!', type: 'success' });
+
+        // Auto-clear message
+        setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+    };
+
+    const handleDeleteTheme = (themeName, e) => {
+        e.stopPropagation(); // Prevent selecting the theme while deleting
+        setSettings(prev => ({
+            ...prev,
+            customThemes: (prev.customThemes || []).filter(t => t.name !== themeName),
+            // Reset to default if deleted theme was selected
+            defaultTheme: prev.defaultTheme === themeName ? 'Void Purple' : prev.defaultTheme
+        }));
+    };
 
     // Default settings state
     const [settings, setSettings] = useState({
@@ -144,6 +198,12 @@ const SettingsManager = () => {
                     onClick={() => setActiveTab('social')}
                 >
                     <FaLink className="settings-tab-icon" /> Social Media
+                </button>
+                <button
+                    className={`settings-tab ${activeTab === 'theme' ? 'active' : ''}`}
+                    onClick={() => setActiveTab('theme')}
+                >
+                    <FaPalette className="settings-tab-icon" /> Theme & Background
                 </button>
                 <button
                     className={`settings-tab ${activeTab === 'system' ? 'active' : ''}`}
@@ -478,27 +538,115 @@ const SettingsManager = () => {
                         </div>
                     </div>
 
-                    {/* System Configuration */}
-                    <div className={`settings-section ${activeTab === 'system' ? '' : 'hidden'}`}>
+                    {/* Theme & Background Tab */}
+                    <div className={`settings-section ${activeTab === 'theme' ? '' : 'hidden'}`}>
                         <div className="settings-section-header">
-                            <div className="settings-section-icon"><FaServer /></div>
-                            <h3 className="settings-section-title">System Configuration</h3>
+                            <div className="settings-section-icon"><FaPalette /></div>
+                            <h3 className="settings-section-title">Theme & Background</h3>
                         </div>
 
                         {/* Appearance Subsection */}
                         <div style={{ marginBottom: '3rem' }}>
                             <h4 style={{ color: 'var(--accent-color)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Appearance</h4>
                             <div className="settings-fields">
-                                <div className="settings-field">
-                                    <label className="settings-label">Default Accent Color</label>
-                                    <input
-                                        type="color"
-                                        name="accentColor"
-                                        value={settings.accentColor}
-                                        onChange={handleChange}
-                                        className="color-input"
-                                    />
+                                <div className="settings-field" style={{ gridColumn: '1 / -1' }}>
+                                    <label className="settings-label">Global Theme Preset</label>
+                                    <div className="theme-grid">
+                                        {/* Preset Themes */}
+                                        {themes.map(theme => (
+                                            <div
+                                                key={theme.name}
+                                                className={`theme-card ${settings.defaultTheme === theme.name ? 'active' : ''}`}
+                                                onClick={() => setSettings(prev => ({
+                                                    ...prev,
+                                                    defaultTheme: theme.name,
+                                                    accentColor: theme.color
+                                                }))}
+                                            >
+                                                <div
+                                                    className="theme-preview"
+                                                    style={{ background: theme.background }}
+                                                />
+                                                <span className="theme-name">{theme.name}</span>
+                                                {settings.defaultTheme === theme.name && (
+                                                    <div className="theme-check">✓</div>
+                                                )}
+                                            </div>
+                                        ))}
+
+                                        {/* Custom Themes */}
+                                        {(settings.customThemes || []).map(theme => (
+                                            <div
+                                                key={theme.name}
+                                                className={`theme-card ${settings.defaultTheme === theme.name ? 'active' : ''}`}
+                                                onClick={() => setSettings(prev => ({
+                                                    ...prev,
+                                                    defaultTheme: theme.name,
+                                                    accentColor: theme.color
+                                                }))}
+                                            >
+                                                <div
+                                                    className="theme-preview"
+                                                    style={{ background: theme.background }}
+                                                />
+                                                <span className="theme-name">{theme.name}</span>
+                                                {settings.defaultTheme === theme.name && (
+                                                    <div className="theme-check">✓</div>
+                                                )}
+                                                <button
+                                                    className="delete-theme-btn"
+                                                    onClick={(e) => handleDeleteTheme(theme.name, e)}
+                                                    title="Delete Theme"
+                                                >
+                                                    <FaTrash />
+                                                </button>
+                                            </div>
+                                        ))}
+
+                                        {/* Add New Theme Card */}
+                                        <div
+                                            className="theme-card add-theme-card"
+                                            onClick={() => setShowAddTheme(true)}
+                                            style={{ borderStyle: 'dashed', justifyContent: 'center' }}
+                                        >
+                                            <div className="theme-preview" style={{ background: 'transparent', border: '2px dashed var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                <FaPlus style={{ color: 'var(--text-secondary)' }} />
+                                            </div>
+                                            <span className="theme-name" style={{ color: 'var(--text-secondary)' }}>Add New</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Add Theme Modal/Form */}
+                                    {showAddTheme && (
+                                        <div className="add-theme-modal">
+                                            <div className="add-theme-content">
+                                                <h4>Add Custom Theme</h4>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Theme Name (e.g. Neon Lime)"
+                                                    value={newTheme.name}
+                                                    onChange={(e) => setNewTheme({ ...newTheme, name: e.target.value })}
+                                                    className="settings-input"
+                                                    maxLength={15}
+                                                />
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+                                                    <input
+                                                        type="color"
+                                                        value={newTheme.color}
+                                                        onChange={(e) => setNewTheme({ ...newTheme, color: e.target.value })}
+                                                        className="color-input"
+                                                    />
+                                                    <span>Pick Color</span>
+                                                </div>
+                                                <div className="modal-actions">
+                                                    <button onClick={() => setShowAddTheme(false)} className="btn btn-secondary">Cancel</button>
+                                                    <button onClick={handleAddTheme} className="btn btn-primary">Add Theme</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
+
                                 <div className="settings-field">
                                     <label className="toggle-btn" style={{ justifyContent: 'space-between' }}>
                                         <span>Show Moon Icon</span>
@@ -538,9 +686,9 @@ const SettingsManager = () => {
                             </div>
                         </div>
 
-                        {/* Performance & Visuals Subsection */}
+                        {/* Visuals & Effects Subsection */}
                         <div style={{ marginBottom: '3rem' }}>
-                            <h4 style={{ color: 'var(--accent-color)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Performance & Visuals</h4>
+                            <h4 style={{ color: 'var(--accent-color)', marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>Visuals & Effects</h4>
                             <div className="settings-fields">
                                 <div className="settings-field">
                                     <label className="toggle-btn" style={{ justifyContent: 'space-between' }}>
@@ -585,6 +733,14 @@ const SettingsManager = () => {
                                     </label>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* System Configuration */}
+                    <div className={`settings-section ${activeTab === 'system' ? '' : 'hidden'}`}>
+                        <div className="settings-section-header">
+                            <div className="settings-section-icon"><FaServer /></div>
+                            <h3 className="settings-section-title">System Configuration</h3>
                         </div>
 
                         {/* System & Admin Subsection */}
