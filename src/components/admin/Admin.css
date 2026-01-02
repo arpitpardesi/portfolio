@@ -472,7 +472,11 @@
         transform: translateX(-100%);
         width: 280px;
         /* Slightly wider for touch */
-        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+        background: rgba(10, 10, 15, 0.95);
+        /* High opacity for visibility */
+        backdrop-filter: blur(20px);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .admin-sidebar.open {

@@ -5,7 +5,7 @@ import { FaUsers, FaFolder, FaChartLine, FaEye, FaGlobeAmericas, FaSync, FaClock
 import { motion } from 'framer-motion';
 import {
     BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid,
-     AreaChart, Area, Legend
+    AreaChart, Area, Legend
 } from 'recharts';
 import './Admin.css';
 
@@ -561,7 +561,7 @@ const AnalyticsDashboard = () => {
                     </h3>
                     {topCities.length > 0 ? (
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart data={topCities} layout="horizontal">
+                            <BarChart data={topCities} layout="vertical">
                                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.05)" />
                                 <XAxis type="number" stroke="var(--text-secondary)" style={{ fontSize: '0.85rem' }} />
                                 <YAxis type="category" dataKey="name" stroke="var(--text-secondary)" style={{ fontSize: '0.85rem' }} width={100} />
