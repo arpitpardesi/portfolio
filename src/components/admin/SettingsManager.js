@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { FaSave, FaCog, FaGlobe, FaLink, FaServer, FaHome, FaUser, FaInstagram, FaPalette, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaSave, FaCog, FaGlobe, FaLink, FaServer, FaHome, FaPalette, FaPlus, FaTrash } from 'react-icons/fa';
 import { themes } from '../ThemeSwitcher';
 import './Admin.css';
 
