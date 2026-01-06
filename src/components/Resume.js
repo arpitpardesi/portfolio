@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaDownload, FaExclamationTriangle, FaExternalLinkAlt } from 'react-icons/fa';
 import { useSettings } from '../context/SettingsContext';
 
