@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaDownload, FaExclamationTriangle, FaExternalLinkAlt } from 'react-icons/fa';
 import { useSettings } from '../context/SettingsContext';
 
 const Resume = () => {
+    const navigate = useNavigate();
     const { settings } = useSettings();
     const resumeUrl = settings.resumeUrl;
     const [iframeError, setIframeError] = useState(false);
@@ -13,9 +14,18 @@ const Resume = () => {
     if (!resumeUrl) {
         return (
             <div className="resume-container empty-state">
-                <Link to="/about" className="back-link-absolute">
-                    <FaArrowLeft /> Back
-                </Link>
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 1002 }}
+                    className="back-nav"
+                >
+                    <button onClick={() => navigate(-1)} className="back-link">
+                        <FaArrowLeft /> Back
+                    </button>
+                </motion.div>
+
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -36,15 +46,17 @@ const Resume = () => {
                         position: relative;
                         padding: 2rem;
                     }
-                    .back-link-absolute {
-                        position: absolute;
-                        top: 2rem;
-                        left: 2rem;
+                    .back-nav {
+                        /* Mobile behavior handled by media query below if needed, 
+                           but for empty state we can keep it simple or match exact responsive behavior */
+                    }
+                    .back-link {
                         display: flex;
                         align-items: center;
                         gap: 0.5rem;
                         color: var(--text-secondary);
                         text-decoration: none;
+                        font-size: 1rem;
                         font-weight: 500;
                         padding: 8px 16px;
                         border-radius: 50px;
@@ -52,11 +64,28 @@ const Resume = () => {
                         backdrop-filter: blur(5px);
                         border: 1px solid var(--border-color);
                         transition: all 0.3s ease;
+                        cursor: pointer;
                     }
-                    .back-link-absolute:hover {
+                    .back-link:hover {
                         background: rgba(var(--accent-rgb), 0.1);
                         border-color: var(--accent-color);
                         color: var(--accent-color);
+                        transform: translateX(-4px);
+                    }
+                    @media (max-width: 768px) {
+                        .back-nav {
+                            position: static !important;
+                            margin-bottom: 2rem;
+                            display: inline-block;
+                            align-self: flex-start;
+                            margin-left: 2rem;
+                            margin-top: 2rem;
+                        }
+                        .resume-container {
+                            flex-direction: column;
+                            justify-content: flex-start;
+                            padding-top: 100px;
+                        }
                     }
                     .error-content {
                         text-align: center;
@@ -82,17 +111,17 @@ const Resume = () => {
     return (
         <section className="section resume-page">
             <div className="container">
-                {/* Fixed Back Button */}
+                {/* Fixed Back Button moved outside transformed container */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 1002 }}
                     className="back-nav"
                 >
-                    <Link to="/about" className="back-link">
+                    <button onClick={() => navigate(-1)} className="back-link">
                         <FaArrowLeft /> Back
-                    </Link>
+                    </button>
                 </motion.div>
 
                 {/* Hero Section */}

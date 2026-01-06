@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt, FaFolder, FaArrowLeft } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProjectModal from './ProjectModal';
 
 const AllProjectsPage = () => {
+    const navigate = useNavigate();
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedProject, setSelectedProject] = useState(null);
@@ -53,7 +54,7 @@ const AllProjectsPage = () => {
                     style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
                     className="back-nav"
                 >
-                    <Link to="/" style={{
+                    <button onClick={() => navigate(-1)} style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
@@ -66,7 +67,9 @@ const AllProjectsPage = () => {
                         background: 'rgba(10, 10, 10, 0.5)',
                         backdropFilter: 'blur(5px)',
                         border: '1px solid var(--border-color)',
-                        transition: 'all 0.3s ease'
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit'
                     }}
                         onMouseOver={(e) => {
                             e.currentTarget.style.color = 'var(--accent-color)';
@@ -80,7 +83,7 @@ const AllProjectsPage = () => {
                         }}
                     >
                         <FaArrowLeft /> Back
-                    </Link>
+                    </button>
                 </motion.div>
 
                 {/* Hero Section */}

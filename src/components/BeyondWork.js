@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaShapes, FaArrowLeft } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -41,6 +41,7 @@ const defaultHobbies = [
 ];
 
 const BeyondWork = () => {
+    const navigate = useNavigate();
     const [hobbies, setHobbies] = useState(defaultHobbies);
 
     useEffect(() => {
@@ -86,6 +87,17 @@ const BeyondWork = () => {
             position: 'relative',
             zIndex: 1
         }}>
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                className="back-nav"
+            >
+                <button onClick={() => navigate(-1)} className="back-link">
+                    <FaArrowLeft /> Back
+                </button>
+            </motion.div>
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -177,6 +189,34 @@ const BeyondWork = () => {
                         .hobby-grid {
                             grid-template-columns: 1fr !important;
                         }
+                        .back-nav {
+                            position: static !important;
+                            margin-bottom: 2rem;
+                            display: inline-block;
+                            align-self: flex-start;
+                        }
+                    }
+                    .back-link {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        color: var(--text-secondary);
+                        text-decoration: none;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        padding: 8px 16px;
+                        border-radius: 50px;
+                        background: rgba(10, 10, 10, 0.5);
+                        backdrop-filter: blur(5px);
+                        border: 1px solid var(--border-color);
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                    }
+                    .back-link:hover {
+                        background: rgba(var(--accent-rgb), 0.1);
+                        border-color: var(--accent-color);
+                        color: var(--accent-color);
+                        transform: translateX(-4px);
                     }
                 `}
             </style>

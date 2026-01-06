@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const HobbyPage = ({ title, icon, color, description, children }) => {
+    const navigate = useNavigate();
     return (
         <section className="hobby-page" style={{
             padding: '120px 20px',
@@ -19,7 +20,7 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
                 style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
                 className="back-nav"
             >
-                <Link to="/beyond-work" style={{
+                <button onClick={() => navigate(-1)} style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.5rem',
@@ -31,10 +32,12 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
                     borderRadius: '50px',
                     background: 'rgba(10, 10, 10, 0.5)',
                     backdropFilter: 'blur(5px)',
-                    border: '1px solid var(--border-color)'
+                    border: '1px solid var(--border-color)',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
                 }}>
                     <FaArrowLeft /> Back
-                </Link>
+                </button>
             </motion.div>
 
             <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>

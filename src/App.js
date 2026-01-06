@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -29,12 +29,23 @@ import { SettingsProvider, useSettings } from './context/SettingsContext';
 
 import { MotionConfig } from 'framer-motion';
 
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 function AppContent() {
     const { settings } = useSettings();
 
     return (
         <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
             <Router>
+                <ScrollToTop />
                 <div className="App">
                     {settings.enableCustomCursor && <CustomCursor />}
                     {settings.enableBackground && <Background />}

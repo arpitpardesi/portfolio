@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import {
@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa';
 
 const DetailedAbout = () => {
+    const navigate = useNavigate();
     const [experienceTimeline, setExperienceTimeline] = useState([]);
     const [educationTimeline, setEducationTimeline] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -71,24 +72,24 @@ const DetailedAbout = () => {
     return (
         <section className="section detailed-about-section">
             <div className="container">
-                {/* 1. Hero Section with Flipped Colors */}
+                <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                    className="back-nav"
+                >
+                    <button onClick={() => navigate(-1)} className="back-link">
+                        <FaArrowLeft /> Back
+                    </button>
+                </motion.div>
+
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="about-hero"
                 >
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
-                        style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
-                        className="back-nav"
-                    >
-                        <Link to="/" className="back-link">
-                            <FaArrowLeft /> Back
-                        </Link>
-                    </motion.div>
                     <div className="hero-content">
                         <h1>
                             <span className="highlight">About</span> Me
@@ -123,10 +124,10 @@ const DetailedAbout = () => {
                                         architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy
                                         of creating solutions that make a difference.
                                     </p>
-                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        Currently pursuing B.Tech in Computer Science at MPSTME, Mumbai, I combine academic knowledge with
+                                    {/* <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                        I combine academic knowledge with
                                         hands-on experience in full-stack development, machine learning, and cloud technologies.
-                                    </p>
+                                    </p> */}
                                     <p style={{ lineHeight: '1.8' }}>
                                         When I'm not coding, you'll find me tinkering with IoT devices, exploring photography,
                                         or diving deep into the latest AI research. Every project is an opportunity to learn,
@@ -341,6 +342,7 @@ const DetailedAbout = () => {
                     backdrop-filter: blur(5px);
                     border: 1px solid var(--border-color);
                     transition: all 0.3s ease;
+                    cursor: pointer;
                 }
                 .back-link:hover {
                     background: rgba(var(--accent-rgb), 0.1);
