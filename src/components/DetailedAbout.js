@@ -120,19 +120,21 @@ const DetailedAbout = () => {
                                     transition={{ delay: 0.2 }}
                                 >
                                     <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        I'm a developer who loves building things that matter. Whether it's crafting seamless web experiences,
-                                        architecting scalable backends, or experimenting with AI and machine learning, I'm driven by the joy
-                                        of creating solutions that make a difference.
+                                        My journey didn't start with code; it started with curiosity. I was the kid who took apart remote controls just to see the circuit boards, fascinated by the invisible logic that made things work. That same curiosity eventually led me to the terminal, where I discovered that software engineering isn't just about syntax—it's about creating something from nothing.
                                     </p>
-                                    {/* <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
-                                        I combine academic knowledge with
-                                        hands-on experience in full-stack development, machine learning, and cloud technologies.
-                                    </p> */}
+                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                        Today, I operate at the intersection of creativity and engineering. Whether I'm architecting scalable backends, training machine learning models, or crafting pixel-perfect interfaces, my goal is always the same: to build experiences that feel intuitive, human, and alive. I believe that technology, at its best, should disappear, leaving only the solution it provides.
+                                    </p>
+                                    <p style={{ lineHeight: '1.8', marginBottom: '1.5rem' }}>
+                                        Every commit is a new chapter, and every bug is a puzzle waiting to be solved. From the structured logic of distributed systems to the boundless potential of AI, I am constantly exploring the edge of what's possible—turning abstract ideas into tangible reality.
+                                    </p>
                                     <p style={{ lineHeight: '1.8' }}>
-                                        When I'm not coding, you'll find me tinkering with IoT devices, exploring photography,
-                                        or diving deep into the latest AI research. Every project is an opportunity to learn,
-                                        grow, and push the boundaries of what's possible.
+                                        To me, code is a form of modern-day alchemy. It's the only medium where you can speak a language of pure logic and have it manifest as art, utility, and connection across the globe. Whether it's a simple script or a complex neural network, the thrill of typing <code>run</code> and watching a static idea come to life never gets old.
                                     </p>
+                                    <div style={{ marginTop: '2rem', borderLeft: '3px solid var(--accent-color)', paddingLeft: '1.5rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
+                                        "The only way of discovering the limits of the possible is to venture a little way past them into the impossible."
+                                        <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--accent-color)', fontStyle: 'normal', fontWeight: '500' }}>— Arthur C. Clarke</div>
+                                    </div>
                                 </motion.div>
                             </div>
                             <motion.div
