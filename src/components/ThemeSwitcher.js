@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPalette, FaTimes, FaRocket } from 'react-icons/fa';
 import { useSettings } from '../context/SettingsContext';
+import { useLocation } from 'react-router-dom';
 
 export const themes = [
     // Original space themes
@@ -27,9 +28,12 @@ export const themes = [
 
 const ThemeSwitcher = () => {
     const { settings } = useSettings();
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [activeTheme, setActiveTheme] = useState(themes[4].name);
     const [hoveredTheme, setHoveredTheme] = useState(null);
+
+
 
     useEffect(() => {
         const allThemes = [...themes, ...(settings.customThemes || [])];
@@ -47,6 +51,11 @@ const ThemeSwitcher = () => {
             }
         }
     }, [settings.defaultTheme, settings.customThemes]);
+
+    // Hide on admin dashboard
+    if (location.pathname.startsWith('/admin')) {
+        return null;
+    }
 
     const applyTheme = (theme) => {
         document.documentElement.style.setProperty('--accent-color', theme.color);

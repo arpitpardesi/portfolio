@@ -23,6 +23,13 @@ const SettingsManager = () => {
             : '255, 255, 255';
     };
 
+    // Helper to apply theme instantly for preview
+    const applyTheme = (theme) => {
+        document.documentElement.style.setProperty('--accent-color', theme.color);
+        document.documentElement.style.setProperty('--accent-rgb', theme.rgb);
+        document.documentElement.style.setProperty('--accent-glow', theme.glow);
+    };
+
     const handleAddTheme = () => {
         if (!newTheme.name || !newTheme.color) {
             setMessage({ text: 'Please provide both name and color.', type: 'error' });
@@ -557,11 +564,14 @@ const SettingsManager = () => {
                                             <div
                                                 key={theme.name}
                                                 className={`theme-card ${settings.defaultTheme === theme.name ? 'active' : ''}`}
-                                                onClick={() => setSettings(prev => ({
-                                                    ...prev,
-                                                    defaultTheme: theme.name,
-                                                    accentColor: theme.color
-                                                }))}
+                                                onClick={() => {
+                                                    applyTheme(theme);
+                                                    setSettings(prev => ({
+                                                        ...prev,
+                                                        defaultTheme: theme.name,
+                                                        accentColor: theme.color
+                                                    }));
+                                                }}
                                             >
                                                 <div
                                                     className="theme-preview"
@@ -579,11 +589,14 @@ const SettingsManager = () => {
                                             <div
                                                 key={theme.name}
                                                 className={`theme-card ${settings.defaultTheme === theme.name ? 'active' : ''}`}
-                                                onClick={() => setSettings(prev => ({
-                                                    ...prev,
-                                                    defaultTheme: theme.name,
-                                                    accentColor: theme.color
-                                                }))}
+                                                onClick={() => {
+                                                    applyTheme(theme);
+                                                    setSettings(prev => ({
+                                                        ...prev,
+                                                        defaultTheme: theme.name,
+                                                        accentColor: theme.color
+                                                    }));
+                                                }}
                                             >
                                                 <div
                                                     className="theme-preview"
