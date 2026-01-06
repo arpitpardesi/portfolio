@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
@@ -122,7 +122,7 @@ const About = () => {
                             ))}
                         </ul>
 
-                        {/* <div style={{ marginTop: '2.5rem' }}>
+                        <div style={{ marginTop: '2.5rem' }}>
                             <Link to="/about" style={{
                                 display: 'inline-flex',
                                 alignItems: 'center',
@@ -148,7 +148,7 @@ const About = () => {
                             >
                                 Want to know more about me? →
                             </Link>
-                        </div> */}
+                        </div>
                     </div>
                 </motion.div>
 
@@ -206,19 +206,16 @@ const About = () => {
                                 e.currentTarget.parentElement.querySelector('.image-border').style.transform = 'translate(0, 0)';
                             }}
                         >
-                            {/* Profile Image linked to LinkedIn */}
-                            <a href={settings.linkedinUrl || "https://www.linkedin.com/in/arpitpardesi/"} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
-                                <img
-                                    src={settings.profileImage || "https://github.com/arpitpardesi.png"}
-                                    alt="Arpit Pardesi"
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        transition: 'transform 0.5s ease',
-                                    }}
-                                />
-                            </a>
+                            <img
+                                src={settings.profileImage || "https://github.com/arpitpardesi.png"}
+                                alt="Arpit Pardesi"
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    transition: 'transform 0.5s ease',
+                                }}
+                            />
                         </div>
                     </motion.div>
                 </motion.div>
