@@ -252,6 +252,27 @@ const Hero = () => {
                             font-size: 0.9rem !important;
                         }
                     }
+
+                    @media (max-height: 500px) and (orientation: landscape) {
+                         /* Reduce font sizes for short landscape screens */
+                        .hero-section span {
+                            font-size: 3rem !important; /* Name */
+                        }
+                        .hero-subtitle {
+                            font-size: 1.5rem !important;
+                            margin-bottom: 1rem !important;
+                        }
+                        .hero-description {
+                            font-size: 0.9rem !important;
+                            margin-bottom: 1.5rem !important;
+                            max-width: 500px !important;
+                        }
+                        .hero-blob {
+                            width: 300px !important;
+                            height: 300px !important;
+                            opacity: 0.3 !important;
+                        }
+                    }
                 `}
             </style>
         </section>

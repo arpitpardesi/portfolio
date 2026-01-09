@@ -144,7 +144,7 @@ const DetailedAbout = () => {
                                 transition={{ duration: 0.6 }}
                                 style={{ flexShrink: 0 }}
                             >
-                                <div style={{
+                                <div className="profile-image-container" style={{
                                     width: '380px',
                                     height: '380px',
                                     borderRadius: '50%',
@@ -187,7 +187,7 @@ const DetailedAbout = () => {
                                         >
                                             <div className="timeline-content">
                                                 <div className="date">{item.dateRange}</div>
-                                                <h4><FaBriefcase className="inline-icon" />{item.title}</h4>
+                                                <h4><FaBriefcase className="inline-icon" />{item.title ? item.title.replace('Developlent', 'Development') : item.title}</h4>
                                                 {item.subtitle && <h5>{item.subtitle}</h5>}
                                                 {item.location && (
                                                     <div style={{
@@ -631,6 +631,20 @@ const DetailedAbout = () => {
                     }
                 }
 
+                .date {
+                    display: inline-block;
+                    background: rgba(var(--accent-rgb), 0.25);
+                    color: #fff;
+                    padding: 0.4rem 1rem;
+                    border-radius: 20px;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    margin-bottom: 1rem;
+                    font-family: var(--font-mono);
+                    letter-spacing: 0.5px;
+                    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                }
+
                 @media (max-width: 768px) {
                     .about-hero h1 { font-size: 2.5rem; }
                     .timeline::before { left: 20px; }
@@ -649,6 +663,63 @@ const DetailedAbout = () => {
                         padding: 0.8rem 1.2rem;
                         font-size: 0.9rem;
                     }
+                }
+
+                @media (max-height: 500px) and (orientation: landscape) {
+                    .detailed-about-section {
+                        padding-top: 60px !important;
+                    }
+                    .about-hero {
+                         margin-bottom: 2rem !important;
+                         padding: 0 !important;
+                    }
+                    .about-hero h1 {
+                         font-size: 2.5rem !important;
+                         margin-bottom: 0.5rem !important;
+                    }
+                    .hero-subtitle {
+                         font-size: 1.1rem !important;
+                         margin-bottom: 2rem !important;
+                    }
+                    .profile-image-container {
+                         width: 200px !important;
+                         height: 200px !important;
+                         margin: 0 auto;
+                    }
+                    .content-block {
+                         gap: 2rem !important;
+                    }
+                    .detailed-content {
+                         gap: 3rem !important;
+                    }
+                    /* Timeline fixes for landscape */
+                     .timeline-item {
+                        margin-bottom: 2rem;
+                     }
+                     .floating-resume-btn {
+                        padding: 0.5rem 1rem;
+                        bottom: 0.5rem;
+                        right: 4rem; /* Move left to avoid other icons */
+                        transform: scale(0.8);
+                        transform-origin: bottom right;
+                    }
+                }
+
+                @media (max-height: 500px) and (orientation: landscape) {
+                    .floating-resume-btn {
+                        padding: 0.5rem 1rem;
+                        bottom: 0.5rem;
+                        right: 4rem; /* Move left to avoid other icons */
+                        transform: scale(0.8);
+                        transform-origin: bottom right;
+                    }
+                    .detailed-about-section {
+                        padding-top: 80px;
+                    }
+                    /* Timeline fixes for landscape */
+                     .timeline-item {
+                        margin-bottom: 2rem;
+                     }
                 }
             `}</style>
         </section>

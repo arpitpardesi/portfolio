@@ -393,7 +393,21 @@ const Header = () => {
 
                     @media (max-height: 500px) and (orientation: landscape) {
                         header {
-                            padding: 0.5rem 1rem !important;
+                            padding: 0.25rem 1rem !important;
+                        }
+                        /* Scale down logo directly using the anchor tag */
+                        header a[href="/"] {
+                            font-size: 1.1rem !important;
+                        }
+                        /* Scale down mobile menu button */
+                        .mobile-menu-btn {
+                            font-size: 1.2rem !important;
+                            padding: 0.25rem !important;
+                        }
+                        /* Hide desktop nav if height is really small to save space, or just scale it */
+                        .desktop-nav {
+                             transform: scale(0.9);
+                             transform-origin: right center;
                         }
                     }
                 `}

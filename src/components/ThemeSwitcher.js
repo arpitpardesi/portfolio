@@ -337,6 +337,21 @@ const ThemeSwitcher = () => {
                             height: 32px !important;
                         }
                     }
+
+                    @media (max-height: 500px) and (orientation: landscape) {
+                        .theme-switcher-container {
+                            bottom: 10px !important;
+                            left: 10px !important;
+                            transform: scale(0.7);
+                            transform-origin: bottom left;
+                        }
+                        .playground-btn {
+                            bottom: 15px !important;
+                            left: 60px !important;
+                            transform: scale(0.7);
+                            transform-origin: bottom left;
+                        }
+                    }
                 `}
             </style>
         </>

@@ -459,6 +459,24 @@ const AllProjectsPage = () => {
                             display: none !important;
                         }
                     }
+
+                    @media (max-height: 500px) and (orientation: landscape) {
+                        .floating-featured-note {
+                            display: none !important;
+                        }
+                        .all-projects-page {
+                            padding-top: 60px !important;
+                            padding-bottom: 20px !important;
+                        }
+                        .all-projects-page h1 {
+                            font-size: 1.8rem !important;
+                            margin-bottom: 0.5rem !important;
+                        }
+                        .all-projects-page > div > div > p {
+                            font-size: 0.9rem !important;
+                            margin-bottom: 1.5rem !important;
+                        }
+                    }
                 `}
             </style>
         </section >
