@@ -87,7 +87,7 @@ const Header = ({ showLogo = true }) => {
                                 {(settings.logoText || 'ARPIT').split('').map((letter, index) => (
                                     <motion.span
                                         key={index}
-                                        initial={{ opacity: showLogo ? 1 : 0, y: showLogo ? 0 : -20 }}
+                                        initial={{ opacity: 0, y: -20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
                                     >
@@ -95,7 +95,7 @@ const Header = ({ showLogo = true }) => {
                                     </motion.span>
                                 ))}
                                 <motion.span
-                                    initial={{ opacity: showLogo ? 1 : 0, scale: showLogo ? 1 : 0 }}
+                                    initial={{ opacity: 0, scale: 0 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: 1.1, type: 'spring' }}
                                     style={{ color: 'var(--accent-color)' }}
