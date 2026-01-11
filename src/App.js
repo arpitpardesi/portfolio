@@ -43,7 +43,6 @@ const ScrollToTop = () => {
 
 function AppContent() {
     const { settings } = useSettings();
-    const { loading } = useAuth(); // Initial auth loading check
     const [splashComplete, setSplashComplete] = React.useState(false);
 
     return (
