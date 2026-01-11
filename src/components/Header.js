@@ -5,7 +5,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
 
-const Header = () => {
+const Header = ({ showLogo = true }) => {
     const { settings } = useSettings();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,25 +77,34 @@ const Header = () => {
                 }}
             >
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex' }}>
-                        {(settings.logoText || 'ARPIT').split('').map((letter, index) => (
-                            <motion.span
-                                key={index}
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
+                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex', textDecoration: 'none', color: 'inherit' }}>
+                        {showLogo && (
+                            <motion.div
+                                layoutId="logo-text"
+                                style={{ display: 'flex' }}
+                                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                             >
-                                {letter}
-                            </motion.span>
-                        ))}
-                        <motion.span
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.1, type: 'spring' }}
-                            style={{ color: 'var(--accent-color)' }}
-                        >
-                            .
-                        </motion.span>
+                                {(settings.logoText || 'ARPIT').split('').map((letter, index) => (
+                                    <motion.span
+                                        key={index}
+                                        initial={{ opacity: showLogo ? 1 : 0, y: showLogo ? 0 : -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
+                                    >
+                                        {letter}
+                                    </motion.span>
+                                ))}
+                                <motion.span
+                                    initial={{ opacity: showLogo ? 1 : 0, scale: showLogo ? 1 : 0 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 1.1, type: 'spring' }}
+                                    style={{ color: 'var(--accent-color)' }}
+                                >
+                                    .
+                                </motion.span>
+                            </motion.div>
+                        )}
+                        {!showLogo && <div style={{ width: '80px', height: '1.5rem' }}></div>} {/* Placeholder to prevent layout shift if needed, though usually loading covers it */}
                     </Link>
 
                     {/* Desktop Navigation */}

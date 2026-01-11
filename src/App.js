@@ -27,7 +27,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
 
-import { MotionConfig } from 'framer-motion';
+import LoadingScreen from './components/LoadingScreen';
+import { useAuth } from './context/AuthContext';
+import { MotionConfig, AnimatePresence } from 'framer-motion';
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -41,17 +43,25 @@ const ScrollToTop = () => {
 
 function AppContent() {
     const { settings } = useSettings();
+    const { loading } = useAuth(); // Initial auth loading check
+    const [splashComplete, setSplashComplete] = React.useState(false);
 
     return (
         <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
             <Router>
                 <ScrollToTop />
+                <AnimatePresence mode="wait">
+                    {!splashComplete && (
+                        <LoadingScreen onComplete={() => setSplashComplete(true)} />
+                    )}
+                </AnimatePresence>
+
                 <div className="App">
                     {settings.enableCustomCursor && <CustomCursor />}
                     {settings.enableBackground && <Background />}
                     {settings.enableMoon && <Moon />}
                     {settings.enableThemeSwitcher && <ThemeSwitcher />}
-                    <Header />
+                    <Header showLogo={splashComplete} />
                     <Routes>
                         <Route path="/" element={
                             <>

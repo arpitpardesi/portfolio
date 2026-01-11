@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         currentUser,
+        loading,
         login,
         logout,
         resetPassword
@@ -76,7 +77,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-            {loading ? <LoadingScreen /> : children}
+            {children}
         </AuthContext.Provider>
     );
 };

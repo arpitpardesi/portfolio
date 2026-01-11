@@ -1,77 +1,112 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const LoadingScreen = () => {
+const LoadingScreen = ({ onComplete }) => {
+    // Determine text to show (should match logic in Header roughly, or just hardcode 'ARPIT' if that's the brand)
+    // Header uses settings.logoText || 'ARPIT'
+    const text = 'ARPIT';
+    const letters = text.split('');
+
+    useEffect(() => {
+        // Sequence:
+        // 0s-0.2s: Delay
+        // 0.2s-1.4s: Text Reveal (1.2s duration)
+        // 1.4s-2.0s: Pause (0.6s)
+        // 2.0s: Complete -> Trigger Shutter
+        const totalDuration = 2000;
+
+        const timer = setTimeout(() => {
+            if (onComplete) onComplete();
+        }, totalDuration);
+
+        return () => clearTimeout(timer);
+    }, [onComplete]);
+
     return (
         <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            className="loading-screen"
             style={{
                 position: 'fixed',
                 inset: 0,
                 zIndex: 9999,
-                background: 'radial-gradient(circle at center, #1a1b26 0%, #000000 100%)',
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '20px'
             }}
         >
-            {/* Orbital Ring Animation */}
-            <div style={{ position: 'relative', width: '80px', height: '80px' }}>
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        border: '3px solid transparent',
-                        borderTopColor: 'var(--accent-color)',
-                        borderRadius: '50%',
-                        boxShadow: '0 0 15px var(--accent-glow)'
-                    }}
-                />
-                <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                    style={{
-                        position: 'absolute',
-                        inset: '10px',
-                        border: '3px solid transparent',
-                        borderBottomColor: '#fff',
-                        borderRadius: '50%',
-                        opacity: 0.5
-                    }}
-                />
-                <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    style={{
-                        position: 'absolute',
-                        inset: '25px',
-                        background: 'var(--accent-color)',
-                        borderRadius: '50%',
-                        boxShadow: '0 0 20px var(--accent-glow)'
-                    }}
-                />
-            </div>
-
-            <motion.h2
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            {/* Background Shutter */}
+            <motion.div
+                initial={{ height: '100%' }}
+                exit={{ height: 0 }}
+                transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                 style={{
-                    color: '#fff',
-                    fontSize: '1.2rem',
-                    fontWeight: '300',
-                    letterSpacing: '4px',
-                    textTransform: 'uppercase',
-                    margin: 0
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    background: '#000',
+                    zIndex: 0
                 }}
-            >
-                Initializing
-            </motion.h2>
+            />
+
+            {/* Content Container */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+
+                {/* 
+                   layoutId wrapper:
+                   This needs to match the Header's motion.div structure for the morph to work.
+                */}
+                <motion.div
+                    layoutId="logo-text"
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden', // Necessary for potential effects
+                        color: '#fff',
+                        mixBlendMode: 'difference'
+                    }}
+                    transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
+                >
+                    {/* Text Reveal Animation Group */}
+                    <motion.div
+                        initial={{ clipPath: 'inset(0 100% 0 0)' }}
+                        animate={{ clipPath: 'inset(0 0% 0 0)' }}
+                        transition={{
+                            duration: 1.2,
+                            ease: "easeInOut",
+                            delay: 0.2
+                        }}
+                        style={{
+                            display: 'flex', // Maintain flex layout for letters
+                            fontSize: '4rem',
+                            fontWeight: '700',
+                            letterSpacing: '1px',
+                        }}
+                    >
+                        {letters.map((letter, index) => (
+                            <span key={index}>{letter}</span>
+                        ))}
+                    </motion.div>
+
+                    {/* The Dot - Needs to reside outside the clipPath if we want it to be separate or just part of it? 
+                        In LoadingScreen, let's keep it simple. If we want it to morph to the dot in Header, 
+                        we should ideally have it here too. 
+                    */}
+                    <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.4, duration: 0.2 }}
+                        style={{
+                            fontSize: '4rem',
+                            fontWeight: '700',
+                            color: 'var(--accent-color)'
+                        }}
+                    >
+                        .
+                    </motion.span>
+                </motion.div>
+            </div>
         </motion.div>
     );
 };
