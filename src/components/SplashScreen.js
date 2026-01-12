@@ -25,7 +25,7 @@ const SplashScreen = ({ onComplete }) => {
 
     return (
         <motion.div
-            className="loading-screen"
+            className="splash-screen"
             style={{
                 position: 'fixed',
                 inset: 0,
@@ -78,6 +78,7 @@ const SplashScreen = ({ onComplete }) => {
                                 delay: 0.2 + index * 0.1,
                                 ease: "easeOut"
                             }}
+
                             style={{
                                 display: 'inline-block',
                                 fontSize: 'clamp(2.5rem, 8vw, 4rem)',
