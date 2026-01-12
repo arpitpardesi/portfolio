@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const LoadingScreen = ({ onComplete }) => {
+const SplashScreen = ({ onComplete }) => {
     // Determine text to show (should match logic in Header roughly, or just hardcode 'ARPIT' if that's the brand)
     // Header uses settings.logoText || 'ARPIT'
     const text = 'ARPIT';
@@ -111,4 +111,4 @@ const LoadingScreen = ({ onComplete }) => {
     );
 };
 
-export default LoadingScreen;
+export default SplashScreen;

@@ -27,7 +27,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
 
-import LoadingScreen from './components/LoadingScreen';
+import SplashScreen from './components/SplashScreen';
 import { useAuth } from './context/AuthContext';
 import { MotionConfig, AnimatePresence } from 'framer-motion';
 
@@ -51,7 +51,7 @@ function AppContent() {
                 <ScrollToTop />
                 <AnimatePresence mode="wait">
                     {!splashComplete && (
-                        <LoadingScreen onComplete={() => setSplashComplete(true)} />
+                        <SplashScreen onComplete={() => setSplashComplete(true)} />
                     )}
                 </AnimatePresence>
 
