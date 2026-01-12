@@ -79,7 +79,7 @@ const LoadingScreen = ({ onComplete }) => {
                         }}
                         style={{
                             display: 'flex', // Maintain flex layout for letters
-                            fontSize: '4rem',
+                            fontSize: 'clamp(2.5rem, 8vw, 4rem)',
                             fontWeight: '700',
                             letterSpacing: '1px',
                         }}
@@ -98,7 +98,7 @@ const LoadingScreen = ({ onComplete }) => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1.4, duration: 0.2 }}
                         style={{
-                            fontSize: '4rem',
+                            fontSize: 'clamp(2.5rem, 8vw, 4rem)',
                             fontWeight: '700',
                             color: 'var(--accent-color)'
                         }}
