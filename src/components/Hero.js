@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useSettings } from '../context/SettingsContext';
 
-const Hero = ({ startAnimations = true }) => {
+const Hero = ({ startAnimation = true }) => {
     const { settings } = useSettings();
     const name = settings.heroName || "Arpit Pardesi.";
 
@@ -81,7 +81,7 @@ const Hero = ({ startAnimations = true }) => {
                 <motion.p
                     variants={typewriterVariants}
                     initial="hidden"
-                    animate={startAnimations ? "visible" : "hidden"}
+                    animate={startAnimation ? "visible" : "hidden"}
                     className="hero-intro"
                     style={{
                         color: 'var(--accent-color)',
@@ -111,7 +111,7 @@ const Hero = ({ startAnimations = true }) => {
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
-                    animate={startAnimations ? "visible" : "hidden"}
+                    animate={startAnimation ? "visible" : "hidden"}
                     style={{ marginBottom: '1rem' }}
                 >
                     {name.split("").map((char, index) => (
@@ -144,7 +144,7 @@ const Hero = ({ startAnimations = true }) => {
 
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}
-                    animate={startAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                     transition={{ delay: 1.5, duration: 0.8 }}
                     className="hero-subtitle"
                     style={{
@@ -159,7 +159,7 @@ const Hero = ({ startAnimations = true }) => {
 
                 <motion.p
                     initial={{ opacity: 0, y: 30 }}
-                    animate={startAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                     transition={{ delay: 1.7, duration: 0.8 }}
                     className="hero-description"
                     style={{
@@ -175,7 +175,7 @@ const Hero = ({ startAnimations = true }) => {
 
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
-                    animate={startAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    animate={startAnimation ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                     transition={{ delay: 1.9, duration: 0.5 }}
                 >
                     <motion.a

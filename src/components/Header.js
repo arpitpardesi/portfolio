@@ -110,8 +110,13 @@ const Header = ({ showLogo = true }) => {
                     {/* Desktop Navigation */}
                     <nav className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
                         <ul className="nav-links" style={{ display: 'flex', gap: '2rem' }}>
-                            {navItems.map((item) => (
-                                <li key={item}>
+                            {navItems.map((item, index) => (
+                                <motion.li
+                                    key={item}
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={showLogo ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+                                    transition={{ delay: 0.8 + index * 0.1, duration: 0.5 }}
+                                >
                                     {item === 'Projects' ? (
                                         <Link
                                             to="/projects"
@@ -156,9 +161,13 @@ const Header = ({ showLogo = true }) => {
                                             {item}
                                         </Link>
                                     )}
-                                </li>
+                                </motion.li>
                             ))}
-                            <li>
+                            <motion.li
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={showLogo ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+                                transition={{ delay: 1.1, duration: 0.5 }}
+                            >
                                 <Link
                                     to="/beyond-work"
                                     className={location.pathname.includes('/beyond-work') ? 'active-link' : ''}
@@ -172,11 +181,16 @@ const Header = ({ showLogo = true }) => {
                                 >
                                     Beyond Work
                                 </Link>
-                            </li>
+                            </motion.li>
 
                         </ul>
 
-                        <div style={{ display: 'flex', gap: '1rem', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '2rem' }}>
+                        <motion.div
+                            style={{ display: 'flex', gap: '1rem', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '2rem' }}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={showLogo ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                            transition={{ delay: 1.3, duration: 0.5 }}
+                        >
                             {socialLinks.map((link, index) => (
                                 <a
                                     key={index}
@@ -197,7 +211,7 @@ const Header = ({ showLogo = true }) => {
                                     <FaUserLock />
                                 </Link>
                             )}
-                        </div>
+                        </motion.div>
                     </nav>
 
                     {/* Mobile Menu Button */}

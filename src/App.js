@@ -68,7 +68,7 @@ function AppContent() {
                     <Routes>
                         <Route path="/" element={
                             <>
-                                <Hero startAnimations={splashComplete} />
+                                <Hero startAnimation={splashComplete} />
                                 <About />
                                 <Projects />
                                 <Contact />
