@@ -119,16 +119,16 @@ const DetailedAbout = () => {
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.2 }}
                                 >
-                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.6', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
                                         My journey didn't start with code; it started with curiosity. I was the kid who took apart remote controls just to see the circuit boards, fascinated by the invisible logic that made things work. That same curiosity eventually led me to the terminal, where I discovered that software engineering isn't just about syntax—it's about creating something from nothing.
                                     </p>
-                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.8' }}>
+                                    <p style={{ marginBottom: '1.5rem', lineHeight: '1.6', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
                                         Today, I operate at the intersection of creativity and engineering. Whether I'm architecting scalable backends, training machine learning models, or crafting pixel-perfect interfaces, my goal is always the same: to build experiences that feel intuitive, human, and alive. I believe that technology, at its best, should disappear, leaving only the solution it provides.
                                     </p>
-                                    <p style={{ lineHeight: '1.8', marginBottom: '1.5rem' }}>
+                                    <p style={{ lineHeight: '1.6', marginBottom: '1.5rem', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
                                         Every commit is a new chapter, and every bug is a puzzle waiting to be solved. From the structured logic of distributed systems to the boundless potential of AI, I am constantly exploring the edge of what's possible—turning abstract ideas into tangible reality.
                                     </p>
-                                    <p style={{ lineHeight: '1.8' }}>
+                                    <p style={{ lineHeight: '1.6', fontSize: '1.1rem', color: 'var(--text-secondary)' }}>
                                         To me, code is a form of modern-day alchemy. It's the only medium where you can speak a language of pure logic and have it manifest as art, utility, and connection across the globe. Whether it's a simple script or a complex neural network, the thrill of typing <code>run</code> and watching a static idea come to life never gets old.
                                     </p>
                                     <div style={{ marginTop: '2rem', borderLeft: '3px solid var(--accent-color)', paddingLeft: '1.5rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
@@ -419,15 +419,15 @@ const DetailedAbout = () => {
                     gap: 7rem;
                 }
                 .content-block h3 {
-                    font-size: 2.5rem;
+                    font-size: 2rem;
                     margin-bottom: 2.5rem;
                     color: var(--text-primary);
                 }
                 .text-content p {
-                    font-size: 1.15rem;
+                    font-size: 1.1rem;
                     color: var(--text-secondary);
                     margin-bottom: 1.2rem;
-                    line-height: 1.8;
+                    line-height: 1.6;
                 }
 
                 /* Timeline */
@@ -584,11 +584,11 @@ const DetailedAbout = () => {
 
                 /* Enhanced Beyond Code */
                 .section-intro {
-                    font-size: 1.2rem;
+                    font-size: 1.1rem;
                     color: var(--text-secondary);
                     margin-bottom: 3rem;
                     text-align: center;
-                    line-height: 1.8;
+                    line-height: 1.6;
                 }
                 .beyond-cta {
                     text-align: center;
