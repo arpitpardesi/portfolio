@@ -8,6 +8,7 @@ const SplashScreen = ({ onComplete }) => {
     const letters = text.split('');
 
     useEffect(() => {
+        console.log("Splash Screen Mounted");
         // Sequence:
         // 0s-0.2s: Delay
         // 0.2s-1.4s: Text Reveal (1.2s duration)

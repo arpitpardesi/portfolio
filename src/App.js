@@ -28,7 +28,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SettingsProvider, useSettings } from './context/SettingsContext';
 
 import SplashScreen from './components/SplashScreen';
-import { useAuth } from './context/AuthContext';
+
 import { MotionConfig, AnimatePresence } from 'framer-motion';
 
 const ScrollToTop = () => {
@@ -44,6 +44,10 @@ const ScrollToTop = () => {
 function AppContent() {
     const { settings } = useSettings();
     const [splashComplete, setSplashComplete] = React.useState(false);
+
+    React.useEffect(() => {
+        console.log("App Mounted. Splash Complete:", splashComplete);
+    }, [splashComplete]);
 
     return (
         <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
