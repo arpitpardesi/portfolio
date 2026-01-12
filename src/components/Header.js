@@ -57,6 +57,17 @@ const Header = ({ showLogo = true }) => {
         }
     };
 
+    const [hasAnimated, setHasAnimated] = useState(false);
+
+    useEffect(() => {
+        if (showLogo && !hasAnimated) {
+            const timer = setTimeout(() => {
+                setHasAnimated(true);
+            }, 2000); // Wait for full animation to complete
+            return () => clearTimeout(timer);
+        }
+    }, [showLogo, hasAnimated]);
+
     return (
         <>
             <motion.header
@@ -80,24 +91,24 @@ const Header = ({ showLogo = true }) => {
                     <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex', textDecoration: 'none', color: 'inherit' }}>
                         {showLogo && (
                             <motion.div
-                                layoutId="logo-text"
+                                layoutId={hasAnimated ? undefined : "logo-text"}
                                 style={{ display: 'flex' }}
                                 transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                             >
                                 {(settings.logoText || 'ARPIT').split('').map((letter, index) => (
                                     <motion.span
                                         key={index}
-                                        initial={{ opacity: 0, y: -20 }}
+                                        initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
+                                        transition={hasAnimated ? { duration: 0 } : { delay: 0.5 + index * 0.1, type: 'spring', stiffness: 200 }}
                                     >
                                         {letter}
                                     </motion.span>
                                 ))}
                                 <motion.span
-                                    initial={{ opacity: 0, scale: 0 }}
+                                    initial={hasAnimated ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
                                     animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 1.1, type: 'spring' }}
+                                    transition={hasAnimated ? { duration: 0 } : { delay: 1.1, type: 'spring' }}
                                     style={{ color: 'var(--accent-color)' }}
                                 >
                                     .
