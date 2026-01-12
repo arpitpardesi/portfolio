@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 
 const SplashScreen = ({ onComplete }) => {
-    // Determine text to show (should match logic in Header roughly, or just hardcode 'ARPIT' if that's the brand)
-    // Header uses settings.logoText || 'ARPIT'
-    const text = 'ARPIT';
+    const { settings } = useSettings();
+    const text = settings.logoText || 'ARPIT';
     const letters = text.split('');
 
     useEffect(() => {
@@ -54,7 +54,7 @@ const SplashScreen = ({ onComplete }) => {
 
                 {/* 
                    layoutId wrapper:
-                   This needs to match the Header's motion.div structure for the morph to work.
+                   Matches Header's motion.div structure for morphing effect.
                 */}
                 <motion.div
                     layoutId="logo-text"
@@ -62,40 +62,35 @@ const SplashScreen = ({ onComplete }) => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        overflow: 'hidden', // Necessary for potential effects
                         color: '#fff',
                         mixBlendMode: 'difference'
                     }}
                     transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
                 >
-                    {/* Text Reveal Animation Group */}
-                    <motion.div
-                        initial={{ clipPath: 'inset(0 100% 0 0)' }}
-                        animate={{ clipPath: 'inset(0 0% 0 0)' }}
-                        transition={{
-                            duration: 1.2,
-                            ease: "easeInOut",
-                            delay: 0.2
-                        }}
-                        style={{
-                            display: 'flex', // Maintain flex layout for letters
-                            fontSize: 'clamp(2.5rem, 8vw, 4rem)',
-                            fontWeight: '700',
-                            letterSpacing: '1px',
-                        }}
-                    >
-                        {letters.map((letter, index) => (
-                            <span key={index}>{letter}</span>
-                        ))}
-                    </motion.div>
+                    {letters.map((letter, index) => (
+                        <motion.span
+                            key={index}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                                duration: 0.8,
+                                delay: 0.2 + index * 0.1,
+                                ease: "easeOut"
+                            }}
+                            style={{
+                                display: 'inline-block',
+                                fontSize: 'clamp(2.5rem, 8vw, 4rem)',
+                                fontWeight: '700',
+                                letterSpacing: '1px',
+                            }}
+                        >
+                            {letter}
+                        </motion.span>
+                    ))}
 
-                    {/* The Dot - Needs to reside outside the clipPath if we want it to be separate or just part of it? 
-                        In LoadingScreen, let's keep it simple. If we want it to morph to the dot in Header, 
-                        we should ideally have it here too. 
-                    */}
                     <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 1.4, duration: 0.2 }}
                         style={{
                             fontSize: 'clamp(2.5rem, 8vw, 4rem)',
