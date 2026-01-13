@@ -37,7 +37,12 @@ const About = () => {
 
     return (
         <section id="about" className="section about-section" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
-            <div className="container about-container" style={{ display: 'grid', gap: '3rem', alignItems: 'start' }}>
+            <motion.div
+                className="container about-container"
+                style={{ display: 'grid', gap: '3rem', alignItems: 'start' }}
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -219,7 +224,7 @@ const About = () => {
                         </div>
                     </motion.div>
                 </motion.div>
-            </div>
+            </motion.div>
 
             <style>
                 {`

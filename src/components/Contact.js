@@ -49,203 +49,208 @@ const Contact = () => {
             }} />
 
             <motion.div
-                className="container"
-                style={{ maxWidth: '700px', margin: '0 auto', position: 'relative' }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
+                animate={{ y: [0, -20, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="contact-label"
-                    style={{
-                        color: 'var(--accent-color)',
-                        fontSize: '1.2rem',
-                        marginBottom: '1.5rem',
-                        fontWeight: '500',
-                        letterSpacing: '1px'
-                    }}
-                >
-                    {settings.contactSubtitle || "What's Next?"}
-                </motion.p>
-
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="contact-title"
-                    style={{
-                        fontSize: '4rem',
-                        fontWeight: '800',
-                        marginBottom: '1.5rem',
-                        color: 'var(--text-primary)',
-                        letterSpacing: '-1px'
-                    }}
-                >
-                    {settings.contactTitle || 'Get In Touch'}
-                </motion.h2>
-
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="contact-description"
-                    style={{
-                        color: 'var(--text-secondary)',
-                        fontSize: '1.2rem',
-                        lineHeight: '1.7',
-                        marginBottom: '3.5rem',
-                        maxWidth: '580px',
-                        marginLeft: 'auto',
-                        marginRight: 'auto'
-                    }}
-                >
-                    {settings.contactText || "I'm currently looking for new opportunities, and my inbox is always open. Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!"}
-                </motion.p>
-
                 <motion.div
-                    className="cta-group"
-                    initial={{ opacity: 0, y: 20 }}
+                    className="container"
+                    style={{ maxWidth: '700px', margin: '0 auto', position: 'relative' }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    style={{
-                        display: 'flex',
-                        gap: '1.5rem',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexWrap: 'wrap',
-                        marginBottom: '4rem'
-                    }}
+                    transition={{ duration: 0.8 }}
                 >
-                    <motion.a
-                        href={`mailto:${settings.contactEmail || 'arpit.pardesi6@gmail.com'}`}
-                        className="contact-btn primary"
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="contact-label"
                         style={{
-                            padding: '1rem 2.5rem',
-                            borderRadius: '8px',
-                            background: 'transparent',
-                            border: '1px solid var(--accent-color)',
                             color: 'var(--accent-color)',
-                            fontWeight: '600',
-                            fontSize: '1.1rem',
-                            textDecoration: 'none',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            transition: 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)',
-                            position: 'relative',
-                            overflow: 'hidden'
+                            fontSize: '1.2rem',
+                            marginBottom: '1.5rem',
+                            fontWeight: '500',
+                            letterSpacing: '1px'
                         }}
-                        whileHover={{
-                            scale: 1.05,
-                            backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-                            boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.2)'
-                        }}
-                        whileTap={{ scale: 0.95 }}
                     >
-                        <FaEnvelope />
-                        {settings.contactCta || 'Say Hello'}
-                    </motion.a>
+                        {settings.contactSubtitle || "What's Next?"}
+                    </motion.p>
 
-                    <div style={{ position: 'relative' }}>
-                        <motion.button
-                            onClick={handleCopyEmail}
-                            className="contact-btn secondary"
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="contact-title"
+                        style={{
+                            fontSize: '4rem',
+                            fontWeight: '800',
+                            marginBottom: '1.5rem',
+                            color: 'var(--text-primary)',
+                            letterSpacing: '-1px'
+                        }}
+                    >
+                        {settings.contactTitle || 'Get In Touch'}
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="contact-description"
+                        style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '1.2rem',
+                            lineHeight: '1.7',
+                            marginBottom: '3.5rem',
+                            maxWidth: '580px',
+                            marginLeft: 'auto',
+                            marginRight: 'auto'
+                        }}
+                    >
+                        {settings.contactText || "I'm currently looking for new opportunities, and my inbox is always open. Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!"}
+                    </motion.p>
+
+                    <motion.div
+                        className="cta-group"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        style={{
+                            display: 'flex',
+                            gap: '1.5rem',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            marginBottom: '4rem'
+                        }}
+                    >
+                        <motion.a
+                            href={`mailto:${settings.contactEmail || 'arpit.pardesi6@gmail.com'}`}
+                            className="contact-btn primary"
                             style={{
-                                padding: '1rem 2rem',
+                                padding: '1rem 2.5rem',
                                 borderRadius: '8px',
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                color: 'var(--text-primary)',
-                                fontWeight: '500',
+                                background: 'transparent',
+                                border: '1px solid var(--accent-color)',
+                                color: 'var(--accent-color)',
+                                fontWeight: '600',
                                 fontSize: '1.1rem',
-                                cursor: 'pointer',
+                                textDecoration: 'none',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.75rem',
-                                transition: 'all 0.3s ease'
+                                transition: 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)',
+                                position: 'relative',
+                                overflow: 'hidden'
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                borderColor: 'rgba(255, 255, 255, 0.2)'
+                                backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
+                                boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.2)'
                             }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            {copied ? <FaCheck style={{ color: '#10b981' }} /> : <FaRegCopy />}
-                            {copied ? 'Copied!' : 'Copy Email'}
-                        </motion.button>
-
-                        <AnimatePresence>
-                            {copied && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: 10 }}
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: '-40px',
-                                        left: '50%',
-                                        transform: 'translateX(-50%)',
-                                        background: '#10b981',
-                                        color: '#fff',
-                                        padding: '4px 12px',
-                                        borderRadius: '4px',
-                                        fontSize: '0.8rem',
-                                        pointerEvents: 'none',
-                                        whiteSpace: 'nowrap'
-                                    }}
-                                >
-                                    Email copied to clipboard!
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-                </motion.div>
-
-                {/* Social Links Row */}
-                <motion.div
-                    className="social-links-row"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 }}
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '2.5rem',
-                        marginTop: 'auto'
-                    }}
-                >
-                    {socialLinks.map((link, index) => (
-                        <motion.a
-                            key={index}
-                            href={link.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            style={{
-                                color: 'var(--text-secondary)',
-                                fontSize: '1.8rem',
-                                position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                            }}
-                            whileHover={{
-                                y: -5,
-                                color: 'var(--accent-color)',
-                                transition: { duration: 0.2 }
-                            }}
-                        >
-                            {link.icon}
+                            <FaEnvelope />
+                            {settings.contactCta || 'Say Hello'}
                         </motion.a>
-                    ))}
+
+                        <div style={{ position: 'relative' }}>
+                            <motion.button
+                                onClick={handleCopyEmail}
+                                className="contact-btn secondary"
+                                style={{
+                                    padding: '1rem 2rem',
+                                    borderRadius: '8px',
+                                    background: 'rgba(255, 255, 255, 0.05)',
+                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    color: 'var(--text-primary)',
+                                    fontWeight: '500',
+                                    fontSize: '1.1rem',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    transition: 'all 0.3s ease'
+                                }}
+                                whileHover={{
+                                    scale: 1.05,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                    borderColor: 'rgba(255, 255, 255, 0.2)'
+                                }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                {copied ? <FaCheck style={{ color: '#10b981' }} /> : <FaRegCopy />}
+                                {copied ? 'Copied!' : 'Copy Email'}
+                            </motion.button>
+
+                            <AnimatePresence>
+                                {copied && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        style={{
+                                            position: 'absolute',
+                                            bottom: '-40px',
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                            background: '#10b981',
+                                            color: '#fff',
+                                            padding: '4px 12px',
+                                            borderRadius: '4px',
+                                            fontSize: '0.8rem',
+                                            pointerEvents: 'none',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
+                                        Email copied to clipboard!
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </motion.div>
+
+                    {/* Social Links Row */}
+                    <motion.div
+                        className="social-links-row"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 }}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '2.5rem',
+                            marginTop: 'auto'
+                        }}
+                    >
+                        {socialLinks.map((link, index) => (
+                            <motion.a
+                                key={index}
+                                href={link.href}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{
+                                    color: 'var(--text-secondary)',
+                                    fontSize: '1.8rem',
+                                    position: 'relative',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                                whileHover={{
+                                    y: -5,
+                                    color: 'var(--accent-color)',
+                                    transition: { duration: 0.2 }
+                                }}
+                            >
+                                {link.icon}
+                            </motion.a>
+                        ))}
+                    </motion.div>
                 </motion.div>
             </motion.div>
 
