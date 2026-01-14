@@ -28,7 +28,10 @@ const SplashScreen = ({ onComplete }) => {
             className="splash-screen"
             style={{
                 position: 'fixed',
-                inset: 0,
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100svh', // Uses small viewport height to prevent jumps on mobile
                 zIndex: 9999,
                 display: 'flex',
                 alignItems: 'center',
