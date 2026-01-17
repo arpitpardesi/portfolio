@@ -56,7 +56,7 @@ const Hero = ({ startAnimation = true }) => {
                 padding: '0 20px'
             }}
         >
-            {/* Background Gradient Blob */}
+
             <div
                 className="hero-blob"
                 style={{
@@ -198,7 +198,7 @@ const Hero = ({ startAnimation = true }) => {
                             textDecoration: 'none',
                             display: 'inline-block',
                             position: 'relative',
-                            overflow: 'hidden' // For potential fill effect
+                            overflow: 'hidden'
                         }}
                         whileHover={{
                             scale: 1.05,

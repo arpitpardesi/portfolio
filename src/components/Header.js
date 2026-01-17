@@ -11,7 +11,6 @@ const Header = ({ showLogo = true }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
 
-    // Check if we are on the home page
     const isHome = location.pathname === '/';
 
     useEffect(() => {
@@ -22,12 +21,9 @@ const Header = ({ showLogo = true }) => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Close mobile menu on route change
     useEffect(() => {
         setMobileMenuOpen(false);
     }, [location]);
-
-    // Prevent body scroll when mobile menu is open
     useEffect(() => {
         if (mobileMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -50,7 +46,6 @@ const Header = ({ showLogo = true }) => {
 
     const handleNavClick = (item) => {
         setMobileMenuOpen(false);
-        // Only scroll for About and Contact on homepage
         if (isHome && item !== 'Projects') {
             const element = document.getElementById(item.toLowerCase());
             if (element) element.scrollIntoView({ behavior: 'smooth' });
@@ -308,7 +303,6 @@ const Header = ({ showLogo = true }) => {
                                                     padding: '0.5rem 0',
                                                 }}
                                             >
-                                                {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>{index + 1}.</span> */}
                                                 {item}
                                             </a>
                                         ) : (
@@ -323,7 +317,6 @@ const Header = ({ showLogo = true }) => {
                                                     padding: '0.5rem 0',
                                                 }}
                                             >
-                                                {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>0{index + 1}.</span> */}
                                                 {item}
                                             </Link>
                                         )}

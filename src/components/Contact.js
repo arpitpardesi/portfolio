@@ -33,7 +33,6 @@ const Contact = () => {
             zIndex: 1,
             overflow: 'hidden'
         }}>
-            {/* Background Glow */}
             <div style={{
                 position: 'absolute',
                 top: '50%',

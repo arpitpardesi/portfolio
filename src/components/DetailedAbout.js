@@ -23,14 +23,12 @@ const DetailedAbout = () => {
                     ...doc.data()
                 }));
 
-                // Sort by dateFrom (most recent first)
                 const sortByDate = (items) => items.sort((a, b) => {
                     const dateA = new Date(a.dateFrom || '1900-01-01');
                     const dateB = new Date(b.dateFrom || '1900-01-01');
                     return dateB - dateA;
                 });
 
-                // Split by category
                 setExperienceTimeline(sortByDate(allTimelineItems.filter(item => item.category === 'experience')));
                 setEducationTimeline(sortByDate(allTimelineItems.filter(item => item.category === 'education')));
             } catch (error) {
@@ -253,7 +251,7 @@ const DetailedAbout = () => {
                         )}
                     </div>
 
-                    {/* 5. Simple Elegant Skills */}
+                    {/* 5. Skills */}
                     <div className="content-block skills-block">
                         <h3>Technical Arsenal</h3>
                         <motion.div
@@ -280,7 +278,7 @@ const DetailedAbout = () => {
                         </motion.div>
                     </div>
 
-                    {/* 6. Enhanced Beyond Code */}
+                    {/* 6. Beyond Code */}
                     <div className="content-block beyond-block">
                         <h3>Beyond Code</h3>
                         <p className="section-intro">
@@ -302,7 +300,7 @@ const DetailedAbout = () => {
                 </div>
             </div>
 
-            {/* Floating Resume Button */}
+            {/* Resume Button */}
             <motion.div
                 className="floating-resume-btn"
                 whileHover={{ scale: 1.1 }}

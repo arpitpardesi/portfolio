@@ -57,7 +57,6 @@ const CustomCursor = () => {
         }
     };
 
-    // Core pointer (the accurate click point)
     const dotVariants = {
         default: {
             x: mousePosition.x - 3,
@@ -113,13 +112,12 @@ const CustomCursor = () => {
                     background: "radial-gradient(circle, rgba(var(--accent-rgb), 0.15) 0%, rgba(var(--accent-rgb), 0) 60%)"
                 }}
             />
-            {/* Outer Ring - trails slightly */}
             <motion.div
                 variants={variants}
                 animate={cursorVariant}
                 transition={{
                     type: "spring",
-                    stiffness: 150, // Looser spring for "drift" logic
+                    stiffness: 150,
                     damping: 15,
                     mass: 0.8
                 }}
@@ -132,7 +130,6 @@ const CustomCursor = () => {
                     zIndex: 99999999,
                 }}
             />
-            {/* Center Pointer - follows instantly */}
             <motion.div
                 variants={dotVariants}
                 animate={cursorVariant}

@@ -16,14 +16,6 @@ const initialProjects = [
         tags: ["Python", "PyTorch", "OpenCV", "YOLO"],
         color: "#8b5cf6",
         github: "https://github.com/arpitpardesi"
-    },
-    {
-        id: 2,
-        title: "Generative Art",
-        description: "Using Stable Diffusion to create unique visual assets for web projects.",
-        fullDesc: "Exploring the intersection of code and creativity. This project involves a custom pipeline using Stable Diffusion ControlNets to generate UI assets that follow specific geometric constraints, allowing for procedurally generated yet usable web graphics.",
-        tags: ["Stable Diffusion", "Python", "Generative AI"],
-        color: "#8b5cf6"
     }
 ];
 

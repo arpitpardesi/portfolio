@@ -12,7 +12,6 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
             position: 'relative',
             zIndex: 1
         }}>
-            {/* Navigation */}
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}

@@ -17,12 +17,9 @@ const About = () => {
 
                 if (!snapshot.empty) {
                     const fetchedSkills = snapshot.docs.map(doc => doc.data());
-                    // Sort by displayOrder
                     fetchedSkills.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
                     setSkills(fetchedSkills.map(s => s.name));
                 } else {
-                    // Fallback if no skills in DB yet (or during load)
-                    // Note: SkillsManager migration should handle data population.
                     setSkills(['Python', 'FastAPI', 'LLM', 'SQL', 'Git', 'Github', 'Linux', 'Docker', 'React', 'Machine Learning']);
                 }
             } catch (error) {

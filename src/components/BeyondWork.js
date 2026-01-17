@@ -54,16 +54,13 @@ const BeyondWork = () => {
                         return {
                             id: doc.id,
                             title: data.title,
-                            description: data.description || data.desc, // handle both field names
-                            icon: <FaShapes />, // Generic icon for database items unless we map them
-                            // Check both 'link' (legacy) and 'category' (slug)
+                            description: data.description || data.desc,
+                            icon: <FaShapes />,
                             link: (data.link && data.link.startsWith('/')) ? data.link : `/beyond-work/${data.category || data.link || doc.id}`,
                             color: data.color || '#fff'
                         };
                     });
 
-                    // Prefer database items. If database has items with same IDs as defaults (e.g. 'photography'), use DB version.
-                    // Otherwise keep defaults.
                     const dbIds = new Set(dynamicHobbies.map(h => h.id));
                     const filteredDefaults = defaultHobbies.filter(h => !dbIds.has(h.id));
 

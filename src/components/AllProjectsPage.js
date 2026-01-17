@@ -46,7 +46,6 @@ const AllProjectsPage = () => {
             zIndex: 1
         }}>
             <div className="container" style={{ maxWidth: '1200px', width: '100%' }}>
-                {/* Navigation - IOT/Hobby style */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -85,8 +84,6 @@ const AllProjectsPage = () => {
                         <FaArrowLeft /> Back
                     </button>
                 </motion.div>
-
-                {/* Hero Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -176,7 +173,6 @@ const AllProjectsPage = () => {
                     )}
                 </motion.div>
 
-                {/* Projects Grid */}
                 {loading ? (
                     <div style={{
                         textAlign: 'center',
@@ -235,7 +231,6 @@ const AllProjectsPage = () => {
                                     overflow: 'hidden'
                                 }}
                             >
-                                {/* Glow effect on hover */}
                                 <div style={{
                                     position: 'absolute',
                                     top: '-50%',

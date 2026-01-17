@@ -18,10 +18,6 @@ const DynamicHobbyPage = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                // 1. Fetch Hobby Metadata (Title, Desc, etc.) from 'hobbies' collection
-                // We assume there's a field 'category' or 'link' that matches the slug, 
-                // OR we can query by ID if we used clean IDs. 
-                // Let's try to find a doc where 'category' == slug OR 'link' == slug
                 const hobbiesRef = collection(db, 'hobbies');
                 const qHobby = query(hobbiesRef, where("category", "==", slug));
                 const hobbySnap = await getDocs(qHobby);
@@ -31,7 +27,6 @@ const DynamicHobbyPage = () => {
                 if (!hobbySnap.empty) {
                     myHobby = hobbySnap.docs[0].data();
                 } else {
-                    // Fallback to check link field just in case
                     const qLink = query(hobbiesRef, where("link", "==", slug));
                     const linkSnap = await getDocs(qLink);
                     if (!linkSnap.empty) myHobby = linkSnap.docs[0].data();
@@ -40,9 +35,6 @@ const DynamicHobbyPage = () => {
                 if (myHobby) {
                     setHobbyData(myHobby);
                 } else {
-                    // Fallback for hardcoded routes if they land here? 
-                    // No, hardcoded routes (iot, ai) have their own components.
-                    // This is only for NEW dynamic ones.
                     setHobbyData({
                         title: slug.charAt(0).toUpperCase() + slug.slice(1),
                         description: "A custom hobby section.",
@@ -50,7 +42,6 @@ const DynamicHobbyPage = () => {
                     });
                 }
 
-                // 2. Fetch Projects associated with this hobby category
                 const projectsRef = collection(db, 'projects');
                 const qProjects = query(projectsRef, where("category", "==", slug));
                 const projectSnap = await getDocs(qProjects);
@@ -72,7 +63,7 @@ const DynamicHobbyPage = () => {
     return (
         <HobbyPage
             title={hobbyData?.title || 'Unknown Hobby'}
-            icon={<FaShapes />} // Generic icon, or render image if available
+            icon={<FaShapes />}
             color={hobbyData?.color || '#ffffff'}
             description={hobbyData?.description}
         >

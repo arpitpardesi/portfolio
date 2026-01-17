@@ -12,18 +12,10 @@ const initialProjects = [
         id: 1,
         title: "Smart Home Hub",
         description: "A custom ESP32-based controller for automating lighting and environment sensing.",
-        fullDesc: "This project serves as the central brain for my home automation. Built around an ESP32, it communicates via MQTT to control various Zigbee lights and sensors. It features a local web server for direct control and integrates seamlessly with Home Assistant for complex automations.",
+        fullDesc: "This project serves as the central brain for my home automation. ",
         tags: ["ESP32", "C++", "MQTT", "React", "WebSockets"],
         color: "#0ea5e9",
         github: "https://github.com/arpitpardesi"
-    },
-    {
-        id: 2,
-        title: "Weather Station",
-        description: "Remote solar-powered station logging temperature, humidity, and air quality.",
-        fullDesc: "A robust, outdoor weather station designed to last. It runs on a LiPo battery charged by a small solar panel. Sensors include BME280 for atmospheric pressure/humidity/temp and an SDS011 for air quality monitoring. Data is transmitted via LoRaWAN to a gateway 2km away.",
-        tags: ["LoRaWAN", "Arduino", "Sensors", "Solar Power", "Data Viz"],
-        color: "#0ea5e9"
     }
 ];
 

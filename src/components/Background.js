@@ -9,9 +9,8 @@ const Background = () => {
         let width, height;
         let stars = [];
 
-        // Configuration
-        const starCount = 200; // More stars for deep space feel
-        const connectionDistance = 100; // Shorter distance for "constellations"
+        const starCount = 200;
+        const connectionDistance = 100;
         const mouseDistance = 150;
 
         let mouse = { x: null, y: null };
@@ -35,26 +34,21 @@ const Background = () => {
                 this.vx = this.baseVx;
                 this.vy = this.baseVy;
 
-                // Random opacity based on depth
                 this.alpha = (1 - this.z) * 0.8 + 0.2;
                 this.color = `rgba(255, 255, 255, ${this.alpha})`;
             }
 
             update() {
-                // Base movement
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Mouse interaction - Parallax shift
-                // When mouse moves right, stars move left (inverse)
                 if (mouse.x != null) {
-                    const parallaxX = (mouse.x - width / 2) * 0.0002 * (1 - this.z); // Depth based parallax
+                    const parallaxX = (mouse.x - width / 2) * 0.0002 * (1 - this.z);
                     const parallaxY = (mouse.y - height / 2) * 0.0002 * (1 - this.z);
 
                     this.x += -parallaxX;
                     this.y += -parallaxY;
 
-                    // Nearby attraction for "near" stars only
                     if (this.z < 0.3) {
                         let dx = mouse.x - this.x;
                         let dy = mouse.y - this.y;
@@ -67,11 +61,9 @@ const Background = () => {
                     }
                 }
 
-                // Friction to return to base speed
                 this.vx += (this.baseVx - this.vx) * 0.05;
                 this.vy += (this.baseVy - this.vy) * 0.05;
 
-                // Wrap around
                 if (this.x < 0) this.x = width;
                 if (this.x > width) this.x = 0;
                 if (this.y < 0) this.y = height;
@@ -94,7 +86,6 @@ const Background = () => {
         };
 
         const animate = () => {
-            // Trail effect for space warp feel
             ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
             ctx.fillRect(0, 0, width, height);
 
@@ -102,9 +93,7 @@ const Background = () => {
                 stars[i].update();
                 stars[i].draw();
 
-                // Draw connections only for "near" stars to form constellations
                 if (stars[i].z < 0.3) {
-                    // Get current accent color from CSS variable
                     const accentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '99, 102, 241';
 
                     for (let j = i; j < stars.length; j++) {
@@ -151,7 +140,7 @@ const Background = () => {
                 width: '100%',
                 height: '100%',
                 zIndex: -1,
-                background: 'linear-gradient(to bottom, #000000, #1a1a2e)', // Deep space gradient
+                background: 'linear-gradient(to bottom, #000000, #1a1a2e)',
             }}
         />
     );
