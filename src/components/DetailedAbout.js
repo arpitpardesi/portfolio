@@ -408,6 +408,13 @@ const DetailedAbout = () => {
                 .floating-resume-btn:hover svg {
                     transform: translateY(-2px);
                 }
+                
+                /* Hide resume button when mobile menu is open */
+                body:has(.mobile-menu-overlay) .floating-resume-btn {
+                    opacity: 0;
+                    pointer-events: none;
+                }
+
 
                 /* Layout */
                 .detailed-content {
