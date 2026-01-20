@@ -260,13 +260,18 @@ const Header = ({ showLogo = true }) => {
                             right: 0,
                             width: '75%',
                             maxWidth: '300px',
-                            height: '100vh',
+                            height: '100dvh', // Dynamic viewport height for better mobile support
+                            minHeight: '100vh', // Fallback for browsers that don't support dvh
                             background: 'rgba(10, 10, 10, 0.95)',
                             backdropFilter: 'blur(10px)',
                             zIndex: 999,
                             display: 'flex',
                             flexDirection: 'column',
-                            padding: 'calc(6rem + env(safe-area-inset-top)) 2rem 2rem',
+                            paddingTop: 'calc(6rem + env(safe-area-inset-top))',
+                            paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))',
+                            paddingLeft: '2rem',
+                            paddingRight: '2rem',
+                            overflowY: 'auto', // Allow scrolling if content is too tall
                         }}
                     >
                         <nav>
@@ -420,7 +425,8 @@ const Header = ({ showLogo = true }) => {
                             top: 0,
                             left: 0,
                             width: '100%',
-                            height: '100vh',
+                            height: '100dvh',
+                            minHeight: '100vh',
                             background: 'rgba(0, 0, 0, 0.5)',
                             zIndex: 998,
                         }}
