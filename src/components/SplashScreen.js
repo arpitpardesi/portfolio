@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useSettings } from '../context/SettingsContext';
 
@@ -6,9 +6,36 @@ const SplashScreen = ({ onComplete }) => {
     const { settings } = useSettings();
     const text = settings.logoText || 'ARPIT';
     const letters = text.split('');
+    const audioRef = useRef(null);
 
     useEffect(() => {
         console.log("Splash Screen Mounted");
+
+        // Check if user prefers reduced motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Play sound effect if motion is allowed
+        if (!prefersReducedMotion) {
+            try {
+                const audio = new Audio(process.env.PUBLIC_URL + '/assets/splash-sound.mp3');
+                audio.volume = 0.4; // Moderate volume
+                audioRef.current = audio;
+
+                // Attempt to play (may be blocked by browser autoplay policy)
+                const playPromise = audio.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        // Autoplay was prevented - this is normal on first visit
+                        console.log('Audio autoplay prevented:', error.message);
+                    });
+                }
+            } catch (error) {
+                // Audio file not found or other error - fail silently
+                console.log('Audio playback error:', error.message);
+            }
+        }
+
         // Sequence:
         // 0s-0.2s: Delay
         // 0.2s-1.4s: Text Reveal (1.2s duration)
@@ -20,7 +47,14 @@ const SplashScreen = ({ onComplete }) => {
             if (onComplete) onComplete();
         }, totalDuration);
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            // Clean up audio
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current = null;
+            }
+        };
     }, [onComplete]);
 
     return (
