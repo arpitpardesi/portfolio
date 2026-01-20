@@ -4,6 +4,7 @@ import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock } from '
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
+import packageJson from '../../package.json';
 
 const Header = ({ showLogo = true }) => {
     const { settings } = useSettings();
@@ -357,44 +358,50 @@ const Header = ({ showLogo = true }) => {
                             style={{
                                 marginTop: 'auto',
                                 display: 'flex',
-                                flexDirection: 'column',
-                                gap: '1rem',
+                                gap: '1.5rem',
+                                justifyContent: 'center',
                                 paddingTop: '2rem',
                                 borderTop: '1px solid var(--border-color)',
                             }}
                         >
-                            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
-                                {socialLinks.map((link, index) => (
-                                    <a
-                                        key={index}
-                                        href={link.href}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
-                                    >
-                                        {link.icon}
-                                    </a>
-                                ))}
-                                {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
-                                    <Link
-                                        to="/login"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
-                                        title="Admin Login"
-                                    >
-                                        <FaUserLock />
-                                    </Link>
-                                )}
-                            </div>
-                            <div style={{
+                            {socialLinks.map((link, index) => (
+                                <a
+                                    key={index}
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
+                                >
+                                    {link.icon}
+                                </a>
+                            ))}
+                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                                <Link
+                                    to="/login"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
+                                    title="Admin Login"
+                                >
+                                    <FaUserLock />
+                                </Link>
+                            )}
+                        </motion.div>
+
+                        {/* Version Info */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            style={{
+                                marginTop: '1rem',
                                 textAlign: 'center',
                                 fontSize: '0.75rem',
+                                color: 'var(--text-secondary)',
                                 opacity: 0.5,
                                 fontFamily: 'var(--font-mono)',
-                                color: 'var(--text-secondary)'
-                            }}>
-                                Version 0.1.0
-                            </div>
+                            }}
+                        >
+                            v{packageJson.version}
                         </motion.div>
                     </motion.div>
                 )}

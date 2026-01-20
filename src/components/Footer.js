@@ -1,6 +1,7 @@
 import React from 'react';
 import VisitorCounter from './VisitorCounter';
 import { useSettings } from '../context/SettingsContext';
+import packageJson from '../../package.json';
 
 const Footer = () => {
     const { settings } = useSettings();
@@ -57,9 +58,9 @@ const Footer = () => {
                 <span className="footer-copyright" style={{ fontSize: '0.85rem', opacity: 0.7 }}>
                     {settings.footerText || `© ${new Date().getFullYear()} All rights reserved.`}
                 </span>
-                <span className="footer-divider" style={{ opacity: 0.5 }}>|</span>
+                <span className="footer-divider footer-version-divider" style={{ opacity: 0.5 }}>|</span>
                 <span className="footer-version" style={{ fontSize: '0.75rem', opacity: 0.5, fontFamily: 'var(--font-mono)' }}>
-                    v0.1.0
+                    v{packageJson.version}
                 </span>
             </div>
 
@@ -93,8 +94,9 @@ const Footer = () => {
                 .footer-copyright {
                     font-size: 0.8rem !important;
                 }
-                .footer-version {
-                    font-size: 0.7rem !important;
+                .footer-version,
+                .footer-version-divider {
+                    display: none !important;
                 }
             }
             
