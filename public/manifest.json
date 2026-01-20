@@ -20,6 +20,11 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "display_override": [
+    "standalone",
+    "fullscreen"
+  ],
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#000000",
+  "orientation": "any"
 }
