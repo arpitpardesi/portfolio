@@ -357,33 +357,44 @@ const Header = ({ showLogo = true }) => {
                             style={{
                                 marginTop: 'auto',
                                 display: 'flex',
-                                gap: '1.5rem',
-                                justifyContent: 'center',
+                                flexDirection: 'column',
+                                gap: '1rem',
                                 paddingTop: '2rem',
                                 borderTop: '1px solid var(--border-color)',
                             }}
                         >
-                            {socialLinks.map((link, index) => (
-                                <a
-                                    key={index}
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
-                                >
-                                    {link.icon}
-                                </a>
-                            ))}
-                            {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
-                                <Link
-                                    to="/login"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
-                                    title="Admin Login"
-                                >
-                                    <FaUserLock />
-                                </Link>
-                            )}
+                            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+                                {socialLinks.map((link, index) => (
+                                    <a
+                                        key={index}
+                                        href={link.href}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem' }}
+                                    >
+                                        {link.icon}
+                                    </a>
+                                ))}
+                                {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
+                                    <Link
+                                        to="/login"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        style={{ color: 'var(--text-secondary)', fontSize: '1.3rem', opacity: 0.5 }}
+                                        title="Admin Login"
+                                    >
+                                        <FaUserLock />
+                                    </Link>
+                                )}
+                            </div>
+                            <div style={{
+                                textAlign: 'center',
+                                fontSize: '0.75rem',
+                                opacity: 0.5,
+                                fontFamily: 'var(--font-mono)',
+                                color: 'var(--text-secondary)'
+                            }}>
+                                Version 0.1.0
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}
