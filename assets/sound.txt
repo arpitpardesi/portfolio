@@ -1,0 +1,3 @@
+Download a short (1-2 sec) sound effect from:
+Save as splash-sound.mp3
+Place in /public/assets/ folder
