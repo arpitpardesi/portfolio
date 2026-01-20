@@ -265,7 +265,7 @@ const Header = ({ showLogo = true }) => {
                             zIndex: 999,
                             display: 'flex',
                             flexDirection: 'column',
-                            padding: '6rem 2rem 2rem',
+                            padding: 'calc(6rem + env(safe-area-inset-top)) 2rem 2rem',
                         }}
                     >
                         <nav>
