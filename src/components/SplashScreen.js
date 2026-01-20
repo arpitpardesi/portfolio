@@ -30,8 +30,9 @@ const SplashScreen = ({ onComplete }) => {
                 position: 'fixed',
                 top: 0,
                 left: 0,
-                width: '100vw',
-                height: '100svh', // Uses small viewport height to prevent jumps on mobile
+                width: '100%',
+                height: '100%', // Use strictly 100% to fill fixed container
+                minHeight: '100vh', // Ensure it covers at least the viewport
                 zIndex: 9999,
                 display: 'flex',
                 alignItems: 'center',
@@ -49,7 +50,8 @@ const SplashScreen = ({ onComplete }) => {
                     left: 0,
                     right: 0,
                     background: '#000',
-                    zIndex: 0
+                    zIndex: 0,
+                    marginBottom: '-100px' // Extend slightly to cover any bottom gaps
                 }}
             />
 

@@ -54,7 +54,7 @@ const Moon = () => {
                 }}
                 style={{
                     position: 'fixed',
-                    top: '120px',
+                    top: 'calc(150px + env(safe-area-inset-top))',
                     right: '50px',
                     width: `${size}px`,
                     height: `${size}px`,
@@ -134,7 +134,7 @@ const Moon = () => {
                         .moon-container {
                             width: 70px !important;
                             height: 70px !important;
-                            top: 90px !important;
+                            top: calc(120px + env(safe-area-inset-top)) !important;
                             right: 30px !important;
                         }
                     }
@@ -143,7 +143,7 @@ const Moon = () => {
                         .moon-container {
                             width: 50px !important;
                             height: 50px !important;
-                            top: 80px !important;
+                            top: calc(100px + env(safe-area-inset-top)) !important;
                             right: 20px !important;
                             opacity: 0.7 !important;
                         }

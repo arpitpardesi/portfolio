@@ -130,7 +130,7 @@ const Login = () => {
             justifyContent: 'center',
             position: 'relative',
             zIndex: 10,
-            padding: '2rem 1rem'
+            padding: 'calc(2rem + env(safe-area-inset-top)) 1rem 2rem'
         }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}

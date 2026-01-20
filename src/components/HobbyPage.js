@@ -7,7 +7,7 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
     const navigate = useNavigate();
     return (
         <section className="hobby-page" style={{
-            padding: '120px 20px',
+            padding: 'calc(120px + env(safe-area-inset-top)) 20px',
             minHeight: '100vh',
             position: 'relative',
             zIndex: 1
@@ -16,7 +16,7 @@ const HobbyPage = ({ title, icon, color, description, children }) => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
-                style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                 className="back-nav"
             >
                 <button onClick={() => navigate(-1)} style={{

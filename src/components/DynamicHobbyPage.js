@@ -58,7 +58,7 @@ const DynamicHobbyPage = () => {
         if (slug) fetchData();
     }, [slug]);
 
-    if (loading) return <div style={{ color: 'white', padding: '100px', textAlign: 'center' }}>Loading...</div>;
+    if (loading) return <div style={{ color: 'white', padding: 'calc(100px + env(safe-area-inset-top)) 100px 100px', textAlign: 'center' }}>Loading...</div>;
 
     return (
         <HobbyPage

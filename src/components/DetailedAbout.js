@@ -74,7 +74,7 @@ const DetailedAbout = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                    style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                     className="back-nav"
                 >
                     <button onClick={() => navigate(-1)} className="back-link">
@@ -317,7 +317,7 @@ const DetailedAbout = () => {
 
             <style>{`
                 .detailed-about-section {
-                    padding-top: 100px;
+                    padding-top: calc(100px + env(safe-area-inset-top));
                     min-height: 100vh;
                 }
 

@@ -41,7 +41,7 @@ const AllProjectsPage = () => {
     return (
         <section className="all-projects-page" style={{
             minHeight: '100vh',
-            padding: '120px 20px 80px',
+            padding: 'calc(120px + env(safe-area-inset-top)) 20px 80px',
             position: 'relative',
             zIndex: 1
         }}>
@@ -50,7 +50,7 @@ const AllProjectsPage = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                    style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                     className="back-nav"
                 >
                     <button onClick={() => navigate(-1)} style={{
@@ -420,7 +420,7 @@ const AllProjectsPage = () => {
 
                     @media (max-width: 768px) {
                         .all-projects-page {
-                            padding: 100px 15px 60px !important;
+                            padding: calc(100px + env(safe-area-inset-top)) 15px 60px !important;
                         }
                         .all-projects-page h1 {
                             font-size: 2.5rem !important;
@@ -460,7 +460,8 @@ const AllProjectsPage = () => {
                             display: none !important;
                         }
                         .all-projects-page {
-                            padding-top: 60px !important;
+                        .all-projects-page {
+                            padding-top: calc(60px + env(safe-area-inset-top)) !important;
                             padding-bottom: 20px !important;
                         }
                         .all-projects-page h1 {

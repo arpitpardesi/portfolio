@@ -75,7 +75,7 @@ const BeyondWork = () => {
 
     return (
         <section className="beyond-work-section" style={{
-            padding: '120px 20px',
+            padding: 'calc(120px + env(safe-area-inset-top)) 20px',
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
@@ -88,7 +88,7 @@ const BeyondWork = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
-                style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 100 }}
+                style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                 className="back-nav"
             >
                 <button onClick={() => navigate(-1)} className="back-link">
@@ -181,7 +181,7 @@ const BeyondWork = () => {
                 {`
                     @media (max-width: 768px) {
                         .beyond-work-section {
-                            padding: 100px 20px !important;
+                            padding: calc(100px + env(safe-area-inset-top)) 20px !important;
                         }
                         .hobby-grid {
                             grid-template-columns: 1fr !important;

@@ -18,7 +18,7 @@ const Resume = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 1002 }}
+                    style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 1002 }}
                     className="back-nav"
                 >
                     <button onClick={() => navigate(-1)} className="back-link">
@@ -84,7 +84,7 @@ const Resume = () => {
                         .resume-container {
                             flex-direction: column;
                             justify-content: flex-start;
-                            padding-top: 100px;
+                            padding-top: calc(100px + env(safe-area-inset-top));
                         }
                     }
                     .error-content {
@@ -116,7 +116,7 @@ const Resume = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: '100px', left: '40px', zIndex: 1002 }}
+                    style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 1002 }}
                     className="back-nav"
                 >
                     <button onClick={() => navigate(-1)} className="back-link">
@@ -179,7 +179,7 @@ const Resume = () => {
 
             <style>{`
                 .resume-page {
-                    padding-top: 100px;
+                    padding-top: calc(100px + env(safe-area-inset-top));
                     min-height: 100vh;
                     padding-bottom: 4rem;
                 }
@@ -353,7 +353,7 @@ const Resume = () => {
 
                 @media (max-width: 768px) {
                     .resume-page {
-                        padding-top: 80px;
+                        padding-top: calc(80px + env(safe-area-inset-top));
                     }
                     
                     .page-title {
