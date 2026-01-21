@@ -78,8 +78,6 @@ const Resume = () => {
                             margin-bottom: 2rem;
                             display: inline-block;
                             align-self: flex-start;
-                            margin-left: 2rem;
-                            margin-top: 2rem;
                         }
                         .resume-container {
                             flex-direction: column;

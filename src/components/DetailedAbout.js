@@ -388,7 +388,7 @@ const DetailedAbout = () => {
                     font-weight: 600;
                     text-decoration: none;
                     box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.5);
-                    z-index: 1000;
+                    z-index: 998;
                     transition: all 0.3s ease;
                     font-size: 1rem;
                 }
