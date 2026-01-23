@@ -255,6 +255,11 @@ const Hero = ({ startAnimation = true }) => {
 
                     @media (max-height: 500px) and (orientation: landscape) {
                          /* Reduce font sizes for short landscape screens */
+                        .hero-section {
+                            padding-top: 45px !important; /* Add space below header */
+                            height: auto !important;
+                            min-height: 100vh !important;
+                        }
                         .hero-section span {
                             font-size: 3rem !important; /* Name */
                         }
@@ -266,6 +271,14 @@ const Hero = ({ startAnimation = true }) => {
                             font-size: 0.9rem !important;
                             margin-bottom: 1.5rem !important;
                             max-width: 500px !important;
+                        }
+                        .hero-intro {
+                            font-size: 0.85rem !important;
+                            margin-bottom: 0.5rem !important;
+                        }
+                        .hero-cta {
+                            padding: 0.7rem 1.8rem !important;
+                            font-size: 0.9rem !important;
                         }
                         .hero-blob {
                             width: 300px !important;
