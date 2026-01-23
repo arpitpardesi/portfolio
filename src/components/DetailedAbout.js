@@ -694,12 +694,37 @@ const DetailedAbout = () => {
                     .content-block {
                          gap: 2rem !important;
                     }
+                    .content-block h3 {
+                         font-size: 1.5rem !important;
+                         margin-bottom: 1.5rem !important;
+                    }
                     .detailed-content {
                          gap: 3rem !important;
+                    }
+                    /* Story block text size fixes for landscape */
+                    .story-block p {
+                         font-size: 0.9rem !important;
+                         margin-bottom: 1rem !important;
+                    }
+                    .story-block div[style*="borderLeft"] {
+                         font-size: 0.85rem !important;
+                         padding-left: 1rem !important;
+                    }
+                    .story-block div[style*="borderLeft"] div {
+                         font-size: 0.8rem !important;
                     }
                     /* Timeline fixes for landscape */
                      .timeline-item {
                         margin-bottom: 2rem;
+                     }
+                     .timeline-content h4 {
+                        font-size: 1.1rem !important;
+                     }
+                     .timeline-content h5 {
+                        font-size: 0.95rem !important;
+                     }
+                     .timeline-content p {
+                        font-size: 0.85rem !important;
                      }
                      .floating-resume-btn {
                         padding: 0.5rem 1rem;
