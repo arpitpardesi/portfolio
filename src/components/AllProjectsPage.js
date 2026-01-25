@@ -252,8 +252,8 @@ const AllProjectsPage = () => {
                                 }}>
                                     <div style={{
                                         fontSize: '2.5rem',
-                                        color: project.color || 'var(--accent-color)',
-                                        filter: `drop-shadow(0 0 10px ${project.color || 'var(--accent-color)'}40)`
+                                        color: 'var(--accent-color)',
+                                        filter: 'drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.4))'
                                     }}>
                                         <FaFolder />
                                     </div>
