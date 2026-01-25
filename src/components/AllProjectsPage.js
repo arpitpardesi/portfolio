@@ -53,36 +53,35 @@ const AllProjectsPage = () => {
                     style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                     className="back-nav"
                 >
-                    <button onClick={() => navigate(-1)} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        color: 'var(--text-secondary)',
-                        textDecoration: 'none',
-                        fontSize: '1rem',
-                        fontWeight: '500',
-                        padding: '8px 16px',
-                        borderRadius: '50px',
-                        background: 'rgba(10, 10, 10, 0.5)',
-                        backdropFilter: 'blur(5px)',
-                        border: '1px solid var(--border-color)',
-                        transition: 'all 0.3s ease',
-                        cursor: 'pointer',
-                        fontFamily: 'inherit'
-                    }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.color = 'var(--accent-color)';
-                            e.currentTarget.style.borderColor = 'var(--accent-color)';
-                            e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
+                    <motion.div
+                        whileHover={{
+                            scale: 1.05,
+                            boxShadow: "0px 0px 8px var(--accent-color)",
+                            backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                         }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.color = 'var(--text-secondary)';
-                            e.currentTarget.style.borderColor = 'var(--border-color)';
-                            e.currentTarget.style.background = 'rgba(10, 10, 10, 0.5)';
-                        }}
+                        whileTap={{ scale: 0.95 }}
+                        style={{ borderRadius: '50px', display: 'inline-block' }}
                     >
-                        <FaArrowLeft /> Back
-                    </button>
+                        <button onClick={() => navigate(-1)} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            color: 'var(--text-secondary)',
+                            textDecoration: 'none',
+                            fontSize: '1rem',
+                            fontWeight: '500',
+                            padding: '8px 16px',
+                            borderRadius: '50px',
+                            background: 'rgba(10, 10, 10, 0.5)',
+                            backdropFilter: 'blur(5px)',
+                            border: '1px solid var(--border-color)',
+                            transition: 'all 0.3s ease',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit'
+                        }}>
+                            <FaArrowLeft /> Back
+                        </button>
+                    </motion.div>
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

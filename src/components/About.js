@@ -50,12 +50,25 @@ const About = () => {
                     <h2 style={{
                         display: 'flex',
                         alignItems: 'center',
+                        gap: '0.5rem',
                         fontSize: '2rem',
                         marginBottom: '2.5rem',
                         fontWeight: '700'
                     }}>
                         <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem', fontSize: '1.5rem' }}></span>
-                        {settings.aboutTitle || "About Me"}
+                        {(() => {
+                            const title = settings.aboutTitle || "About Me";
+                            const words = title.split(' ');
+                            if (words.length <= 1) return <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>{title}</span>;
+                            return (
+                                <>
+                                    <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>
+                                        {words[0]}{' '}
+                                    </span>
+                                    <span>{words.slice(1).join(' ')}</span>
+                                </>
+                            );
+                        })()}
                         <span style={{
                             height: '1px',
                             background: 'var(--border-color)',
@@ -125,31 +138,35 @@ const About = () => {
                         </ul>
 
                         <div style={{ marginTop: '2.5rem' }}>
-                            <Link to="/about" style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                padding: '10px 20px',
-                                background: 'rgba(var(--accent-rgb), 0.1)',
-                                border: '1px solid var(--accent-color)',
-                                borderRadius: '4px',
-                                color: 'var(--accent-color)',
-                                fontWeight: '500',
-                                transition: 'all 0.3s ease',
-                                cursor: 'pointer',
-                                textDecoration: 'none'
-                            }}
-                                onMouseOver={(e) => {
-                                    e.target.style.background = 'var(--accent-color)';
-                                    e.target.style.color = '#fff';
+                            <motion.div
+                                whileHover={{
+                                    scale: 1.05,
+                                    boxShadow: "0px 0px 8px var(--accent-color)",
+                                    backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                                 }}
-                                onMouseOut={(e) => {
-                                    e.target.style.background = 'rgba(var(--accent-rgb), 0.1)';
-                                    e.target.style.color = 'var(--accent-color)';
+                                whileTap={{ scale: 0.95 }}
+                                style={{
+                                    display: 'inline-block',
+                                    borderRadius: '4px'
                                 }}
                             >
-                                Want to know more about me? →
-                            </Link>
+                                <Link to="/about" style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    padding: '10px 20px',
+                                    background: 'rgba(var(--accent-rgb), 0.1)',
+                                    border: '1px solid var(--accent-color)',
+                                    borderRadius: '4px',
+                                    color: 'var(--accent-color)',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s ease',
+                                    cursor: 'pointer',
+                                    textDecoration: 'none'
+                                }}>
+                                    Want to know more about me? →
+                                </Link>
+                            </motion.div>
                         </div>
                     </div>
                 </motion.div>

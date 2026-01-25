@@ -179,12 +179,12 @@ const Hero = ({ startAnimation = true }) => {
                     transition={{ delay: 1.9, duration: 0.5 }}
                 >
                     <motion.a
-                        href={settings.heroCtaLink || "#projects"}
+                        href={settings.heroCtaLink || "#about"}
                         onClick={(e) => {
                             e.preventDefault();
-                            const projects = document.getElementById('projects');
-                            if (projects) {
-                                projects.scrollIntoView({ behavior: 'smooth' });
+                            const about = document.getElementById('about');
+                            if (about) {
+                                about.scrollIntoView({ behavior: 'smooth' });
                             }
                         }}
                         className="hero-cta"
@@ -207,7 +207,7 @@ const Hero = ({ startAnimation = true }) => {
                         }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        {settings.heroCtaText || "Check out my work"}
+                        {settings.heroCtaText || "Explore My Journey"}
                     </motion.a>
                 </motion.div>
 

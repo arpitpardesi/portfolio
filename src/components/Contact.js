@@ -86,10 +86,25 @@ const Contact = () => {
                             fontWeight: '800',
                             marginBottom: '1.5rem',
                             color: 'var(--text-primary)',
-                            letterSpacing: '-1px'
+                            letterSpacing: '-1px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            gap: '0.8rem'
                         }}
                     >
-                        {settings.contactTitle || 'Get In Touch'}
+                        {(() => {
+                            const title = settings.contactTitle || 'Get In Touch';
+                            const words = title.split(' ');
+                            if (words.length <= 1) return <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>{title}</span>;
+                            return (
+                                <>
+                                    <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>
+                                        {words[0]}{' '}
+                                    </span>
+                                    <span>{words.slice(1).join(' ')}</span>
+                                </>
+                            );
+                        })()}
                     </motion.h2>
 
                     <motion.p
@@ -147,8 +162,8 @@ const Contact = () => {
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: 'rgba(var(--accent-rgb), 0.1)',
-                                boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.2)'
+                                boxShadow: "0px 0px 8px var(--accent-color)",
+                                backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                             }}
                             whileTap={{ scale: 0.95 }}
                         >
@@ -176,8 +191,8 @@ const Contact = () => {
                                 }}
                                 whileHover={{
                                     scale: 1.05,
-                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                    borderColor: 'rgba(255, 255, 255, 0.2)'
+                                    boxShadow: "0px 0px 8px var(--accent-color)",
+                                    backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                                 }}
                                 whileTap={{ scale: 0.95 }}
                             >

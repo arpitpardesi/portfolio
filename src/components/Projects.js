@@ -55,13 +55,17 @@ const Projects = () => {
                     style={{
                         display: 'flex',
                         alignItems: 'center',
+                        gap: '0.5rem',
                         fontSize: '2rem',
                         marginBottom: '3rem',
                         fontWeight: '700'
                     }}
                 >
                     <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem', fontSize: '1.5rem' }}></span>
-                    Some Things I've Built
+                    <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>
+                        Some{' '}
+                    </span>
+                    Things I've Built
                     <span className="title-line" style={{
                         height: '1px',
                         background: 'var(--border-color)',
@@ -195,36 +199,38 @@ const Projects = () => {
                             marginTop: '3rem'
                         }}
                     >
-                        <Link
-                            to="/projects"
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.75rem',
-                                padding: '1rem 2rem',
-                                background: 'transparent',
-                                border: '2px solid var(--accent-color)',
-                                borderRadius: '4px',
-                                color: 'var(--accent-color)',
-                                fontSize: '1rem',
-                                fontWeight: '600',
-                                textDecoration: 'none',
-                                transition: 'all 0.3s ease',
-                                position: 'relative',
-                                overflow: 'hidden'
+                        <motion.div
+                            whileHover={{
+                                scale: 1.05,
+                                boxShadow: "0px 0px 8px var(--accent-color)",
+                                backgroundColor: "rgba(var(--accent-rgb), 0.1)"
                             }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.background = 'rgba(var(--accent-rgb), 0.1)';
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.background = 'transparent';
-                                e.currentTarget.style.transform = 'translateY(0)';
-                            }}
+                            whileTap={{ scale: 0.95 }}
+                            style={{ borderRadius: '4px' }}
                         >
-                            View All Projects
-                            <FaArrowRight />
-                        </Link>
+                            <Link
+                                to="/projects"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '0.75rem',
+                                    padding: '1rem 2rem',
+                                    background: 'transparent',
+                                    border: '2px solid var(--accent-color)',
+                                    borderRadius: '4px',
+                                    color: 'var(--accent-color)',
+                                    fontSize: '1rem',
+                                    fontWeight: '600',
+                                    textDecoration: 'none',
+                                    transition: 'all 0.3s ease',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                            >
+                                View All Projects
+                                <FaArrowRight />
+                            </Link>
+                        </motion.div>
                     </motion.div>
                 )}
             </motion.div>
