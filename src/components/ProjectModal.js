@@ -55,8 +55,8 @@ const ProjectModal = ({ project, onClose }) => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: 'rgba(0, 0, 0, 0.9)',
-                    backdropFilter: 'blur(15px)',
+                    background: 'rgba(10, 10, 10, 0.7)',
+                    backdropFilter: 'blur(8px)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -87,7 +87,12 @@ const ProjectModal = ({ project, onClose }) => {
                     {/* Close Button */}
                     <motion.button
                         onClick={onClose}
-                        whileHover={{ scale: 1.1, rotate: 90 }}
+                        whileHover={{
+                            scale: 1.1,
+                            rotate: 90,
+                            backgroundColor: "rgba(239, 68, 68, 0.25)",
+                            borderColor: "rgba(239, 68, 68, 0.5)"
+                        }}
                         whileTap={{ scale: 0.9 }}
                         style={{
                             position: 'absolute',
@@ -107,14 +112,6 @@ const ProjectModal = ({ project, onClose }) => {
                             transition: 'all 0.3s',
                             zIndex: 10,
                             backdropFilter: 'blur(10px)'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.25)';
-                            e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.5)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)';
-                            e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.3)';
                         }}
                     >
                         <FaTimes />
@@ -158,11 +155,12 @@ const ProjectModal = ({ project, onClose }) => {
                             style={{
                                 position: 'relative',
                                 width: '100%',
-                                height: isFullscreen ? '60vh' : '350px',
+                                height: isFullscreen ? '60vh' : 'var(--gallery-height, 350px)',
                                 borderRadius: '20px 20px 0 0',
                                 overflow: 'hidden',
                                 background: '#000'
                             }}
+                            className="media-gallery"
                         >
                             <AnimatePresence mode="wait">
                                 <motion.div
@@ -218,8 +216,8 @@ const ProjectModal = ({ project, onClose }) => {
                                 onClick={() => setIsFullscreen(!isFullscreen)}
                                 style={{
                                     position: 'absolute',
-                                    top: '1rem',
-                                    right: '1rem',
+                                    top: '1.5rem',
+                                    right: '5.5rem',
                                     background: 'rgba(0, 0, 0, 0.6)',
                                     border: '1px solid rgba(255, 255, 255, 0.2)',
                                     borderRadius: '8px',
@@ -232,7 +230,8 @@ const ProjectModal = ({ project, onClose }) => {
                                     color: 'white',
                                     fontSize: '0.9rem',
                                     backdropFilter: 'blur(10px)',
-                                    transition: 'all 0.3s'
+                                    transition: 'all 0.3s',
+                                    zIndex: 20
                                 }}
                                 onMouseOver={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.8)'}
                                 onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.6)'}
@@ -352,8 +351,8 @@ const ProjectModal = ({ project, onClose }) => {
                                     {/* Media Counter */}
                                     <div style={{
                                         position: 'absolute',
-                                        top: '1rem',
-                                        left: '1rem',
+                                        bottom: '1.5rem',
+                                        left: '1.5rem',
                                         background: 'rgba(0, 0, 0, 0.6)',
                                         padding: '0.4rem 0.8rem',
                                         borderRadius: '20px',
@@ -361,7 +360,8 @@ const ProjectModal = ({ project, onClose }) => {
                                         color: 'white',
                                         fontFamily: 'var(--font-mono)',
                                         backdropFilter: 'blur(10px)',
-                                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                                        zIndex: 20
                                     }}>
                                         {currentMediaIndex + 1} / {mediaItems.length}
                                     </div>
@@ -371,24 +371,37 @@ const ProjectModal = ({ project, onClose }) => {
                     )}
 
                     {/* Content */}
-                    <div style={{ padding: '2rem' }}>
+                    <div className="modal-body" style={{ padding: mediaItems.length > 0 ? '2.5rem' : '5.5rem 2.5rem 2.5rem' }}>
                         {/* Title */}
                         <motion.h2
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
+                            className="modal-title"
                             style={{
                                 fontSize: '2.25rem',
                                 fontWeight: '700',
-                                background: 'linear-gradient(135deg, var(--accent-color) 0%, var(--primary-text-color) 50%, var(--accent-color) 100%)',
-                                backgroundSize: '200% auto',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
                                 marginBottom: '1.5rem',
-                                animation: 'shimmer 3s linear infinite'
+                                color: 'var(--primary-text-color)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.6rem',
+                                flexWrap: 'wrap'
                             }}
                         >
-                            {project.title}
+                            {(() => {
+                                const title = project.title;
+                                const words = title.split(' ');
+                                if (words.length <= 1) return <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>{title}</span>;
+                                return (
+                                    <>
+                                        <span style={{ color: 'var(--accent-color)', textShadow: '0 0 40px rgba(var(--accent-rgb), 0.5)' }}>
+                                            {words[0]}
+                                        </span>
+                                        <span>{words.slice(1).join(' ')}</span>
+                                    </>
+                                );
+                            })()}
                         </motion.h2>
 
                         {/* Tech Stack & Metadata Grid */}
@@ -396,6 +409,7 @@ const ProjectModal = ({ project, onClose }) => {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
+                            className="modal-metadata-grid"
                             style={{
                                 display: 'grid',
                                 gridTemplateColumns: 'minmax(0, 1fr) auto',
@@ -453,7 +467,7 @@ const ProjectModal = ({ project, onClose }) => {
                             </div>
 
                             {/* Metadata Sidebar */}
-                            <div style={{ textAlign: 'right', minWidth: '150px' }}>
+                            <div className="metadata-sidebar" style={{ textAlign: 'right', minWidth: '150px' }}>
                                 {project.category && (
                                     <motion.div
                                         initial={{ opacity: 0, x: 20 }}
@@ -547,8 +561,13 @@ const ProjectModal = ({ project, onClose }) => {
                                     href={project.github}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.03, y: -2 }}
-                                    whileTap={{ scale: 0.97 }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        boxShadow: "0px 0px 8px rgba(255, 255, 255, 0.3)",
+                                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                                        borderColor: "rgba(255, 255, 255, 0.3)"
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
                                     style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
@@ -564,16 +583,6 @@ const ProjectModal = ({ project, onClose }) => {
                                         transition: 'all 0.3s',
                                         cursor: 'pointer'
                                     }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                                        e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                                        e.currentTarget.style.boxShadow = 'none';
-                                    }}
                                 >
                                     <FaGithub size={18} /> View Source
                                 </motion.a>
@@ -583,8 +592,12 @@ const ProjectModal = ({ project, onClose }) => {
                                     href={project.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    whileHover={{ scale: 1.03, y: -2 }}
-                                    whileTap={{ scale: 0.97 }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        boxShadow: "0px 0px 15px rgba(var(--accent-rgb), 0.5)",
+                                        filter: 'brightness(1.1)'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
                                     style={{
                                         display: 'inline-flex',
                                         alignItems: 'center',
@@ -601,14 +614,6 @@ const ProjectModal = ({ project, onClose }) => {
                                         cursor: 'pointer',
                                         boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.3)'
                                     }}
-                                    onMouseOver={(e) => {
-                                        e.currentTarget.style.boxShadow = '0 8px 30px rgba(var(--accent-rgb), 0.5)';
-                                        e.currentTarget.style.filter = 'brightness(1.1)';
-                                    }}
-                                    onMouseOut={(e) => {
-                                        e.currentTarget.style.boxShadow = '0 4px 20px rgba(var(--accent-rgb), 0.3)';
-                                        e.currentTarget.style.filter = 'brightness(1)';
-                                    }}
                                 >
                                     <FaExternalLinkAlt size={16} /> Live Demo
                                 </motion.a>
@@ -619,6 +624,10 @@ const ProjectModal = ({ project, onClose }) => {
 
                 {/* Styles */}
                 <style>{`
+                    :root {
+                        --gallery-height: 350px;
+                    }
+
                     @keyframes shimmer {
                         0% { background-position: 0% center; }
                         100% { background-position: 200% center; }
@@ -655,10 +664,64 @@ const ProjectModal = ({ project, onClose }) => {
                         margin-bottom: 0.5rem;
                     }
 
+                    @media (max-width: 992px) {
+                        --gallery-height: 300px;
+                    }
+
                     @media (max-width: 768px) {
+                        :root {
+                            --gallery-height: 250px;
+                        }
+                        
+                        .modal-body {
+                            padding: 1.5rem !important;
+                        }
+
+                        .modal-title {
+                            font-size: 1.75rem !important;
+                        }
+
+                        .modal-metadata-grid {
+                            grid-template-columns: 1fr !important;
+                            gap: 1.5rem !important;
+                        }
+
+                        .metadata-sidebar {
+                            text-align: left !important;
+                            min-width: auto !important;
+                            display: flex !important;
+                            gap: 2rem !important;
+                            flex-wrap: wrap !important;
+                        }
+
                         .markdown-content {
                             font-size: 0.95rem !important;
                             padding: 1rem !important;
+                            line-height: 1.6 !important;
+                        }
+
+                        .cta-group {
+                            flex-direction: column !important;
+                        }
+
+                        .cta-group a {
+                            width: 100% !important;
+                            justify-content: center !important;
+                        }
+                    }
+
+                    @media (max-width: 480px) {
+                        :root {
+                            --gallery-height: 200px;
+                        }
+
+                        .modal-title {
+                            font-size: 1.5rem !important;
+                        }
+
+                        .metadata-sidebar {
+                            flex-direction: column !important;
+                            gap: 1rem !important;
                         }
                     }
                 `}</style>
