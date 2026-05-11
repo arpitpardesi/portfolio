@@ -67,6 +67,19 @@ const DetailedAbout = () => {
         fetchSkills();
     }, []);
 
+    const formatDateRange = (item) => {
+        if (item.dateFrom) {
+            const options = { year: 'numeric', month: 'short' };
+            const from = new Date(item.dateFrom).toLocaleDateString('en-US', options);
+            let to = 'Present';
+            if (!item.isPresent && item.dateTo) {
+                to = new Date(item.dateTo).toLocaleDateString('en-US', options);
+            }
+            return `${from} - ${to}`;
+        }
+        return item.dateRange ? item.dateRange.replace(/\b\d{1,2}\s/g, '') : '';
+    };
+
     return (
         <section className="section detailed-about-section">
             <div className="container">
@@ -184,7 +197,7 @@ const DetailedAbout = () => {
                                             transition={{ duration: 0.5, delay: index * 0.1 }}
                                         >
                                             <div className="timeline-content">
-                                                <div className="date">{item.dateRange}</div>
+                                                <div className="date">{formatDateRange(item)}</div>
                                                 <h4><FaBriefcase className="inline-icon" />{item.title ? item.title.replace('Developlent', 'Development') : item.title}</h4>
                                                 {item.subtitle && <h5>{item.subtitle}</h5>}
                                                 {item.location && (
@@ -227,7 +240,7 @@ const DetailedAbout = () => {
                                             transition={{ duration: 0.5, delay: index * 0.1 }}
                                         >
                                             <div className="timeline-content">
-                                                <div className="date">{item.dateRange}</div>
+                                                <div className="date">{formatDateRange(item)}</div>
                                                 <h4><FaGraduationCap className="inline-icon" />{item.title}</h4>
                                                 {item.subtitle && <h5>{item.subtitle}</h5>}
                                                 {item.location && (
