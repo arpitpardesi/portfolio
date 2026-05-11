@@ -23,7 +23,8 @@ const CollectionManager = ({ collectionName, title }) => {
         link: '',
         image: '',
         isPinned: false,
-        mediaItems: []
+        mediaItems: [],
+        isVisible: true
     });
 
     const fetchItems = useCallback(async () => {
@@ -113,7 +114,8 @@ const CollectionManager = ({ collectionName, title }) => {
             link: item.link || '',
             image: item.image || '',
             isPinned: item.isPinned || false,
-            mediaItems: item.mediaItems || []
+            mediaItems: item.mediaItems || [],
+            isVisible: item.isVisible !== false
         });
         setIsEditing(true);
     };
@@ -130,7 +132,8 @@ const CollectionManager = ({ collectionName, title }) => {
             link: '',
             image: '',
             isPinned: false,
-            mediaItems: []
+            mediaItems: [],
+            isVisible: true
         });
         setIsEditing(true);
     };
@@ -353,6 +356,17 @@ const CollectionManager = ({ collectionName, title }) => {
                                             style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                                         />
                                         <span style={{ color: 'var(--text-primary)' }}>⭐ Pin this project (featured)</span>
+                                    </label>
+                                </div>
+                                <div className="form-group" style={{ marginBottom: '0.5rem' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.95rem' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.isVisible}
+                                            onChange={e => setFormData({ ...formData, isVisible: e.target.checked })}
+                                            style={{ cursor: 'pointer', width: '18px', height: '18px' }}
+                                        />
+                                        <span style={{ color: 'var(--text-primary)' }}>👁️ Show in Portfolio</span>
                                     </label>
                                 </div>
                                 <div className="form-group">

@@ -59,7 +59,7 @@ const BeyondWork = () => {
                             link: (data.link && data.link.startsWith('/')) ? data.link : `/beyond-work/${data.category || data.link || doc.id}`,
                             color: data.color || '#fff'
                         };
-                    });
+                    }).filter(h => h.isVisible !== false);
 
                     const dbIds = new Set(dynamicHobbies.map(h => h.id));
                     const filteredDefaults = defaultHobbies.filter(h => !dbIds.has(h.id));

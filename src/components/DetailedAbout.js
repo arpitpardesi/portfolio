@@ -21,7 +21,7 @@ const DetailedAbout = () => {
                 const allTimelineItems = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
-                }));
+                })).filter(item => item.isVisible !== false);
 
                 const sortByDate = (items) => items.sort((a, b) => {
                     const dateA = new Date(a.dateFrom || '1900-01-01');
@@ -47,7 +47,7 @@ const DetailedAbout = () => {
                 const snapshot = await getDocs(skillsCollection);
 
                 if (!snapshot.empty) {
-                    const fetchedSkills = snapshot.docs.map(doc => doc.data());
+                    const fetchedSkills = snapshot.docs.map(doc => doc.data()).filter(skill => skill.isVisible !== false);
                     setSkills(fetchedSkills.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0)));
                 } else {
                     setSkills([

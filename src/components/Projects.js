@@ -19,7 +19,7 @@ const Projects = () => {
                         ...doc.data(),
                         // Ensure tech is an array if stored as string, though CollectionManager handles it
                         tech: Array.isArray(doc.data().tech) ? doc.data().tech : (doc.data().tags || [])
-                    }));
+                    })).filter(item => item.isVisible !== false);
                     // Filter to show only pinned projects on homepage
                     const pinnedProjects = items.filter(item => item.isPinned);
                     // Sort to show pinned projects first (redundant here but for consistency)

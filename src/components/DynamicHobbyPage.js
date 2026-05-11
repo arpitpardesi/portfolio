@@ -46,7 +46,7 @@ const DynamicHobbyPage = () => {
                 const qProjects = query(projectsRef, where("category", "==", slug));
                 const projectSnap = await getDocs(qProjects);
 
-                const loadedProjects = projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const loadedProjects = projectSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })).filter(item => item.isVisible !== false);
                 setProjects(loadedProjects);
 
             } catch (error) {

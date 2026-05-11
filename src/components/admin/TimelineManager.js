@@ -24,7 +24,8 @@ const TimelineManager = () => {
         subtitle: '',
         location: '',
         description: '',
-        category: 'experience'
+        category: 'experience',
+        isVisible: true
     });
 
     const fetchItems = useCallback(async () => {
@@ -97,7 +98,8 @@ const TimelineManager = () => {
             subtitle: item.subtitle || '',
             location: item.location || '',
             description: item.description || '',
-            category: item.category || 'experience'
+            category: item.category || 'experience',
+            isVisible: item.isVisible !== false
         });
         setIsEditing(true);
     };
@@ -112,7 +114,8 @@ const TimelineManager = () => {
             subtitle: '',
             location: '',
             description: '',
-            category: 'experience'
+            category: 'experience',
+            isVisible: true
         });
         setIsEditing(true);
     };
@@ -142,6 +145,7 @@ const TimelineManager = () => {
             location: formData.location,
             description: formData.description,
             category: formData.category,
+            isVisible: formData.isVisible,
             updatedAt: new Date()
         };
 
@@ -412,6 +416,17 @@ const TimelineManager = () => {
                                             style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                                         />
                                         <span style={{ color: 'var(--text-primary)' }}>📍 Currently ongoing (Present)</span>
+                                    </label>
+                                </div>
+                                <div className="form-group" style={{ marginBottom: '0.5rem' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.95rem' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.isVisible}
+                                            onChange={e => setFormData({ ...formData, isVisible: e.target.checked })}
+                                            style={{ cursor: 'pointer', width: '18px', height: '18px' }}
+                                        />
+                                        <span style={{ color: 'var(--text-primary)' }}>👁️ Show in Portfolio</span>
                                     </label>
                                 </div>
 

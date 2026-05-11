@@ -16,7 +16,7 @@ const About = () => {
                 const snapshot = await getDocs(skillsCollection);
 
                 if (!snapshot.empty) {
-                    const fetchedSkills = snapshot.docs.map(doc => doc.data());
+                    const fetchedSkills = snapshot.docs.map(doc => doc.data()).filter(skill => skill.isVisible !== false);
                     fetchedSkills.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
                     setSkills(fetchedSkills.map(s => s.name));
                 } else {

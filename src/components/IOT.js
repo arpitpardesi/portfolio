@@ -28,7 +28,7 @@ const IOT = () => {
             try {
                 const querySnapshot = await getDocs(collection(db, 'iot'));
                 if (!querySnapshot.empty) {
-                    const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).filter(item => item.isVisible !== false);
                     setProjects(items);
                 }
             } catch (error) {

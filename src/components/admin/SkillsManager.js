@@ -13,7 +13,8 @@ const SkillsManager = () => {
         name: '',
         category: 'Tech Stack',
         proficiency: 100,
-        displayOrder: 0
+        displayOrder: 0,
+        isVisible: true
     });
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [itemsToDelete, setItemsToDelete] = useState([]);
@@ -82,10 +83,10 @@ const SkillsManager = () => {
     // };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setCurrentSkill({
             ...currentSkill,
-            [name]: name === 'displayOrder' ? (value === '' ? '' : parseInt(value)) : value
+            [name]: type === 'checkbox' ? checked : (name === 'displayOrder' ? (value === '' ? '' : parseInt(value)) : value)
         });
     };
 
@@ -178,7 +179,8 @@ const SkillsManager = () => {
     const handleEdit = (skill) => {
         setCurrentSkill({
             ...skill,
-            displayOrder: skill.displayOrder || 0
+            displayOrder: skill.displayOrder || 0,
+            isVisible: skill.isVisible !== false
         });
         setIsEditing(true);
         setShowForm(true);
@@ -233,7 +235,8 @@ const SkillsManager = () => {
             name: '',
             category: 'Tech Stack',
             proficiency: 100,
-            displayOrder: maxOrder + 1
+            displayOrder: maxOrder + 1,
+            isVisible: true
         });
         setIsEditing(false);
         setShowForm(false);
@@ -343,6 +346,17 @@ const SkillsManager = () => {
                                         min="0"
                                         required
                                     />
+                                </div>
+                                <div className="form-group" style={{ marginBottom: '0.5rem', flexDirection: 'row', alignItems: 'center', gap: '0.5rem' }}>
+                                    <input
+                                        type="checkbox"
+                                        name="isVisible"
+                                        checked={currentSkill.isVisible}
+                                        onChange={handleInputChange}
+                                        style={{ cursor: 'pointer', width: '18px', height: '18px', margin: 0, flex: 'none' }}
+                                        id="isVisible-skill"
+                                    />
+                                    <label htmlFor="isVisible-skill" style={{ color: 'var(--text-primary)', cursor: 'pointer', margin: 0 }}>👁️ Show in Portfolio</label>
                                 </div>
                                 <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', padding: '12px' }}>
                                     <FaSave /> {isEditing ? 'Update Skill' : 'Save Skill'}

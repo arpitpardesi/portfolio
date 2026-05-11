@@ -21,7 +21,7 @@ const AllProjectsPage = () => {
                         id: doc.id,
                         ...doc.data(),
                         tech: Array.isArray(doc.data().tech) ? doc.data().tech : (doc.data().tags || [])
-                    }));
+                    })).filter(item => item.isVisible !== false);
                     // Sort to show pinned projects first
                     const sortedItems = items.sort((a, b) => {
                         if (a.isPinned && !b.isPinned) return -1;

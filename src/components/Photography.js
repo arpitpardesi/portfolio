@@ -29,11 +29,13 @@ const Photography = () => {
             try {
                 const querySnapshot = await getDocs(collection(db, 'photography'));
                 if (!querySnapshot.empty) {
-                    const items = querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        src: doc.data().image, // Map 'image' field to 'src'
-                        title: doc.data().title
-                    }));
+                    const items = querySnapshot.docs
+                        .filter(doc => doc.data().isVisible !== false)
+                        .map(doc => ({
+                            id: doc.id,
+                            src: doc.data().image, // Map 'image' field to 'src'
+                            title: doc.data().title
+                        }));
                     setImages(items);
                 }
             } catch (error) {
