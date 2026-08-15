@@ -201,7 +201,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                             animate={showLogo ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                             transition={{ delay: 1.3, duration: 0.5 }}
                         >
-                            {onOpenCommandPalette && (
+                            {settings.enableCommandPalette !== false && onOpenCommandPalette && (
                                 <button
                                     onClick={onOpenCommandPalette}
                                     aria-label="Open Command Palette (Cmd + K)"

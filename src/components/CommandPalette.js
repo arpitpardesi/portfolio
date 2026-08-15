@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FaSearch, FaHome, FaUser, FaFolder, FaGamepad, FaCopy, FaCheck, FaTimes, FaCamera, FaRobot, FaLaptopCode } from 'react-icons/fa';
+import {
+    FaSearch, FaHome, FaUser, FaFolder, FaGamepad, FaCopy, FaCheck,
+    FaTimes, FaCamera, FaRobot, FaLaptopCode, FaPalette, FaGithub,
+    FaLinkedin, FaTwitter, FaFilePdf, FaMicrochip, FaAdjust
+} from 'react-icons/fa';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 import { useSettings } from '../context/SettingsContext';
+import { themes } from './ThemeSwitcher';
 
 const CommandPalette = ({ isOpen, onClose }) => {
     let navigate = () => {};
@@ -12,18 +19,54 @@ const CommandPalette = ({ isOpen, onClose }) => {
     } catch (e) {
         // Fallback for non-router test contexts
     }
-    const { settings } = useSettings();
+    const { settings, updateSettings } = useSettings();
     const [query, setQuery] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [copied, setCopied] = useState(false);
+    const [projects, setProjects] = useState([]);
+    const [hobbies, setHobbies] = useState([]);
     const inputRef = useRef(null);
 
     const email = settings.contactEmail || 'arpit.pardesi6@gmail.com';
 
-    const items = [
+    // Fetch dynamic projects and hobbies from Firestore
+    useEffect(() => {
+        const fetchDynamicData = async () => {
+            try {
+                // Fetch projects
+                const projSnapshot = await getDocs(collection(db, 'projects'));
+                if (!projSnapshot.empty) {
+                    const projData = projSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })).filter(p => p.isVisible !== false);
+                    setProjects(projData);
+                }
+
+                // Fetch hobbies
+                const hobbySnapshot = await getDocs(collection(db, 'hobbies'));
+                if (!hobbySnapshot.empty) {
+                    const hobbyData = hobbySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setHobbies(hobbyData);
+                }
+            } catch (err) {
+                console.error("CommandPalette Firestore fetch error:", err);
+            }
+        };
+
+        if (isOpen) {
+            fetchDynamicData();
+        }
+    }, [isOpen]);
+
+    // Build static + dynamic item list
+    const staticNavItems = [
         {
             id: 'home',
-            title: 'Go to Home',
+            title: 'Go to Home Page',
             subtitle: 'Main overview & hero section',
             icon: <FaHome />,
             category: 'Navigation',
@@ -32,15 +75,15 @@ const CommandPalette = ({ isOpen, onClose }) => {
         {
             id: 'about',
             title: 'Detailed About Me',
-            subtitle: 'Read about my journey, skills & story',
+            subtitle: 'Read about my journey, engineering story & tech stack',
             icon: <FaUser />,
             category: 'Navigation',
             action: () => { navigate('/about'); onClose(); }
         },
         {
-            id: 'projects',
-            title: 'View All Projects',
-            subtitle: 'Explore full project portfolio & code',
+            id: 'projects-page',
+            title: 'View All Projects Archive',
+            subtitle: 'Browse complete project collection & code repositories',
             icon: <FaFolder />,
             category: 'Navigation',
             action: () => { navigate('/projects'); onClose(); }
@@ -48,7 +91,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
         {
             id: 'playground',
             title: 'Physics Playground',
-            subtitle: 'Interactive Matter.js physics simulations',
+            subtitle: 'Interactive Matter.js physics 2D canvas simulation',
             icon: <FaGamepad />,
             category: 'Interactive',
             action: () => { navigate('/playground'); onClose(); }
@@ -56,33 +99,104 @@ const CommandPalette = ({ isOpen, onClose }) => {
         {
             id: 'beyond-work',
             title: 'Beyond Work & Hobbies',
-            subtitle: 'Photography, IoT, AI & Raspberry Pi projects',
+            subtitle: 'Explore photography, IoT, AI & Raspberry Pi experiments',
             icon: <FaLaptopCode />,
             category: 'Navigation',
             action: () => { navigate('/beyond-work'); onClose(); }
         },
         {
+            id: 'resume',
+            title: 'View Resume / CV',
+            subtitle: 'Open detailed resume document',
+            icon: <FaFilePdf />,
+            category: 'Navigation',
+            action: () => { navigate('/resume'); onClose(); }
+        },
+        {
             id: 'photography',
             title: 'Photography Gallery',
-            subtitle: 'Visual captures & creative photos',
+            subtitle: 'Visual captures & creative high-res photo gallery',
             icon: <FaCamera />,
             category: 'Hobbies',
             action: () => { navigate('/beyond-work/photography'); onClose(); }
         },
         {
+            id: 'iot',
+            title: 'IoT & Hardware Systems',
+            subtitle: 'Microcontroller, sensor & embedded hardware builds',
+            icon: <FaMicrochip />,
+            category: 'Hobbies',
+            action: () => { navigate('/beyond-work/iot'); onClose(); }
+        },
+        {
             id: 'ai',
             title: 'AI & Machine Learning',
-            subtitle: 'Generative AI & smart agent projects',
+            subtitle: 'Generative AI models & intelligent agent projects',
             icon: <FaRobot />,
             category: 'Hobbies',
             action: () => { navigate('/beyond-work/ai'); onClose(); }
-        },
+        }
+    ];
+
+    // Dynamic Project Items
+    const dynamicProjectItems = projects.map(project => ({
+        id: `proj-${project.id}`,
+        title: `Project: ${project.title}`,
+        subtitle: Array.isArray(project.tech)
+            ? `Tech: ${project.tech.join(', ')}`
+            : project.description || 'View project details',
+        icon: <FaFolder style={{ color: 'var(--accent-color)' }} />,
+        category: 'Dynamic Projects',
+        action: () => {
+            if (project.liveUrl) {
+                window.open(project.liveUrl, '_blank', 'noreferrer');
+            } else if (project.githubUrl) {
+                window.open(project.githubUrl, '_blank', 'noreferrer');
+            } else {
+                navigate('/projects');
+            }
+            onClose();
+        }
+    }));
+
+    // Dynamic Hobby Items
+    const dynamicHobbyItems = hobbies.map(hobby => ({
+        id: `hobby-${hobby.id}`,
+        title: `Hobby: ${hobby.title}`,
+        subtitle: hobby.subtitle || hobby.description || 'Explore hobby page',
+        icon: <FaLaptopCode style={{ color: 'var(--accent-color)' }} />,
+        category: 'Dynamic Hobbies',
+        action: () => {
+            navigate(`/beyond-work/${hobby.slug || hobby.id}`);
+            onClose();
+        }
+    }));
+
+    // Theme Switching Items
+    const themeItems = themes.map(theme => ({
+        id: `theme-${theme.name.toLowerCase().replace(/\s+/g, '-')}`,
+        title: `Theme: ${theme.name}`,
+        subtitle: `Set site color scheme to ${theme.name}`,
+        icon: <FaPalette style={{ color: theme.color }} />,
+        category: 'Color Themes',
+        action: () => {
+            document.documentElement.style.setProperty('--accent-color', theme.color);
+            document.documentElement.style.setProperty('--accent-rgb', theme.rgb);
+            document.documentElement.style.setProperty('--accent-glow', theme.glow);
+            localStorage.setItem('cosmos-theme', theme.name);
+            window.dispatchEvent(new CustomEvent('themechanged', { detail: theme }));
+            onClose();
+        }
+    }));
+
+    // Action Items (Email, Links, Controls)
+    const actionItems = [
         {
             id: 'copy-email',
-            title: `Copy Contact Email (${email})`,
-            subtitle: 'Copy email address to clipboard',
+            title: `Copy Email (${email})`,
+            subtitle: 'Copy contact email address to clipboard',
             icon: copied ? <FaCheck style={{ color: '#10b981' }} /> : <FaCopy />,
-            category: 'Quick Actions',
+            category: 'Actions',
             action: () => {
                 navigator.clipboard.writeText(email);
                 setCopied(true);
@@ -91,10 +205,62 @@ const CommandPalette = ({ isOpen, onClose }) => {
                     onClose();
                 }, 1000);
             }
+        },
+        {
+            id: 'toggle-cursor',
+            title: `Toggle Custom Cursor (${settings.enableCustomCursor ? 'Enabled' : 'Disabled'})`,
+            subtitle: 'Enable or disable futuristic glowing cursor',
+            icon: <FaAdjust />,
+            category: 'Preferences',
+            action: () => {
+                updateSettings({ enableCustomCursor: !settings.enableCustomCursor });
+                onClose();
+            }
+        },
+        {
+            id: 'github-link',
+            title: 'Open GitHub Profile',
+            subtitle: settings.githubUrl || 'https://github.com/arpitpardesi',
+            icon: <FaGithub />,
+            category: 'Socials',
+            action: () => {
+                window.open(settings.githubUrl || 'https://github.com/arpitpardesi', '_blank');
+                onClose();
+            }
+        },
+        {
+            id: 'linkedin-link',
+            title: 'Open LinkedIn Profile',
+            subtitle: settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/',
+            icon: <FaLinkedin />,
+            category: 'Socials',
+            action: () => {
+                window.open(settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/', '_blank');
+                onClose();
+            }
+        },
+        {
+            id: 'twitter-link',
+            title: 'Open Twitter / X Profile',
+            subtitle: settings.twitterUrl || 'https://x.com/arpit_pardesi',
+            icon: <FaTwitter />,
+            category: 'Socials',
+            action: () => {
+                window.open(settings.twitterUrl || 'https://x.com/arpit_pardesi', '_blank');
+                onClose();
+            }
         }
     ];
 
-    const filteredItems = items.filter(item =>
+    const allItems = [
+        ...staticNavItems,
+        ...dynamicProjectItems,
+        ...dynamicHobbyItems,
+        ...themeItems,
+        ...actionItems
+    ];
+
+    const filteredItems = allItems.filter(item =>
         item.title.toLowerCase().includes(query.toLowerCase()) ||
         item.subtitle.toLowerCase().includes(query.toLowerCase()) ||
         item.category.toLowerCase().includes(query.toLowerCase())
@@ -192,7 +358,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                         <input
                             ref={inputRef}
                             type="text"
-                            placeholder="Type a command or search page..."
+                            placeholder="Type to search projects, pages, themes & actions..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             style={{
@@ -234,7 +400,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
                                 color: 'var(--text-secondary)',
                                 fontSize: '0.95rem'
                             }}>
-                                No results found for "{query}"
+                                No matches found for "{query}"
                             </div>
                         ) : (
                             filteredItems.map((item, index) => (

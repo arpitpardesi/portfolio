@@ -76,21 +76,23 @@ function AppContent() {
 
     React.useEffect(() => {
         const handleKeyDown = (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            if (settings.enableCommandPalette !== false && (e.metaKey || e.ctrlKey) && e.key === 'k') {
                 e.preventDefault();
                 setCommandPaletteOpen(prev => !prev);
             }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, []);
+    }, [settings.enableCommandPalette]);
 
     return (
         <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
             <Router>
                 <ScrollToTop />
                 <ScrollProgress />
-                <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
+                {settings.enableCommandPalette !== false && (
+                    <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
+                )}
                 <AnimatePresence mode="wait">
                     {!splashComplete && (
                         <SplashScreen onComplete={() => setSplashComplete(true)} />

@@ -95,6 +95,7 @@ const SettingsManager = () => {
         enableThemeSwitcher: true,
         enableCustomCursor: true,
         enableBackground: true,
+        enableCommandPalette: true,
         debugMode: false,
 
         // Hero Defaults
@@ -740,6 +741,18 @@ const SettingsManager = () => {
                                             type="checkbox"
                                             name="enableCustomCursor"
                                             checked={settings.enableCustomCursor}
+                                            onChange={handleChange}
+                                            style={{ width: '20px', height: '20px', accentColor: 'var(--accent-color)' }}
+                                        />
+                                    </label>
+                                </div>
+                                <div className="settings-field">
+                                    <label className="toggle-btn" style={{ justifyContent: 'space-between' }}>
+                                        <span>Enable Command Palette (Cmd + K)</span>
+                                        <input
+                                            type="checkbox"
+                                            name="enableCommandPalette"
+                                            checked={settings.enableCommandPalette !== false}
                                             onChange={handleChange}
                                             style={{ width: '20px', height: '20px', accentColor: 'var(--accent-color)' }}
                                         />

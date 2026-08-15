@@ -55,6 +55,7 @@ export const SettingsProvider = ({ children }) => {
         enableThemeSwitcher: true,
         enableCustomCursor: true,
         enableBackground: true,
+        enableCommandPalette: true,
         debugMode: false,
         defaultTheme: 'Void Purple',
         accentColor: '#6366f1'
