@@ -12,6 +12,18 @@ const AllProjectsPage = () => {
     const [loading, setLoading] = useState(true);
     const [selectedProject, setSelectedProject] = useState(null);
 
+    const [selectedCategory, setSelectedCategory] = useState('All');
+
+    const categories = ['All', 'React', 'Python', 'IoT', 'AI', 'Web'];
+
+    const filteredProjects = projects.filter(project => {
+        if (selectedCategory === 'All') return true;
+        const techStr = (project.tech || []).join(' ').toLowerCase();
+        const categoryStr = (project.category || '').toLowerCase();
+        const query = selectedCategory.toLowerCase();
+        return techStr.includes(query) || categoryStr.includes(query);
+    });
+
     useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -87,7 +99,7 @@ const AllProjectsPage = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    style={{ textAlign: 'center', marginBottom: '5rem' }}
+                    style={{ textAlign: 'center', marginBottom: '3rem' }}
                 >
                     <h1 style={{
                         fontSize: '3.5rem',
@@ -123,8 +135,41 @@ const AllProjectsPage = () => {
                         }}
                     >
                         A constellation of ideas brought to life. <br /> Each project is a journey through the intersection of imagination and engineering, where curiosity transforms into creation.
-
                     </motion.p>
+
+                    {/* Filter Pills */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        flexWrap: 'wrap',
+                        marginBottom: '2rem'
+                    }}>
+                        {categories.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                style={{
+                                    padding: '8px 18px',
+                                    borderRadius: '30px',
+                                    border: selectedCategory === cat
+                                        ? '1px solid var(--accent-color)'
+                                        : '1px solid rgba(255, 255, 255, 0.1)',
+                                    background: selectedCategory === cat
+                                        ? 'rgba(var(--accent-rgb), 0.2)'
+                                        : 'rgba(255, 255, 255, 0.03)',
+                                    color: selectedCategory === cat ? '#ffffff' : 'var(--text-secondary)',
+                                    fontSize: '0.85rem',
+                                    fontWeight: '500',
+                                    cursor: 'pointer',
+                                    backdropFilter: 'blur(5px)',
+                                    transition: 'all 0.25s ease'
+                                }}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
 
                     {projects.some(p => p.isPinned) && (
                         <motion.div
@@ -195,6 +240,15 @@ const AllProjectsPage = () => {
                     }}>
                         The vault is empty. More to come soon.
                     </div>
+                ) : filteredProjects.length === 0 ? (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '4rem 2rem',
+                        color: 'var(--text-secondary)',
+                        fontSize: '1.05rem'
+                    }}>
+                        No projects match the selected category "{selectedCategory}".
+                    </div>
                 ) : (
                     <div className="projects-grid" style={{
                         display: 'grid',
@@ -202,7 +256,7 @@ const AllProjectsPage = () => {
                         gap: '2rem',
                         padding: '0 1rem'
                     }}>
-                        {projects.map((project, i) => (
+                        {filteredProjects.map((project, i) => (
                             <motion.div
                                 key={project.id || i}
                                 initial={{ opacity: 0, y: 30 }}

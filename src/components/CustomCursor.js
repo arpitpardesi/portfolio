@@ -2,15 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const CustomCursor = () => {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
     const [cursorVariant, setCursorVariant] = useState("default");
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
+        const checkTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+        if (checkTouch) {
+            setIsTouchDevice(true);
+            return;
+        }
+
+        let rafId;
+        let latestX = -100;
+        let latestY = -100;
+
         const mouseMove = (e) => {
-            setMousePosition({
-                x: e.clientX,
-                y: e.clientY
-            });
+            latestX = e.clientX;
+            latestY = e.clientY;
+            if (!rafId) {
+                rafId = requestAnimationFrame(() => {
+                    setMousePosition({ x: latestX, y: latestY });
+                    rafId = null;
+                });
+            }
         };
 
         const handleMouseOver = (e) => {
@@ -30,8 +45,11 @@ const CustomCursor = () => {
         return () => {
             window.removeEventListener("mousemove", mouseMove);
             window.removeEventListener("mouseover", handleMouseOver);
+            if (rafId) cancelAnimationFrame(rafId);
         };
     }, []);
+
+    if (isTouchDevice) return null;
 
     const variants = {
         default: {

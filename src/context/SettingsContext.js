@@ -74,7 +74,9 @@ export const SettingsProvider = ({ children }) => {
             setLoading(false);
         });
 
-        return () => unsubscribe();
+        return () => {
+            if (typeof unsubscribe === 'function') unsubscribe();
+        };
     }, []);
 
     const value = {

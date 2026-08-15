@@ -22,7 +22,9 @@ export const AuthProvider = ({ children }) => {
     // Session Timeout Logic
     useEffect(() => {
         let timeoutId;
+        let lastResetTime = 0;
         const TIMEOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+        const THROTTLE_MS = 10000; // Throttle timer reset to max once per 10s
 
         const resetTimer = () => {
             if (timeoutId) clearTimeout(timeoutId);
@@ -34,7 +36,13 @@ export const AuthProvider = ({ children }) => {
             }
         };
 
-        const handleActivity = () => resetTimer();
+        const handleActivity = () => {
+            const now = Date.now();
+            if (now - lastResetTime > THROTTLE_MS) {
+                lastResetTime = now;
+                resetTimer();
+            }
+        };
 
         if (currentUser) {
             resetTimer(); // Start timer on login

@@ -23,7 +23,10 @@ const VisitorCounter = () => {
 
                     // 1. Get Location
                     try {
-                        const response = await fetch('https://ipapi.co/json/');
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 3000);
+                        const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                        clearTimeout(timeoutId);
                         if (response.ok) {
                             const data = await response.json();
                             locationData = {
@@ -35,7 +38,7 @@ const VisitorCounter = () => {
                             };
                         }
                     } catch (err) {
-                        console.error("Location fetch error:", err);
+                        // Ignore location fetch timeout or network failure gracefully
                     }
 
                     // 2. Get Device/Browser Info
@@ -114,7 +117,9 @@ const VisitorCounter = () => {
             setError(true);
         });
 
-        return () => unsubscribe();
+        return () => {
+            if (typeof unsubscribe === 'function') unsubscribe();
+        };
     }, []);
 
     const getOrdinal = (n) => {

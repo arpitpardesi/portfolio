@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
 import packageJson from '../../package.json';
 
-const Header = ({ showLogo = true }) => {
+const Header = ({ showLogo = true, onOpenCommandPalette }) => {
     const { settings } = useSettings();
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,10 +37,10 @@ const Header = ({ showLogo = true }) => {
     }, [mobileMenuOpen]);
 
     const socialLinks = [
-        { icon: <FaGithub />, href: settings.githubUrl || 'https://github.com/arpitpardesi' },
-        { icon: <FaLinkedin />, href: settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/' },
-        { icon: <FaXTwitter />, href: settings.twitterUrl || 'https://x.com/arpit_pardesi' },
-        { icon: <FaInstagram />, href: settings.instagramUrl || 'https://www.instagram.com/arpitpardesi' },
+        { icon: <FaGithub />, href: settings.githubUrl || 'https://github.com/arpitpardesi', name: 'GitHub Profile' },
+        { icon: <FaLinkedin />, href: settings.linkedinUrl || 'https://www.linkedin.com/in/arpitpardesi/', name: 'LinkedIn Profile' },
+        { icon: <FaXTwitter />, href: settings.twitterUrl || 'https://x.com/arpit_pardesi', name: 'X / Twitter Profile' },
+        { icon: <FaInstagram />, href: settings.instagramUrl || 'https://www.instagram.com/arpitpardesi', name: 'Instagram Profile' },
     ];
 
     const navItems = ['About', 'Projects', 'Contact'];
@@ -87,7 +87,7 @@ const Header = ({ showLogo = true }) => {
                 }}
             >
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex', textDecoration: 'none', color: 'inherit' }}>
+                    <Link to="/" style={{ fontSize: '1.5rem', fontWeight: '700', letterSpacing: '1px', zIndex: 1001, display: 'flex', textDecoration: 'none', color: 'inherit' }} aria-label="Arpit Pardesi Home">
                         {showLogo && (
                             <motion.div
                                 layoutId={hasAnimated ? undefined : "logo-text"}
@@ -114,7 +114,7 @@ const Header = ({ showLogo = true }) => {
                                 </motion.span>
                             </motion.div>
                         )}
-                        {!showLogo && <div style={{ width: '80px', height: '1.5rem' }}></div>} {/* Placeholder to prevent layout shift if needed, though usually loading covers it */}
+                        {!showLogo && <div style={{ width: '80px', height: '1.5rem' }}></div>}
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -196,17 +196,49 @@ const Header = ({ showLogo = true }) => {
                         </ul>
 
                         <motion.div
-                            style={{ display: 'flex', gap: '1rem', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '2rem' }}
+                            style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '1.5rem' }}
                             initial={{ opacity: 0, x: 20 }}
                             animate={showLogo ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                             transition={{ delay: 1.3, duration: 0.5 }}
                         >
+                            {onOpenCommandPalette && (
+                                <button
+                                    onClick={onOpenCommandPalette}
+                                    aria-label="Open Command Palette (Cmd + K)"
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        padding: '4px 10px',
+                                        borderRadius: '8px',
+                                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                                        background: 'rgba(255, 255, 255, 0.03)',
+                                        color: 'var(--text-secondary)',
+                                        fontSize: '0.75rem',
+                                        fontFamily: 'var(--font-mono, monospace)',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.borderColor = 'var(--accent-color)';
+                                        e.currentTarget.style.color = 'var(--text-primary)';
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                        e.currentTarget.style.color = 'var(--text-secondary)';
+                                    }}
+                                >
+                                    <span>⌘K</span>
+                                </button>
+                            )}
+
                             {socialLinks.map((link, index) => (
                                 <a
                                     key={index}
                                     href={link.href}
                                     target="_blank"
                                     rel="noreferrer"
+                                    aria-label={link.name}
                                     style={{ color: 'var(--text-primary)', fontSize: '1.1rem' }}
                                 >
                                     {link.icon}
@@ -215,8 +247,9 @@ const Header = ({ showLogo = true }) => {
                             {location.pathname !== '/login' && !location.pathname.startsWith('/admin') && (
                                 <Link
                                     to="/login"
-                                    style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.5rem', opacity: 0.5 }}
+                                    style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginLeft: '0.2rem', opacity: 0.5 }}
                                     title="Admin Login"
+                                    aria-label="Admin Login"
                                 >
                                     <FaUserLock />
                                 </Link>
@@ -227,6 +260,7 @@ const Header = ({ showLogo = true }) => {
                     {/* Mobile Menu Button */}
                     <button
                         className="mobile-menu-btn"
+                        aria-label="Toggle Navigation Menu"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         style={{
                             display: 'none',
@@ -238,7 +272,6 @@ const Header = ({ showLogo = true }) => {
                             zIndex: 1001,
                             padding: '0.5rem',
                         }}
-                        aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? <FaTimes /> : <FaBars />}
                     </button>

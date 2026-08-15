@@ -12,7 +12,9 @@ const SplashScreen = ({ onComplete }) => {
         console.log("Splash Screen Mounted");
 
         // Check if user prefers reduced motion
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const prefersReducedMotion = (typeof window !== 'undefined' && window.matchMedia)
+            ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            : false;
 
         // Play sound effect if motion is allowed
         if (!prefersReducedMotion) {
@@ -51,7 +53,11 @@ const SplashScreen = ({ onComplete }) => {
             clearTimeout(timer);
             // Clean up audio
             if (audioRef.current) {
-                audioRef.current.pause();
+                try {
+                    audioRef.current.pause();
+                } catch (e) {
+                    // Ignore media engine limitations in unsupported environments
+                }
                 audioRef.current = null;
             }
         };

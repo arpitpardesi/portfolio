@@ -13,12 +13,23 @@ const Moon = () => {
         const data = getMoonPhase();
         setMoonData(data);
 
-        fetch('https://ipapi.co/json/')
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        fetch('https://ipapi.co/json/', { signal: controller.signal })
             .then(res => res.json())
             .then(data => {
                 if (data.latitude && data.latitude < 0) setIsSouthern(true);
             })
-            .catch(err => console.warn("Moon orientation warning:", err));
+            .catch(() => {
+                // Silently fallback to Northern hemisphere default on network fail/timeout
+            })
+            .finally(() => clearTimeout(timeoutId));
+
+        return () => {
+            clearTimeout(timeoutId);
+            controller.abort();
+        };
     }, []);
 
     const size = 100;

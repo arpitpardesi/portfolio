@@ -37,11 +37,10 @@ const StarFieldOverlay = ({ count, onClose }) => {
             twinkleAmplitude: Math.random() * 0.3 + 0.2
         }));
 
+        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#ffffff';
+
         const draw = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Get accent color from CSS variables
-            const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
 
             stars.forEach(star => {
                 // Sine-wave twinkle logic
@@ -53,7 +52,7 @@ const StarFieldOverlay = ({ count, onClose }) => {
                 if (star.size > 2.5 && opacity > 0.7) {
                     ctx.beginPath();
                     ctx.arc(star.x, star.y, star.size * 2.5, 0, Math.PI * 2);
-                    ctx.fillStyle = accentColor || '#ffffff';
+                    ctx.fillStyle = accentColor;
                     ctx.globalAlpha = opacity * 0.15;
                     ctx.fill();
                 }
@@ -61,7 +60,7 @@ const StarFieldOverlay = ({ count, onClose }) => {
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
 
-                ctx.fillStyle = opacity > 0.85 ? '#ffffff' : accentColor || '#ffffff';
+                ctx.fillStyle = opacity > 0.85 ? '#ffffff' : accentColor;
                 ctx.globalAlpha = opacity;
                 ctx.fill();
 

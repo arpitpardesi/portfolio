@@ -2,12 +2,12 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Admin Dashboard
+    // Admin Dashboard (full access for authenticated admin)
     match /{document=**} {
       allow read, write: if request.auth != null;
     }
     
-    // Public Site Content
+    // Public Site Content (read-only for all visitors)
     match /projects/{doc} { allow read: if true; }
     match /hobbies/{doc} { allow read: if true; }
     match /iot/{doc} { allow read: if true; }
@@ -15,10 +15,19 @@ service cloud.firestore {
     match /rpi/{doc} { allow read: if true; }
     match /skills/{doc} { allow read: if true; }
     match /timeline/{doc} { allow read: if true; }
+    match /photography/{doc} { allow read: if true; }
+    match /settings/{doc} { allow read: if true; }
     
+    // Visitor Logging
+    match /visitor_logs/{doc} {
+      allow create: if true;
+    }
+
     // Visitor Counter
     match /stats/visitors {
-      allow read, write: if true;
+      allow read: if true;
+      allow create: if true;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['count']);
     }
   }
 }

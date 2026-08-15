@@ -5,7 +5,9 @@ const Background = () => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
+        if (!ctx) return;
         let width, height;
         let stars = [];
 
@@ -85,6 +87,19 @@ const Background = () => {
             }
         };
 
+        let animId;
+        let cachedAccentRgb = '99, 102, 241';
+
+        const updateAccentColor = () => {
+            const val = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim();
+            if (val) cachedAccentRgb = val;
+        };
+
+        const handleMouseMove = (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        };
+
         const animate = () => {
             ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
             ctx.fillRect(0, 0, width, height);
@@ -94,8 +109,6 @@ const Background = () => {
                 stars[i].draw();
 
                 if (stars[i].z < 0.3) {
-                    const accentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '99, 102, 241';
-
                     for (let j = i; j < stars.length; j++) {
                         if (stars[j].z < 0.3) {
                             const dx = stars[i].x - stars[j].x;
@@ -104,7 +117,7 @@ const Background = () => {
 
                             if (dist < connectionDistance) {
                                 ctx.beginPath();
-                                ctx.strokeStyle = `rgba(${accentRgb}, ${1 - dist / connectionDistance})`;
+                                ctx.strokeStyle = `rgba(${cachedAccentRgb}, ${1 - dist / connectionDistance})`;
                                 ctx.lineWidth = 0.5;
                                 ctx.moveTo(stars[i].x, stars[i].y);
                                 ctx.lineTo(stars[j].x, stars[j].y);
@@ -114,20 +127,22 @@ const Background = () => {
                     }
                 }
             }
-            requestAnimationFrame(animate);
+            animId = requestAnimationFrame(animate);
         };
 
         window.addEventListener('resize', resize);
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
+        window.addEventListener('mousemove', handleMouseMove);
 
         resize();
+        updateAccentColor();
         init();
         animate();
 
-        return () => window.removeEventListener('resize', resize);
+        return () => {
+            window.removeEventListener('resize', resize);
+            window.removeEventListener('mousemove', handleMouseMove);
+            if (animId) cancelAnimationFrame(animId);
+        };
     }, []);
 
     return (
