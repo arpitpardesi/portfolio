@@ -63,6 +63,7 @@ const ThemeSwitcher = () => {
         document.documentElement.style.setProperty('--accent-glow', theme.glow);
         setActiveTheme(theme.name);
         localStorage.setItem('cosmos-theme', theme.name);
+        window.dispatchEvent(new CustomEvent('themechanged', { detail: theme }));
     };
 
     // Calculate positions in a spread pattern (going right and up from the button)

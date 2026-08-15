@@ -88,12 +88,19 @@ const Background = () => {
         };
 
         let animId;
-        let cachedAccentRgb = '99, 102, 241';
+        let cachedAccentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '99, 102, 241';
 
-        const updateAccentColor = () => {
-            const val = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim();
-            if (val) cachedAccentRgb = val;
+        const updateAccentColor = (e) => {
+            if (e && e.detail && e.detail.rgb) {
+                cachedAccentRgb = e.detail.rgb;
+            } else {
+                const val = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim();
+                if (val) cachedAccentRgb = val;
+            }
         };
+
+        const observer = new MutationObserver(updateAccentColor);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
 
         const handleMouseMove = (e) => {
             mouse.x = e.clientX;
@@ -132,6 +139,7 @@ const Background = () => {
 
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('themechanged', updateAccentColor);
 
         resize();
         updateAccentColor();
@@ -141,6 +149,8 @@ const Background = () => {
         return () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('themechanged', updateAccentColor);
+            observer.disconnect();
             if (animId) cancelAnimationFrame(animId);
         };
     }, []);
