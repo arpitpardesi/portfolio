@@ -57,8 +57,8 @@ export const SettingsProvider = ({ children }) => {
         enableBackground: true,
         enableCommandPalette: true,
         debugMode: false,
-        defaultTheme: 'Void Purple',
-        accentColor: '#6366f1'
+        defaultTheme: 'Martian Red',
+        accentColor: '#ef4444'
     });
     const [loading, setLoading] = useState(true);
 

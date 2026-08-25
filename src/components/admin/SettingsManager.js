@@ -67,7 +67,7 @@ const SettingsManager = () => {
             ...prev,
             customThemes: (prev.customThemes || []).filter(t => t.name !== themeName),
             // Reset to default if deleted theme was selected
-            defaultTheme: prev.defaultTheme === themeName ? 'Void Purple' : prev.defaultTheme
+            defaultTheme: prev.defaultTheme === themeName ? 'Martian Red' : prev.defaultTheme
         }));
     };
 
@@ -122,8 +122,8 @@ const SettingsManager = () => {
         contactCta: 'Say Hello',
 
         // Theme defaults
-        defaultTheme: 'dark',
-        accentColor: '#6366f1'
+        defaultTheme: 'Martian Red',
+        accentColor: '#ef4444'
     });
 
     useEffect(() => {
