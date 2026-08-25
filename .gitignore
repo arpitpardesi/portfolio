@@ -20,3 +20,4 @@ yarn-error.log*
 node_modules/
 .cache/
 How to.txt
+README_OLD.md
