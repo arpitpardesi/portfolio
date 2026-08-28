@@ -1,4 +1,3 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
@@ -57,8 +56,8 @@ export const SettingsProvider = ({ children }) => {
         enableBackground: true,
         enableCommandPalette: true,
         debugMode: false,
-        defaultTheme: 'Martian Red',
-        accentColor: '#ef4444'
+        defaultTheme: 'Void Purple',
+        accentColor: '#6366f1'
     });
     const [loading, setLoading] = useState(true);
 

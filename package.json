@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "homepage": "https://arpitpardesi.github.io/portfolio",
-  "version": "4.1",
+  "version": "4.2",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
