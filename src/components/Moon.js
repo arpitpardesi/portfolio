@@ -95,22 +95,21 @@ const Moon = () => {
                 <AnimatePresence>
                     {isHovered && (
                         <motion.div
-                            initial={{ opacity: 0, x: -size, scale: 0.9 }}
-                            animate={{ opacity: 1, x: -size - 120, scale: 1 }}
-                            exit={{ opacity: 0, x: -size, scale: 0.9 }}
+                            className="moon-tooltip"
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
                             style={{
                                 position: 'absolute',
-                                top: '50%',
-                                translateY: '-50%',
-                                width: '180px',
-                                padding: '15px',
-                                background: 'rgba(0, 0, 0, 0.4)',
-                                backdropFilter: 'blur(10px)',
+                                background: 'rgba(10, 10, 15, 0.85)',
+                                backdropFilter: 'blur(12px)',
                                 borderRadius: '12px',
-                                border: '1px solid rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
                                 color: 'white',
                                 pointerEvents: 'none',
-                                textAlign: 'center'
+                                textAlign: 'center',
+                                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+                                zIndex: 110
                             }}
                         >
                             <div style={{
@@ -119,18 +118,19 @@ const Moon = () => {
                                 letterSpacing: '1px',
                                 textTransform: 'uppercase',
                                 marginBottom: '4px',
-                                opacity: 0.8
+                                opacity: 0.9,
+                                fontWeight: '600'
                             }}>
                                 {stage}
                             </div>
-                            <div style={{ fontSize: '0.9rem', fontWeight: '500', marginBottom: '8px' }}>
+                            <div style={{ fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px' }}>
                                 {Math.round(illumination * 100)}% Lit
                             </div>
                             <div style={{
                                 fontStyle: 'italic',
                                 color: 'var(--text-secondary)',
-                                fontSize: '0.8rem',
-                                lineHeight: '1.4'
+                                fontSize: '0.78rem',
+                                lineHeight: '1.35'
                             }}>
                                 "{reflections[stage] || "Surrounded by stars."}"
                             </div>
@@ -141,22 +141,42 @@ const Moon = () => {
 
             <style>
                 {`
+                    .moon-tooltip {
+                        top: 50%;
+                        right: calc(100% + 15px);
+                        transform: translateY(-50%);
+                        width: 170px;
+                        padding: 14px;
+                    }
+
                     @media (max-width: 768px) {
                         .moon-container {
-                            width: 70px !important;
-                            height: 70px !important;
-                            top: calc(120px + env(safe-area-inset-top)) !important;
-                            right: 30px !important;
+                            width: 60px !important;
+                            height: 60px !important;
+                            top: calc(110px + env(safe-area-inset-top)) !important;
+                            right: 24px !important;
+                        }
+                        .moon-tooltip {
+                            top: calc(100% + 10px) !important;
+                            right: 0 !important;
+                            transform: none !important;
+                            width: 150px !important;
+                            padding: 10px !important;
                         }
                     }
-                    
+
                     @media (max-width: 480px) {
                         .moon-container {
-                            width: 50px !important;
-                            height: 50px !important;
-                            top: calc(100px + env(safe-area-inset-top)) !important;
-                            right: 20px !important;
-                            opacity: 0.7 !important;
+                            width: 48px !important;
+                            height: 48px !important;
+                            top: calc(95px + env(safe-area-inset-top)) !important;
+                            right: 16px !important;
+                            opacity: 0.85 !important;
+                        }
+                        .moon-tooltip {
+                            width: 135px !important;
+                            padding: 8px !important;
+                            font-size: 0.75rem !important;
                         }
                     }
                 `}

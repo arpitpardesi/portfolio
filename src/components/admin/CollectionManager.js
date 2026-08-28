@@ -81,17 +81,54 @@ const CollectionManager = ({ collectionName, title }) => {
     const [showSeedConfirm, setShowSeedConfirm] = useState(false);
 
     const handleSeedDefaults = async () => {
-        const defaults = [
-            { id: 'photography', title: 'Photography', description: 'Capturing moments in time.', color: '#f43f5e', category: 'photography', link: '/beyond-work/photography' },
-            { id: 'iot', title: 'IOT & Smart Home', description: 'Connecting the physical world.', color: '#0ea5e9', category: 'iot', link: '/beyond-work/iot' },
-            { id: 'ai', title: 'Artificial Intelligence', description: 'Teaching machines to think.', color: '#8b5cf6', category: 'ai', link: '/beyond-work/ai' },
-            { id: 'rpi', title: 'Raspberry Pi', description: 'Tiny computer, big ideas.', color: '#d946ef', category: 'raspberry-pi', link: '/beyond-work/raspberry-pi' }
-        ];
+        let defaults = [];
+        let targetCollection = collectionName;
+
+        if (collectionName === 'hobbies') {
+            defaults = [
+                { id: 'photography', title: 'Photography', description: 'Capturing moments in time.', color: '#f43f5e', category: 'photography', link: '/beyond-work/photography' },
+                { id: 'iot', title: 'IOT & Smart Home', description: 'Connecting the physical world.', color: '#0ea5e9', category: 'iot', link: '/beyond-work/iot' },
+                { id: 'ai', title: 'Artificial Intelligence', description: 'Teaching machines to think.', color: '#8b5cf6', category: 'ai', link: '/beyond-work/ai' },
+                { id: 'rpi', title: 'Raspberry Pi', description: 'Tiny computer, big ideas.', color: '#d946ef', category: 'raspberry-pi', link: '/beyond-work/raspberry-pi' }
+            ];
+        } else if (collectionName === 'blogs') {
+            defaults = [
+                {
+                    id: 'architecting-scalable-web-apps',
+                    title: 'Architecting Scalable Web Applications with React & Modern Frontend Patterns',
+                    description: 'A deep dive into state management, clean architecture, performance optimization, and modular code structures.',
+                    fullDesc: '### Architecting Scalable Web Applications\n\nBuilding modern web applications requires balancing performance, developer experience, and scalability.',
+                    tags: ['Tech', 'React', 'Architecture'],
+                    date: '2026-08-15',
+                    color: '#6366f1',
+                    isPinned: true,
+                    author: 'Arpit Pardesi',
+                    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
+                    isVisible: true
+                },
+                {
+                    id: 'building-autonomous-ai-agents',
+                    title: 'Building Autonomous AI Agents: From Prompting to Tool Orchestration',
+                    description: 'Exploring LLM tool calling, multi-agent coordination, stateful execution loops, and robust error recovery.',
+                    fullDesc: '### Autonomous AI Agents\n\nAI is shifting rapidly from single-turn chat interfaces to goal-directed autonomous agents.',
+                    tags: ['AI', 'Tech', 'Agents'],
+                    date: '2026-08-01',
+                    color: '#8b5cf6',
+                    isPinned: false,
+                    author: 'Arpit Pardesi',
+                    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+                    isVisible: true
+                }
+            ];
+        }
+
         try {
-            // Use setDoc to overwrite/create with specific IDs
             const { setDoc } = await import('firebase/firestore');
-            for (const h of defaults) {
-                await setDoc(doc(db, 'hobbies', h.id), h);
+            for (const item of defaults) {
+                await setDoc(doc(db, targetCollection, item.id), {
+                    ...item,
+                    createdAt: new Date()
+                });
             }
             alert("Defaults added successfully! 🎉");
             fetchItems();
@@ -202,7 +239,7 @@ const CollectionManager = ({ collectionName, title }) => {
                                 <FaTrash /> Delete ({selectedItems.length})
                             </button>
                         )}
-                        {collectionName === 'hobbies' && (
+                        {(collectionName === 'hobbies' || collectionName === 'blogs') && (
                             <button
                                 onClick={() => setShowSeedConfirm(true)}
                                 className="btn btn-outline"

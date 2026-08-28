@@ -7,7 +7,6 @@ import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import SettingsManager from './admin/SettingsManager';
-import BlogManager from './admin/BlogManager';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -32,7 +31,7 @@ const AdminDashboard = () => {
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
             case 'blogs':
-                return <BlogManager />;
+                return <CollectionManager key="blogs" collectionName="blogs" title="Blog Posts & Articles" />;
             case 'hobbies':
                 return <CollectionManager key="hobbies" collectionName="hobbies" title="Beyond Work Content (Hub Cards)" />;
             case 'photography':
