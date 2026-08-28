@@ -18,24 +18,33 @@ const SplashScreen = ({ onComplete }) => {
 
         // Play sound effect if motion is allowed
         if (!prefersReducedMotion) {
-            try {
-                const audio = new Audio(process.env.PUBLIC_URL + '/assets/splash-sound.mp3');
-                audio.volume = 0.4; // Moderate volume
-                audioRef.current = audio;
+            const soundUrl = `${process.env.PUBLIC_URL || ''}/assets/splash-sound.mp3`;
 
-                // Attempt to play (may be blocked by browser autoplay policy)
-                const playPromise = audio.play();
+            // Check if audio file exists before attempting playback
+            fetch(soundUrl, { method: 'HEAD' })
+                .then(response => {
+                    const contentType = response.headers.get('content-type') || '';
+                    // Ensure file exists and is not an HTML fallback page (common in SPAs on 404)
+                    if (response.ok && !contentType.includes('text/html')) {
+                        const audio = new Audio(soundUrl);
+                        audio.volume = 0.4;
+                        audioRef.current = audio;
 
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        // Autoplay was prevented - this is normal on first visit
-                        console.log('Audio autoplay prevented:', error.message);
-                    });
-                }
-            } catch (error) {
-                // Audio file not found or other error - fail silently
-                console.log('Audio playback error:', error.message);
-            }
+                        audio.onerror = () => {
+                            audioRef.current = null;
+                        };
+
+                        const playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => {
+                                // Autoplay prevented by browser policy - ignore silently
+                            });
+                        }
+                    }
+                })
+                .catch(() => {
+                    // Silently ignore if file is missing or network check fails
+                });
         }
 
         // Sequence:
