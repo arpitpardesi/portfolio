@@ -30,6 +30,8 @@ const AI = lazy(() => import('./components/AI'));
 const RaspberryPi = lazy(() => import('./components/RaspberryPi'));
 const DynamicHobbyPage = lazy(() => import('./components/DynamicHobbyPage'));
 const AllProjectsPage = lazy(() => import('./components/AllProjectsPage'));
+const Blog = lazy(() => import('./components/Blog'));
+const BlogPostDetail = lazy(() => import('./components/BlogPostDetail'));
 const Login = lazy(() => import('./components/Login'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 
@@ -123,6 +125,8 @@ function AppContent() {
                             {/* Dynamic Hobbies Route */}
                             <Route path="/beyond-work/:slug" element={<DynamicHobbyPage />} />
                             <Route path="/projects" element={<AllProjectsPage />} />
+                            <Route path="/blog" element={<Blog />} />
+                            <Route path="/blog/:id" element={<BlogPostDetail />} />
                             <Route path="/photography" element={<Photography />} />
                             <Route path="/playground" element={<PhysicsPlayground />} />
                             <Route path="/about" element={<DetailedAbout />} />

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode, FaCog } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode, FaCog, FaBookOpen } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import SettingsManager from './admin/SettingsManager';
+import BlogManager from './admin/BlogManager';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -30,6 +31,8 @@ const AdminDashboard = () => {
                 return <AnalyticsDashboard />;
             case 'projects':
                 return <CollectionManager key="projects" collectionName="projects" title="Projects (Main & Dynamic)" />;
+            case 'blogs':
+                return <BlogManager />;
             case 'hobbies':
                 return <CollectionManager key="hobbies" collectionName="hobbies" title="Beyond Work Content (Hub Cards)" />;
             case 'photography':
@@ -55,6 +58,7 @@ const AdminDashboard = () => {
         { id: 'analytics', label: 'Analytics', icon: <FaChartLine /> },
         { id: 'timeline', label: 'Timeline', icon: <FaClock /> },
         { id: 'skills', label: 'Skills', icon: <FaCode /> },
+        { id: 'blogs', label: 'Blog Posts', icon: <FaBookOpen /> },
         { id: 'hobbies', label: 'Manage Hobbies (Hub)', icon: <FaFolder /> },
         { id: 'projects', label: 'Projects', icon: <FaFolder /> },
         { id: 'photography', label: 'Photography', icon: <FaCamera /> },

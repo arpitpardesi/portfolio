@@ -176,6 +176,26 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                             <motion.li
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={showLogo ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+                                transition={{ delay: 1.05, duration: 0.5 }}
+                            >
+                                <Link
+                                    to="/blog"
+                                    className={location.pathname.includes('/blog') ? 'active-link' : ''}
+                                    style={{
+                                        fontSize: '0.9rem',
+                                        fontWeight: '500',
+                                        color: location.pathname.includes('/blog') ? 'var(--accent-color)' : 'var(--text-secondary)',
+                                    }}
+                                    onMouseOver={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                                    onMouseOut={(e) => (e.currentTarget.style.color = location.pathname.includes('/blog') ? 'var(--accent-color)' : 'var(--text-secondary)')}
+                                >
+                                    Blog
+                                </Link>
+                            </motion.li>
+
+                            <motion.li
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={showLogo ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
                                 transition={{ delay: 1.1, duration: 0.5 }}
                             >
                                 <Link
@@ -184,10 +204,10 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                                     style={{
                                         fontSize: '0.9rem',
                                         fontWeight: '500',
-                                        color: 'var(--text-secondary)',
+                                        color: location.pathname.includes('/beyond-work') ? 'var(--accent-color)' : 'var(--text-secondary)',
                                     }}
                                     onMouseOver={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                                    onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+                                    onMouseOut={(e) => (e.currentTarget.style.color = location.pathname.includes('/beyond-work') ? 'var(--accent-color)' : 'var(--text-secondary)')}
                                 >
                                     Beyond Work
                                 </Link>
@@ -370,17 +390,35 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                                     transition={{ delay: 0.3 }}
                                 >
                                     <Link
+                                        to="/blog"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        style={{
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            color: location.pathname.includes('/blog') ? 'var(--accent-color)' : 'var(--text-secondary)',
+                                            display: 'block',
+                                            padding: '0.5rem 0',
+                                        }}
+                                    >
+                                        Blog
+                                    </Link>
+                                </motion.li>
+                                <motion.li
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.35 }}
+                                >
+                                    <Link
                                         to="/beyond-work"
                                         onClick={() => setMobileMenuOpen(false)}
                                         style={{
                                             fontSize: '1.2rem',
                                             fontWeight: '500',
-                                            color: 'var(--text-secondary)',
+                                            color: location.pathname.includes('/beyond-work') ? 'var(--accent-color)' : 'var(--text-secondary)',
                                             display: 'block',
                                             padding: '0.5rem 0',
                                         }}
                                     >
-                                        {/* <span style={{ color: 'var(--accent-color)', marginRight: '0.5rem' }}>04.</span> */}
                                         Beyond Work
                                     </Link>
 

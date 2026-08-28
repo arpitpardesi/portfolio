@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     FaSearch, FaHome, FaUser, FaFolder, FaGamepad, FaCopy, FaCheck,
     FaTimes, FaCamera, FaRobot, FaLaptopCode, FaPalette, FaGithub,
-    FaLinkedin, FaTwitter, FaFilePdf, FaMicrochip, FaAdjust
+    FaLinkedin, FaTwitter, FaFilePdf, FaMicrochip, FaAdjust, FaBookOpen
 } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -25,11 +25,12 @@ const CommandPalette = ({ isOpen, onClose }) => {
     const [copied, setCopied] = useState(false);
     const [projects, setProjects] = useState([]);
     const [hobbies, setHobbies] = useState([]);
+    const [blogs, setBlogs] = useState([]);
     const inputRef = useRef(null);
 
     const email = settings.contactEmail || 'arpit.pardesi6@gmail.com';
 
-    // Fetch dynamic projects and hobbies from Firestore
+    // Fetch dynamic projects, hobbies, and blogs from Firestore
     useEffect(() => {
         const fetchDynamicData = async () => {
             try {
@@ -51,6 +52,16 @@ const CommandPalette = ({ isOpen, onClose }) => {
                         ...doc.data()
                     }));
                     setHobbies(hobbyData);
+                }
+
+                // Fetch blogs
+                const blogSnapshot = await getDocs(collection(db, 'blogs'));
+                if (!blogSnapshot.empty) {
+                    const blogData = blogSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    })).filter(b => b.isVisible !== false);
+                    setBlogs(blogData);
                 }
             } catch (err) {
                 console.error("CommandPalette Firestore fetch error:", err);
@@ -87,6 +98,14 @@ const CommandPalette = ({ isOpen, onClose }) => {
             icon: <FaFolder />,
             category: 'Navigation',
             action: () => { navigate('/projects'); onClose(); }
+        },
+        {
+            id: 'blog-page',
+            title: 'Blog & Insights',
+            subtitle: 'Read technical articles, AI agent write-ups & engineering insights',
+            icon: <FaBookOpen />,
+            category: 'Navigation',
+            action: () => { navigate('/blog'); onClose(); }
         },
         {
             id: 'playground',
@@ -168,6 +187,19 @@ const CommandPalette = ({ isOpen, onClose }) => {
         category: 'Dynamic Hobbies',
         action: () => {
             navigate(`/beyond-work/${hobby.slug || hobby.id}`);
+            onClose();
+        }
+    }));
+
+    // Dynamic Blog Items
+    const dynamicBlogItems = blogs.map(blog => ({
+        id: `blog-${blog.id}`,
+        title: `Article: ${blog.title}`,
+        subtitle: blog.description || 'Read full article',
+        icon: <FaBookOpen style={{ color: 'var(--accent-color)' }} />,
+        category: 'Blog Articles',
+        action: () => {
+            navigate(`/blog/${blog.id}`);
             onClose();
         }
     }));
@@ -255,6 +287,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
     const allItems = [
         ...staticNavItems,
         ...dynamicProjectItems,
+        ...dynamicBlogItems,
         ...dynamicHobbyItems,
         ...themeItems,
         ...actionItems

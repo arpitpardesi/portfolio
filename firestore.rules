@@ -16,6 +16,7 @@ service cloud.firestore {
     match /skills/{doc} { allow read: if true; }
     match /timeline/{doc} { allow read: if true; }
     match /photography/{doc} { allow read: if true; }
+    match /blogs/{doc} { allow read: if true; }
     match /settings/{doc} { allow read: if true; }
     
     // Visitor Logging
