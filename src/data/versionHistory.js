@@ -10,6 +10,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "release version 4.5.3 with GitHub API-integrated version history generation",
                 "hash": "3ae901e1"
+            },
+            {
+                "type": "refactor",
+                "description": "automate version history generation using chronological git log parsing and improve deduplication logic",
+                "hash": "2ed2df6b"
             }
         ],
         "isLatest": true

@@ -11,6 +11,7 @@ All notable changes to this project from Day One are documented in this file.
 *Automated git log version extraction and linked prestart/prebuild triggers for seamless release tracking.*
 
 - **FEAT**: release version 4.5.3 with GitHub API-integrated version history generation
+- **REFACTOR**: automate version history generation using chronological git log parsing and improve deduplication logic
 
 ---
 
