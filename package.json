@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "homepage": "https://arpitpardesi.github.io/portfolio",
-  "version": "4.5.2",
+  "version": "4.5.3",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -25,6 +25,7 @@
   },
   "scripts": {
     "version-gen": "node scripts/generate-version-history.js",
+    "prestart": "node scripts/generate-version-history.js",
     "prebuild": "node scripts/generate-version-history.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

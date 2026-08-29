@@ -8,6 +8,11 @@ export const versionHistory = [
         "changes": [
             {
                 "type": "feat",
+                "description": "automate version history generation using Git log data and sync with project releases",
+                "hash": "efd48a20"
+            },
+            {
+                "type": "feat",
                 "description": "add versionHistory Firestore rules and implement multiline change log parsing",
                 "hash": "9d789b80"
             },

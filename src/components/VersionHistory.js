@@ -40,11 +40,21 @@ const compareSemVer = (v1, v2) => {
     return 0;
 };
 
+const parseCommitType = (msg) => {
+    const lower = msg.toLowerCase();
+    if (lower.startsWith('feat') || lower.includes('implement') || lower.includes('add')) return 'feat';
+    if (lower.startsWith('refactor') || lower.includes('refine') || lower.includes('update')) return 'refactor';
+    if (lower.startsWith('fix') || lower.includes('bug') || lower.includes('resolve')) return 'fix';
+    if (lower.startsWith('style') || lower.includes('css') || lower.includes('ui')) return 'style';
+    if (lower.startsWith('docs') || lower.includes('readme')) return 'doc';
+    return 'chore';
+};
+
 const normalizeChanges = (item) => {
     if (Array.isArray(item.changes) && item.changes.length > 0) {
         return item.changes.map(c => {
-            if (typeof c === 'string') return { type: 'feat', description: c };
-            return { type: c.type || 'feat', description: c.description || c.desc || c.title || '' };
+            if (typeof c === 'string') return { type: parseCommitType(c), description: c };
+            return { type: c.type || parseCommitType(c.description || ''), description: c.description || c.desc || c.title || '' };
         });
     }
 
@@ -53,12 +63,7 @@ const normalizeChanges = (item) => {
         const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
         return lines.map(line => {
             const clean = line.replace(/^[-*•\d.]+\s*/, '');
-            let type = 'feat';
-            if (/refactor/i.test(line)) type = 'refactor';
-            else if (/fix|bug/i.test(line)) type = 'fix';
-            else if (/style|ui|css/i.test(line)) type = 'style';
-            else if (/chore|bump|build/i.test(line)) type = 'chore';
-            return { type, description: clean || line };
+            return { type: parseCommitType(clean || line), description: clean || line };
         });
     }
 
@@ -73,12 +78,12 @@ const VersionHistory = () => {
     const [loading, setLoading] = useState(true);
     const [expandedVersions, setExpandedVersions] = useState({ [packageJson.version]: true });
 
-    // Fetch dynamic versions from Firestore, fallback to static version data
     useEffect(() => {
         const fetchVersions = async () => {
             setLoading(true);
             let combined = [...staticVersionHistory];
 
+            // 1. Fetch Firestore Version History if configured
             try {
                 const snapshot = await getDocs(collection(db, 'versionHistory'));
                 if (!snapshot.empty) {
@@ -94,9 +99,56 @@ const VersionHistory = () => {
                     }
                 }
             } catch (err) {
-                console.error("Firestore versionHistory fetch error, using local fallback:", err);
+                // Graceful fallback if firestore permissions or table pending
             }
 
+            // 2. Fetch live commits from GitHub API directly
+            try {
+                const ghRes = await fetch('https://api.github.com/repos/arpitpardesi/portfolio/commits?per_page=30');
+                if (ghRes.ok) {
+                    const ghCommits = await ghRes.json();
+                    if (Array.isArray(ghCommits) && ghCommits.length > 0) {
+                        const currentPkgVer = String(packageJson.version);
+                        let latestBucket = combined.find(v => String(v.version) === currentPkgVer);
+
+                        if (!latestBucket) {
+                            const today = new Date().toISOString().split('T')[0];
+                            latestBucket = {
+                                version: currentPkgVer,
+                                date: today,
+                                title: `Version ${currentPkgVer} Release`,
+                                isLatest: true,
+                                highlights: `Live production build for Version ${currentPkgVer} synced with GitHub repo.`,
+                                changes: []
+                            };
+                            combined.unshift(latestBucket);
+                        }
+
+                        const existingHashes = new Set((latestBucket.changes || []).map(c => c.hash).filter(Boolean));
+                        const existingDescs = new Set((latestBucket.changes || []).map(c => c.description.toLowerCase()));
+
+                        ghCommits.forEach(item => {
+                            const hash = item.sha ? item.sha.substring(0, 8) : '';
+                            const rawMsg = item.commit?.message ? item.commit.message.split('\n')[0] : '';
+                            const cleanMsg = rawMsg.replace(/^(feat|fix|refactor|style|chore|docs)(\([^)]+\))?:\s*/i, '').trim();
+
+                            if (cleanMsg && !existingHashes.has(hash) && !existingDescs.has(cleanMsg.toLowerCase())) {
+                                const type = parseCommitType(rawMsg);
+                                latestBucket.changes.unshift({
+                                    type,
+                                    description: cleanMsg,
+                                    hash
+                                });
+                                existingDescs.add(cleanMsg.toLowerCase());
+                            }
+                        });
+                    }
+                }
+            } catch (ghErr) {
+                // Graceful fallback to static data if offline or rate limited
+            }
+
+            // Ensure current package.version exists in combined list
             const currentPkgVer = String(packageJson.version);
             const hasCurrentVer = combined.some(v => String(v.version) === currentPkgVer);
 
@@ -109,17 +161,17 @@ const VersionHistory = () => {
                     isLatest: true,
                     highlights: `Production deployment of Version ${currentPkgVer}. Updated system configurations and performance optimizations.`,
                     changes: [
-                        { type: 'feat', description: `Deployed production build for version ${currentPkgVer}` },
-                        { type: 'chore', description: `Updated project package version tag to ${currentPkgVer}` }
+                        { type: 'feat', description: `Deployed production build for version ${currentPkgVer}` }
                     ]
                 };
-
                 combined.unshift(dynamicCurrentEntry);
             }
 
+            // Sort descending using strict SemVer
             combined.sort((a, b) => compareSemVer(a.version, b.version));
 
-            if (combined.length > 0) {
+            // Set isLatest strictly on top version
+            if (sortedVersionsHaveItems(combined)) {
                 const topVer = String(combined[0].version);
                 combined = combined.map(v => ({
                     ...v,
@@ -133,6 +185,8 @@ const VersionHistory = () => {
 
         fetchVersions();
     }, []);
+
+    const sortedVersionsHaveItems = (arr) => Array.isArray(arr) && arr.length > 0;
 
     const toggleExpand = (ver) => {
         setExpandedVersions(prev => ({
@@ -548,7 +602,7 @@ const VersionHistory = () => {
                                                             padding: '0 1.5rem 1.5rem 1.5rem',
                                                             borderTop: '1px solid var(--border-color, rgba(255, 255, 255, 0.05))'
                                                         }}>
-                                                            {/* Highlights & Description Callout */}
+                                                            {/* Highlights Callout */}
                                                             {summaryText && (
                                                                 <p style={{
                                                                     margin: '1.2rem 0 1.25rem 0',
@@ -567,7 +621,7 @@ const VersionHistory = () => {
                                                                 </p>
                                                             )}
 
-                                                            {/* Detailed Changes List */}
+                                                            {/* Changes List */}
                                                             {changesList.length > 0 && (
                                                                 <div style={{
                                                                     display: 'flex',

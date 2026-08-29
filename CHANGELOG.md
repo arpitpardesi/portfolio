@@ -10,6 +10,7 @@ All notable changes to this project from Day One are documented in this file.
 
 *Configured public read permissions for versionHistory in firestore.rules, added firebase.json workspace configuration, and implemented flexible description parsers.*
 
+- **FEAT**: automate version history generation using Git log data and sync with project releases
 - **FEAT**: add versionHistory Firestore rules and implement multiline change log parsing
 - **FEAT**: implement semver sorting and robust change normalization in VersionHistory component, and bump app version to 4.5.2
 
