@@ -96,7 +96,7 @@ const BlogPostDetail = () => {
                     whileTap={{ scale: 0.95 }}
                     style={{ borderRadius: '50px', display: 'inline-block' }}
                 >
-                    <button onClick={() => navigate('/blog')} style={{
+                    <button onClick={() => navigate('/blog', { replace: true })} style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
@@ -149,7 +149,7 @@ const BlogPostDetail = () => {
                     whileTap={{ scale: 0.95 }}
                     style={{ borderRadius: '50px', display: 'inline-block' }}
                 >
-                    <button onClick={() => navigate('/blog')} style={{
+                    <button onClick={() => navigate('/blog', { replace: true })} style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
@@ -322,7 +322,7 @@ const BlogPostDetail = () => {
                         whileTap={{ scale: 0.95 }}
                         style={{ borderRadius: '50px', display: 'inline-block' }}
                     >
-                        <button onClick={() => navigate('/blog')} style={{
+                        <button onClick={() => navigate('/blog', { replace: true })} style={{
                             display: 'flex',
                             alignItems: 'center',
                             gap: '0.5rem',

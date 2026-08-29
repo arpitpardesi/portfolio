@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { FaArrowRight } from 'react-icons/fa';
 import { db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useSettings } from '../context/SettingsContext';
@@ -140,31 +141,34 @@ const About = () => {
                         <div style={{ marginTop: '2.5rem' }}>
                             <motion.div
                                 whileHover={{
-                                    scale: 1.05,
-                                    boxShadow: "0px 0px 8px var(--accent-color)",
-                                    backgroundColor: "rgba(var(--accent-rgb), 0.1)"
+                                    scale: 1.04,
+                                    boxShadow: "0px 0px 22px rgba(var(--accent-rgb), 0.35)",
+                                    backgroundColor: "rgba(var(--accent-rgb), 0.15)"
                                 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileTap={{ scale: 0.96 }}
                                 style={{
                                     display: 'inline-block',
-                                    borderRadius: '4px'
+                                    borderRadius: '10px'
                                 }}
                             >
                                 <Link to="/about" style={{
                                     display: 'inline-flex',
                                     alignItems: 'center',
-                                    gap: '0.5rem',
-                                    padding: '10px 20px',
-                                    background: 'rgba(var(--accent-rgb), 0.1)',
+                                    gap: '0.75rem',
+                                    padding: '0.9rem 2.2rem',
+                                    background: 'rgba(var(--accent-rgb), 0.08)',
                                     border: '1px solid var(--accent-color)',
-                                    borderRadius: '4px',
+                                    borderRadius: '10px',
                                     color: 'var(--accent-color)',
-                                    fontWeight: '500',
+                                    fontWeight: '600',
+                                    fontSize: '1rem',
+                                    backdropFilter: 'blur(10px)',
                                     transition: 'all 0.3s ease',
                                     cursor: 'pointer',
                                     textDecoration: 'none'
                                 }}>
-                                    Want to know more about me? →
+                                    Want to know more about me?
+                                    <FaArrowRight />
                                 </Link>
                             </motion.div>
                         </div>

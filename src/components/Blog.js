@@ -133,7 +133,7 @@ const Blog = () => {
                     whileTap={{ scale: 0.95 }}
                     style={{ borderRadius: '50px', display: 'inline-block' }}
                 >
-                    <button onClick={() => navigate(-1)} style={{
+                    <button onClick={() => navigate('/')} style={{
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',

@@ -145,27 +145,28 @@ const Contact = () => {
                             href={`mailto:${settings.contactEmail || 'arpit.pardesi6@gmail.com'}`}
                             className="contact-btn primary"
                             style={{
-                                padding: '1rem 2.5rem',
-                                borderRadius: '8px',
-                                background: 'transparent',
+                                padding: '0.9rem 2.2rem',
+                                borderRadius: '10px',
+                                background: 'rgba(var(--accent-rgb), 0.08)',
                                 border: '1px solid var(--accent-color)',
                                 color: 'var(--accent-color)',
                                 fontWeight: '600',
-                                fontSize: '1.1rem',
+                                fontSize: '1rem',
                                 textDecoration: 'none',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '0.75rem',
+                                backdropFilter: 'blur(10px)',
                                 transition: 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)',
                                 position: 'relative',
                                 overflow: 'hidden'
                             }}
                             whileHover={{
-                                scale: 1.05,
-                                boxShadow: "0px 0px 8px var(--accent-color)",
-                                backgroundColor: "rgba(var(--accent-rgb), 0.1)"
+                                scale: 1.04,
+                                boxShadow: "0px 0px 22px rgba(var(--accent-rgb), 0.35)",
+                                backgroundColor: "rgba(var(--accent-rgb), 0.15)"
                             }}
-                            whileTap={{ scale: 0.95 }}
+                            whileTap={{ scale: 0.96 }}
                         >
                             <FaEnvelope />
                             {settings.contactCta || 'Say Hello'}
@@ -176,13 +177,13 @@ const Contact = () => {
                                 onClick={handleCopyEmail}
                                 className="contact-btn secondary"
                                 style={{
-                                    padding: '1rem 2rem',
-                                    borderRadius: '8px',
+                                    padding: '0.9rem 2rem',
+                                    borderRadius: '10px',
                                     background: 'rgba(255, 255, 255, 0.05)',
-                                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid rgba(255, 255, 255, 0.12)',
                                     color: 'var(--text-primary)',
-                                    fontWeight: '500',
-                                    fontSize: '1.1rem',
+                                    fontWeight: '600',
+                                    fontSize: '1rem',
                                     cursor: 'pointer',
                                     display: 'flex',
                                     alignItems: 'center',

@@ -189,23 +189,25 @@ const Hero = ({ startAnimation = true }) => {
                         }}
                         className="hero-cta"
                         style={{
-                            padding: '1rem 2.5rem',
+                            padding: '0.9rem 2.2rem',
                             border: '1px solid var(--accent-color)',
-                            borderRadius: '4px',
+                            borderRadius: '10px',
+                            background: 'rgba(var(--accent-rgb), 0.08)',
                             color: 'var(--accent-color)',
-                            fontWeight: '500',
+                            fontWeight: '600',
                             fontSize: '1rem',
                             textDecoration: 'none',
                             display: 'inline-block',
+                            backdropFilter: 'blur(10px)',
                             position: 'relative',
                             overflow: 'hidden'
                         }}
                         whileHover={{
-                            scale: 1.05,
-                            boxShadow: "0px 0px 8px var(--accent-color)",
-                            backgroundColor: "rgba(var(--accent-rgb), 0.1)"
+                            scale: 1.04,
+                            boxShadow: "0px 0px 22px rgba(var(--accent-rgb), 0.35)",
+                            backgroundColor: "rgba(var(--accent-rgb), 0.15)"
                         }}
-                        whileTap={{ scale: 0.95 }}
+                        whileTap={{ scale: 0.96 }}
                     >
                         {settings.heroCtaText || "Explore My Journey"}
                     </motion.a>
