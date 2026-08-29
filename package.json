@@ -24,6 +24,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "version-gen": "node scripts/generate-version-history.js",
+    "prebuild": "node scripts/generate-version-history.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
