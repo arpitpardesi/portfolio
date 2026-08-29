@@ -124,22 +124,30 @@ const VersionHistory = () => {
                             combined.unshift(latestBucket);
                         }
 
-                        const existingHashes = new Set((latestBucket.changes || []).map(c => c.hash).filter(Boolean));
-                        const existingDescs = new Set((latestBucket.changes || []).map(c => c.description.toLowerCase()));
+                        // Collect all existing commit hashes and descriptions across ALL version buckets to prevent past commit leaks
+                        const allExistingHashes = new Set();
+                        const allExistingDescs = new Set();
+                        combined.forEach(bucket => {
+                            (bucket.changes || []).forEach(c => {
+                                if (c.hash) allExistingHashes.add(c.hash);
+                                if (c.description) allExistingDescs.add(c.description.toLowerCase());
+                            });
+                        });
 
                         ghCommits.forEach(item => {
                             const hash = item.sha ? item.sha.substring(0, 8) : '';
                             const rawMsg = item.commit?.message ? item.commit.message.split('\n')[0] : '';
                             const cleanMsg = rawMsg.replace(/^(feat|fix|refactor|style|chore|docs)(\([^)]+\))?:\s*/i, '').trim();
 
-                            if (cleanMsg && !existingHashes.has(hash) && !existingDescs.has(cleanMsg.toLowerCase())) {
+                            if (cleanMsg && !allExistingHashes.has(hash) && !allExistingDescs.has(cleanMsg.toLowerCase())) {
                                 const type = parseCommitType(rawMsg);
                                 latestBucket.changes.unshift({
                                     type,
                                     description: cleanMsg,
                                     hash
                                 });
-                                existingDescs.add(cleanMsg.toLowerCase());
+                                allExistingHashes.add(hash);
+                                allExistingDescs.add(cleanMsg.toLowerCase());
                             }
                         });
                     }

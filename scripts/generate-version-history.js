@@ -31,43 +31,39 @@ function cleanCommitMessage(msg) {
         .trim();
 }
 
-function getVersionForCommit(commitDate, commitMessage) {
-    const lowerMsg = commitMessage.toLowerCase();
-
-    // Check for explicit version bump patterns
-    const verMatch = commitMessage.match(/(?:bump|version|release|v)\s*(?:to\s*)?v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i);
+function detectVersionBump(message) {
+    const verMatch = message.match(/(?:bump|version|release|v)\s*(?:to\s*)?v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i);
     if (verMatch) {
         return verMatch[1];
     }
-
-    // Historical date-based version bucketing for early commits
-    if (commitDate.startsWith('2022')) return '1.0';
-    if (commitDate.startsWith('2025')) return '2.0';
-    if (commitDate >= '2026-01-01' && commitDate <= '2026-05-31') return '3.0';
-
     return null;
 }
 
 function getVersionMetadata(ver) {
     switch (ver) {
+        case '4.5.3':
+            return {
+                title: "Git Commit Automation & Dynamic Version Sync",
+                highlights: "Automated git log version extraction and linked prestart/prebuild triggers for seamless release tracking."
+            };
         case '4.5.2':
             return {
-                title: "Firestore Security Rules & Multi-Format Description Parsing",
-                highlights: "Configured public read permissions for versionHistory in firestore.rules, added firebase.json workspace configuration, and implemented flexible description parsers."
+                title: "Firestore Security Rules & Description Normalization",
+                highlights: "Configured public read permissions for versionHistory in firestore.rules and built multi-line description parsers."
             };
         case '4.5.1':
             return {
                 title: "Dynamic Versioning & SemVer Alignment",
-                highlights: "Implemented semantic version sorting (compareSemVer) and added Version History collection management to the Firebase Admin Dashboard."
+                highlights: "Implemented semantic version sorting (compareSemVer) and added Version History management to Firebase Admin Dashboard."
             };
         case '4.5':
             return {
                 title: "Version History & System Evolution Page",
-                highlights: "Built the interactive Version History page (/changelog) with Framer Motion timeline, category pills, search input, and Command Palette integration."
+                highlights: "Built the interactive Version History page (/changelog) with Framer Motion timeline, category pills, and Command Palette integration."
             };
         case '4.4':
             return {
-                title: "UI Aesthetics Polish & Button Refactor",
+                title: "UI Polish & Navigation Refactor",
                 highlights: "Updated button styles with glassmorphic hover effects, glowing accent borders, and streamlined routing navigation logic."
             };
         case '4.3.1':
@@ -119,13 +115,14 @@ function generateCompleteVersionHistory() {
         const rootDir = path.resolve(__dirname, '..');
         const pkgPath = path.join(rootDir, 'package.json');
         const pkgData = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-        const currentVersion = String(pkgData.version || '4.5.2');
+        const currentVersion = String(pkgData.version || '4.5.3');
 
-        // Fetch complete git log from day one
-        const gitOutput = execSync('git log --format="%h|%ad|%s" --date=short', { cwd: rootDir, encoding: 'utf8' });
+        // Fetch complete git log from day one in CHRONOLOGICAL order (oldest to newest)
+        const gitOutput = execSync('git log --reverse --format="%h|%ad|%s" --date=short', { cwd: rootDir, encoding: 'utf8' });
         const lines = gitOutput.split('\n').filter(l => l.trim() !== '');
 
         const versionBuckets = new Map();
+        let currentActiveVersion = '1.0';
 
         // Helper to ensure a version bucket exists
         const ensureBucket = (ver, date) => {
@@ -141,22 +138,28 @@ function generateCompleteVersionHistory() {
             }
         };
 
-        let currentActiveVersion = currentVersion;
-
         for (const line of lines) {
             const parts = line.split('|');
             if (parts.length < 3) continue;
 
             const [hash, date, message] = [parts[0], parts[1], parts.slice(2).join('|')];
 
-            const detectedVer = getVersionForCommit(date, message);
+            // Check if this commit bumps version
+            const detectedVer = detectVersionBump(message);
             if (detectedVer) {
                 currentActiveVersion = detectedVer;
+            } else if (date.startsWith('2022')) {
+                currentActiveVersion = '1.0';
+            } else if (date.startsWith('2025')) {
+                currentActiveVersion = '2.0';
+            } else if (date >= '2026-01-01' && date <= '2026-05-31' && compareSemVer(currentActiveVersion, '3.0') > 0) {
+                currentActiveVersion = '3.0';
             }
 
             ensureBucket(currentActiveVersion, date);
 
             const bucket = versionBuckets.get(currentActiveVersion);
+            bucket.date = date; // update to latest date in bucket
             const type = parseCommitType(message);
             const description = cleanCommitMessage(message);
 
@@ -168,6 +171,9 @@ function generateCompleteVersionHistory() {
                 });
             }
         }
+
+        // Ensure current package.json version bucket exists
+        ensureBucket(currentVersion, new Date().toISOString().split('T')[0]);
 
         let sortedVersions = Array.from(versionBuckets.values());
 
