@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.5.2] - 2026-08-29
+
+### Fixed
+- **Firestore Permissions**: Configured public read security rules for `versionHistory` collection in `firestore.rules`.
+
+### Added
+- **Multi-format Description Parser**: Built `normalizeChanges` parser for handling multiline bullet points, custom tags, and markdown descriptions across dynamic release inputs.
+- **Firebase Config**: Added `firebase.json` workspace configuration linking `firestore.rules`.
+
+### Chores
+- **Version Bump**: Updated project version to 4.5.2 in `package.json`.
+
+---
+
 ## [4.5.1] - 2026-08-29
 
 ### Added

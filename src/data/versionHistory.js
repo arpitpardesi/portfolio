@@ -1,9 +1,22 @@
 export const versionHistory = [
     {
+        version: "4.5.2",
+        date: "2026-08-29",
+        title: "Firestore Rules & Comprehensive Description Parsing",
+        isLatest: true,
+        highlights: "Resolved Firestore versionHistory security permissions and added multi-format description parsing for bullet points and markdown.",
+        changes: [
+            { type: "fix", description: "Configured public read security rules for versionHistory collection in firestore.rules" },
+            { type: "feat", description: "Built normalizeChanges parser for multiline bullet points, custom tags, and markdown descriptions" },
+            { type: "feat", description: "Added firebase.json workspace configuration for firestore deployment" },
+            { type: "chore", description: "Bumped project version to 4.5.2 in package.json" }
+        ]
+    },
+    {
         version: "4.5.1",
         date: "2026-08-29",
         title: "Dynamic Versioning & SemVer Alignment",
-        isLatest: true,
+        isLatest: false,
         highlights: "Enhanced version release tracking with dynamic package.json auto-detection, SemVer sorting, and Firestore sync.",
         changes: [
             { type: "feat", description: "Implemented dynamic version auto-detection and SemVer sorting algorithm" },

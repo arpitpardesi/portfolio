@@ -18,6 +18,7 @@ service cloud.firestore {
     match /photography/{doc} { allow read: if true; }
     match /blogs/{doc} { allow read: if true; }
     match /settings/{doc} { allow read: if true; }
+    match /versionHistory/{doc} { allow read: if true; }
     
     // Visitor Logging
     match /visitor_logs/{doc} {
