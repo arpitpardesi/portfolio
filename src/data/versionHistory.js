@@ -20,6 +20,11 @@ export const versionHistory = [
                 "type": "refactor",
                 "description": "automate version history generation using chronological git log parsing and improved deduplication logic",
                 "hash": "0fba35dd"
+            },
+            {
+                "type": "feat",
+                "description": "add latest refactor entry to version history and changelog",
+                "hash": "d69b2ed1"
             }
         ],
         "isLatest": true
