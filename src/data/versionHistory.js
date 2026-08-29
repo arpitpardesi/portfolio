@@ -25,6 +25,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add latest refactor entry to version history and changelog",
                 "hash": "d69b2ed1"
+            },
+            {
+                "type": "feat",
+                "description": "add version history link to header and update VersionHistory styling",
+                "hash": "c58610bb"
             }
         ],
         "isLatest": true

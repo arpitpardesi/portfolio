@@ -235,24 +235,18 @@ const VersionHistory = () => {
     }, [versionsList, searchQuery, selectedCategory]);
 
     return (
-        <section className="version-history-page" style={{
-            minHeight: '100vh',
-            padding: 'calc(120px + env(safe-area-inset-top)) 20px 80px',
-            position: 'relative',
-            zIndex: 1
-        }}>
+        <section className="version-history-page">
             <Helmet>
                 <title>Version History | Arpit Pardesi</title>
                 <meta name="description" content="Complete version history and changelog for Arpit Pardesi's portfolio website." />
             </Helmet>
 
-            <div className="container" style={{ maxWidth: '1100px', width: '100%' }}>
+            <div className="container vh-container">
                 {/* Floating Back Navigation */}
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
-                    style={{ position: 'fixed', top: 'calc(100px + env(safe-area-inset-top))', left: '40px', zIndex: 100 }}
                     className="back-nav"
                 >
                     <motion.div
@@ -264,61 +258,28 @@ const VersionHistory = () => {
                         whileTap={{ scale: 0.95 }}
                         style={{ borderRadius: '50px', display: 'inline-block' }}
                     >
-                        <button onClick={() => navigate(-1)} style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            color: 'var(--text-secondary)',
-                            textDecoration: 'none',
-                            fontSize: '1rem',
-                            fontWeight: '500',
-                            padding: '8px 16px',
-                            borderRadius: '50px',
-                            background: 'rgba(10, 10, 10, 0.6)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid var(--border-color, rgba(255, 255, 255, 0.1))',
-                            transition: 'all 0.3s ease',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit'
-                        }}>
+                        <button onClick={() => navigate(-1)} className="back-nav-btn">
                             <FaArrowLeft /> Back
                         </button>
                     </motion.div>
                 </motion.div>
 
-                {/* Section Header */}
+                {/* Section Header Title */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    style={{ textAlign: 'center', marginBottom: '45px' }}
+                    transition={{ duration: 0.8 }}
+                    className="vh-header"
                 >
-                    <span className="section-subtitle" style={{
-                        fontFamily: 'var(--font-mono, monospace)',
-                        color: 'var(--accent-color)',
-                        fontSize: '0.9rem',
-                        letterSpacing: '2px',
-                        textTransform: 'uppercase',
-                        display: 'block',
-                        marginBottom: '10px'
-                    }}>
-                        {"// System Evolution & Changelog"}
-                    </span>
-                    <h1 className="section-title" style={{
-                        fontSize: 'clamp(2.2rem, 5vw, 3.2rem)',
-                        fontWeight: '700',
-                        color: 'var(--text-primary)',
-                        margin: '0 0 15px 0'
-                    }}>
-                        Version History
+                    <h1 className="vh-main-title">
+                        <span className="vh-accent-text">
+                            Version{' '}
+                        </span>
+                        <span className="vh-white-text">
+                            History
+                        </span>
                     </h1>
-                    <p style={{
-                        color: 'var(--text-secondary)',
-                        maxWidth: '620px',
-                        margin: '0 auto',
-                        fontSize: '1rem',
-                        lineHeight: '1.6'
-                    }}>
+                    <p className="vh-description">
                         Explore release milestones, feature implementations, UI refinements, and architectural improvements across all updates.
                     </p>
                 </motion.div>
@@ -327,128 +288,54 @@ const VersionHistory = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 }}
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '20px',
-                        marginBottom: '50px'
-                    }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="vh-controls"
                 >
-                    {/* Search Input */}
-                    <div style={{
-                        position: 'relative',
-                        maxWidth: '520px',
-                        width: '100%'
-                    }}>
-                        <FaSearch style={{
-                            position: 'absolute',
-                            left: '18px',
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            color: 'var(--text-secondary)',
-                            fontSize: '0.9rem'
-                        }} />
+                    {/* Search Input Box */}
+                    <div className="vh-search-box">
+                        <FaSearch className="vh-search-icon" />
                         <input
                             type="text"
                             placeholder="Search changes, features, version numbers..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: '12px 18px 12px 48px',
-                                borderRadius: '50px',
-                                background: 'rgba(15, 15, 18, 0.6)',
-                                border: '1px solid var(--border-color, rgba(255, 255, 255, 0.1))',
-                                color: 'var(--text-primary)',
-                                fontSize: '0.95rem',
-                                outline: 'none',
-                                transition: 'all 0.3s ease',
-                                backdropFilter: 'blur(10px)',
-                                boxSizing: 'border-box'
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = 'var(--accent-color)'}
-                            onBlur={(e) => e.target.style.borderColor = 'var(--border-color, rgba(255, 255, 255, 0.1))'}
+                            className="vh-search-input"
                         />
                     </div>
 
-                    {/* Category Filter Pills */}
-                    <div style={{
-                        display: 'flex',
-                        gap: '10px',
-                        flexWrap: 'wrap',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                        <span style={{
-                            fontSize: '0.85rem',
-                            color: 'var(--text-secondary)',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.4rem',
-                            marginRight: '0.25rem'
-                        }}>
+                    {/* Filter Pills Bar */}
+                    <div className="vh-filter-row">
+                        <span className="vh-filter-label">
                             <FaFilter style={{ fontSize: '0.75rem' }} /> Filter:
                         </span>
-                        {categories.map(cat => {
-                            const active = selectedCategory === cat.id;
-                            return (
-                                <motion.button
-                                    key={cat.id}
-                                    onClick={() => setSelectedCategory(cat.id)}
-                                    whileHover={{ scale: 1.04 }}
-                                    whileTap={{ scale: 0.96 }}
-                                    style={{
-                                        padding: '8px 20px',
-                                        borderRadius: '50px',
-                                        border: active ? '1px solid var(--accent-color)' : '1px solid var(--border-color, rgba(255, 255, 255, 0.1))',
-                                        background: active ? 'rgba(var(--accent-rgb, 239, 68, 68), 0.15)' : 'rgba(15, 15, 18, 0.6)',
-                                        color: active ? 'var(--accent-color)' : 'var(--text-secondary)',
-                                        fontSize: '0.85rem',
-                                        fontWeight: active ? '600' : '400',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s ease',
-                                        backdropFilter: 'blur(5px)',
-                                        fontFamily: 'inherit'
-                                    }}
-                                >
-                                    {cat.label}
-                                </motion.button>
-                            );
-                        })}
+                        <div className="vh-pills-container">
+                            {categories.map(cat => {
+                                const active = selectedCategory === cat.id;
+                                return (
+                                    <button
+                                        key={cat.id}
+                                        onClick={() => setSelectedCategory(cat.id)}
+                                        className={`vh-pill-btn ${active ? 'active' : ''}`}
+                                    >
+                                        {cat.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
                 </motion.div>
 
-                {/* Version Timeline */}
-                <div style={{
-                    position: 'relative',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '24px'
-                }}>
-                    {/* Vertical Timeline Stem Line */}
-                    <div style={{
-                        position: 'absolute',
-                        left: '23px',
-                        top: '24px',
-                        bottom: '24px',
-                        width: '2px',
-                        background: 'linear-gradient(to bottom, var(--accent-color) 0%, rgba(255, 255, 255, 0.05) 100%)',
-                        zIndex: 0
-                    }} />
+                {/* Floating Cosmic Timeline */}
+                <div className="vh-timeline">
+                    {/* Simple Clean Connecting Line */}
+                    <div className="vh-simple-line" />
 
                     <AnimatePresence mode="popLayout">
                         {loading ? (
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                style={{
-                                    padding: '3rem',
-                                    textAlign: 'center',
-                                    color: 'var(--accent-color)',
-                                    fontFamily: 'var(--font-mono, monospace)'
-                                }}
+                                className="vh-loading"
                             >
                                 Loading release history...
                             </motion.div>
@@ -457,14 +344,7 @@ const VersionHistory = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                style={{
-                                    padding: '4rem 2rem',
-                                    textAlign: 'center',
-                                    background: 'rgba(15, 15, 18, 0.5)',
-                                    borderRadius: '16px',
-                                    border: '1px dashed var(--border-color, rgba(255, 255, 255, 0.1))',
-                                    color: 'var(--text-secondary)'
-                                }}
+                                className="vh-empty"
                             >
                                 <FaHistory style={{ fontSize: '2.5rem', marginBottom: '1rem', opacity: 0.5, color: 'var(--accent-color)' }} />
                                 <p style={{ fontSize: '1.05rem', margin: 0 }}>No version releases match your search or filter options.</p>
@@ -474,123 +354,77 @@ const VersionHistory = () => {
                                 const isExpanded = expandedVersions[item.version] ?? (index === 0);
                                 const summaryText = item.highlights || item.description || item.desc || item.fullDesc;
                                 const changesList = normalizeChanges(item);
+                                const floatDelay = (index % 4) * 0.6;
 
                                 return (
                                     <motion.div
                                         key={item.version}
-                                        initial={{ opacity: 0, y: 25 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.95 }}
-                                        transition={{ duration: 0.4, delay: index * 0.04 }}
-                                        style={{
-                                            position: 'relative',
-                                            zIndex: 1,
-                                            paddingLeft: '52px'
+                                        initial={{ opacity: 0, y: 30 }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: [0, -5, 0],
                                         }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{
+                                            opacity: { duration: 0.5, delay: index * 0.05 },
+                                            y: {
+                                                duration: 4.5 + (index % 3),
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: floatDelay
+                                            }
+                                        }}
+                                        className="vh-node-wrapper"
                                     >
-                                        {/* Node Bullet on Timeline */}
-                                        <div style={{
-                                            position: 'absolute',
-                                            left: '14px',
-                                            top: '24px',
-                                            width: '20px',
-                                            height: '20px',
-                                            borderRadius: '50%',
-                                            background: item.isLatest ? 'var(--accent-color)' : '#0a0a0a',
-                                            border: item.isLatest ? '4px solid rgba(var(--accent-rgb, 239, 68, 68), 0.35)' : '2px solid var(--border-color, rgba(255, 255, 255, 0.25))',
-                                            boxShadow: item.isLatest ? '0 0 16px var(--accent-color)' : 'none',
-                                            transition: 'all 0.3s ease'
-                                        }} />
+                                        {/* Orbital Energy Core */}
+                                        <div className={`vh-cosmic-orb ${item.isLatest ? 'latest' : ''}`}>
+                                            <div className="vh-orb-core" />
+                                            <div className="vh-orb-ring" />
+                                        </div>
 
-                                        {/* Release Card */}
-                                        <div style={{
-                                            background: 'rgba(15, 15, 18, 0.65)',
-                                            borderRadius: '16px',
-                                            border: item.isLatest ? '1px solid rgba(var(--accent-rgb, 239, 68, 68), 0.4)' : '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
-                                            backdropFilter: 'blur(12px)',
-                                            overflow: 'hidden',
-                                            transition: 'all 0.3s ease',
-                                            boxShadow: item.isLatest ? '0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--accent-rgb, 239, 68, 68), 0.05)' : '0 4px 20px rgba(0, 0, 0, 0.2)'
-                                        }}>
+                                        {/* Floating Cosmic Glass Card */}
+                                        <motion.div
+                                            whileHover={{
+                                                y: -6,
+                                                boxShadow: item.isLatest
+                                                    ? '0 16px 40px rgba(0, 0, 0, 0.6), 0 0 35px rgba(var(--accent-rgb, 239, 68, 68), 0.25)'
+                                                    : '0 12px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.05)'
+                                            }}
+                                            transition={{ duration: 0.3 }}
+                                            className={`vh-card ${item.isLatest ? 'latest' : ''}`}
+                                        >
                                             {/* Card Header Bar */}
                                             <div
                                                 onClick={() => toggleExpand(item.version)}
-                                                style={{
-                                                    padding: '1.25rem 1.5rem',
-                                                    display: 'flex',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                    cursor: 'pointer',
-                                                    userSelect: 'none',
-                                                    background: item.isLatest ? 'rgba(var(--accent-rgb, 239, 68, 68), 0.06)' : 'transparent',
-                                                    transition: 'background 0.2s ease'
-                                                }}
+                                                className={`vh-card-header ${item.isLatest ? 'latest' : ''}`}
                                             >
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                                                    {/* Version Tag */}
-                                                    <span style={{
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.4rem',
-                                                        padding: '4px 12px',
-                                                        borderRadius: '8px',
-                                                        background: item.isLatest ? 'var(--accent-color)' : 'rgba(255, 255, 255, 0.08)',
-                                                        color: '#fff',
-                                                        fontSize: '0.9rem',
-                                                        fontWeight: '700',
-                                                        fontFamily: 'var(--font-mono, monospace)',
-                                                        letterSpacing: '0.5px'
-                                                    }}>
-                                                        <FaCodeBranch style={{ fontSize: '0.8rem' }} /> v{item.version}
-                                                    </span>
-
-                                                    {item.isLatest && (
-                                                        <span style={{
-                                                            fontSize: '0.7rem',
-                                                            fontWeight: '700',
-                                                            padding: '2px 8px',
-                                                            borderRadius: '12px',
-                                                            background: 'rgba(34, 197, 94, 0.15)',
-                                                            color: '#4ade80',
-                                                            border: '1px solid rgba(34, 197, 94, 0.3)',
-                                                            letterSpacing: '0.5px'
-                                                        }}>
-                                                            LATEST RELEASE
+                                                <div className="vh-card-header-left">
+                                                    <div className="vh-tags-row">
+                                                        <span className={`vh-ver-tag ${item.isLatest ? 'latest' : ''}`}>
+                                                            <FaCodeBranch style={{ fontSize: '0.8rem' }} /> v{item.version}
                                                         </span>
-                                                    )}
 
-                                                    <h3 style={{
-                                                        margin: 0,
-                                                        fontSize: '1.2rem',
-                                                        fontWeight: '600',
-                                                        color: 'var(--text-primary)'
-                                                    }}>
+                                                        {item.isLatest && (
+                                                            <span className="vh-latest-badge">
+                                                                LATEST RELEASE
+                                                            </span>
+                                                        )}
+
+                                                        <span className="vh-date-mobile">
+                                                            <FaCalendarAlt style={{ fontSize: '0.75rem', color: 'var(--accent-color)' }} /> {item.date}
+                                                        </span>
+                                                    </div>
+
+                                                    <h3 className="vh-card-title">
                                                         {item.title}
                                                     </h3>
                                                 </div>
 
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                                                    <span style={{
-                                                        fontSize: '0.85rem',
-                                                        color: 'var(--text-secondary)',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.4rem',
-                                                        fontFamily: 'var(--font-mono, monospace)'
-                                                    }}>
+                                                <div className="vh-card-header-right">
+                                                    <span className="vh-date-desktop">
                                                         <FaCalendarAlt style={{ fontSize: '0.75rem', color: 'var(--accent-color)' }} /> {item.date}
                                                     </span>
-                                                    <div style={{
-                                                        width: '28px',
-                                                        height: '28px',
-                                                        borderRadius: '50%',
-                                                        background: 'rgba(255, 255, 255, 0.05)',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        color: 'var(--text-secondary)',
-                                                        fontSize: '0.85rem'
-                                                    }}>
+                                                    <div className="vh-toggle-btn">
                                                         {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
                                                     </div>
                                                 </div>
@@ -606,47 +440,22 @@ const VersionHistory = () => {
                                                         transition={{ duration: 0.3 }}
                                                         style={{ overflow: 'hidden' }}
                                                     >
-                                                        <div style={{
-                                                            padding: '0 1.5rem 1.5rem 1.5rem',
-                                                            borderTop: '1px solid var(--border-color, rgba(255, 255, 255, 0.05))'
-                                                        }}>
+                                                        <div className="vh-card-body">
                                                             {/* Highlights Callout */}
                                                             {summaryText && (
-                                                                <p style={{
-                                                                    margin: '1.2rem 0 1.25rem 0',
-                                                                    color: 'var(--text-primary)',
-                                                                    fontSize: '0.95rem',
-                                                                    lineHeight: '1.6',
-                                                                    background: 'rgba(0, 0, 0, 0.3)',
-                                                                    padding: '0.85rem 1.1rem',
-                                                                    borderRadius: '10px',
-                                                                    borderLeft: '3px solid var(--accent-color)',
-                                                                    border: '1px solid rgba(255, 255, 255, 0.05)',
-                                                                    borderLeftWidth: '3px',
-                                                                    borderLeftColor: 'var(--accent-color)'
-                                                                }}>
+                                                                <p className="vh-highlights">
                                                                     {summaryText}
                                                                 </p>
                                                             )}
 
                                                             {/* Changes List */}
                                                             {changesList.length > 0 && (
-                                                                <div style={{
-                                                                    display: 'flex',
-                                                                    flexDirection: 'column',
-                                                                    gap: '0.75rem'
-                                                                }}>
+                                                                <div className="vh-changes-list">
                                                                     {changesList.map((change, cIdx) => {
                                                                         const style = getTypeBadgeStyle(change.type);
 
                                                                         return (
-                                                                            <div key={cIdx} style={{
-                                                                                display: 'flex',
-                                                                                alignItems: 'flex-start',
-                                                                                gap: '0.85rem',
-                                                                                fontSize: '0.925rem',
-                                                                                color: 'var(--text-secondary)'
-                                                                            }}>
+                                                                            <div key={cIdx} className="vh-change-item">
                                                                                 <span style={{
                                                                                     fontSize: '0.65rem',
                                                                                     fontWeight: '700',
@@ -662,7 +471,7 @@ const VersionHistory = () => {
                                                                                 }}>
                                                                                     {style.label}
                                                                                 </span>
-                                                                                <span style={{ lineHeight: '1.5', flex: 1, color: 'rgba(255, 255, 255, 0.88)' }}>
+                                                                                <span className="vh-change-text">
                                                                                     {change.description}
                                                                                 </span>
                                                                             </div>
@@ -674,7 +483,7 @@ const VersionHistory = () => {
                                                     </motion.div>
                                                 )}
                                             </AnimatePresence>
-                                        </div>
+                                        </motion.div>
                                     </motion.div>
                                 );
                             })
@@ -682,6 +491,556 @@ const VersionHistory = () => {
                     </AnimatePresence>
                 </div>
             </div>
+
+            <style>
+                {`
+                    .version-history-page {
+                        padding: calc(120px + env(safe-area-inset-top)) 20px 80px;
+                        min-height: 100vh;
+                        position: relative;
+                        z-index: 1;
+                    }
+
+                    .vh-container {
+                        max-width: 1100px;
+                        margin: 0 auto;
+                        width: 100%;
+                    }
+
+                    .back-nav {
+                        position: fixed;
+                        top: calc(100px + env(safe-area-inset-top));
+                        left: 40px;
+                        z-index: 100;
+                    }
+
+                    .back-nav-btn {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        color: var(--text-secondary);
+                        text-decoration: none;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        padding: 8px 16px;
+                        border-radius: 50px;
+                        background: rgba(10, 10, 10, 0.5);
+                        backdrop-filter: blur(5px);
+                        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+                        transition: all 0.3s ease;
+                        cursor: pointer;
+                        font-family: inherit;
+                    }
+
+                    .vh-header {
+                        text-align: center;
+                        margin-bottom: 3.5rem;
+                    }
+
+                    .vh-main-title {
+                        font-size: clamp(2.2rem, 6vw, 3.5rem);
+                        margin-bottom: 1rem;
+                        font-weight: 700;
+                        line-height: 1.2;
+                    }
+
+                    .vh-accent-text {
+                        color: var(--accent-color);
+                        text-shadow: 0 0 40px rgba(var(--accent-rgb, 239, 68, 68), 0.5);
+                    }
+
+                    .vh-white-text {
+                        color: var(--text-primary);
+                    }
+
+                    .vh-description {
+                        color: var(--text-secondary);
+                        max-width: 620px;
+                        margin: 0 auto;
+                        font-size: clamp(1rem, 2.5vw, 1.15rem);
+                        line-height: 1.6;
+                    }
+
+                    .vh-controls {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 1.25rem;
+                        margin-bottom: 3.5rem;
+                    }
+
+                    .vh-search-box {
+                        position: relative;
+                        max-width: 540px;
+                        width: 100%;
+                    }
+
+                    .vh-search-icon {
+                        position: absolute;
+                        left: 18px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: var(--text-secondary);
+                        font-size: 0.9rem;
+                    }
+
+                    .vh-search-input {
+                        width: 100%;
+                        padding: 12px 18px 12px 48px;
+                        border-radius: 50px;
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+                        color: var(--text-primary);
+                        font-size: 0.95rem;
+                        outline: none;
+                        transition: all 0.3s ease;
+                        backdrop-filter: blur(10px);
+                        box-sizing: border-box;
+                    }
+
+                    .vh-search-input:focus {
+                        border-color: var(--accent-color);
+                    }
+
+                    .vh-filter-row {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+                        max-width: 100%;
+                    }
+
+                    .vh-filter-label {
+                        font-size: 0.85rem;
+                        color: var(--text-secondary);
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.4rem;
+                        margin-right: 0.25rem;
+                        white-space: nowrap;
+                    }
+
+                    .vh-pills-container {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .vh-pill-btn {
+                        padding: 8px 20px;
+                        border-radius: 30px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        background: rgba(255, 255, 255, 0.03);
+                        color: var(--text-secondary);
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.25s ease;
+                        backdrop-filter: blur(5px);
+                        font-family: inherit;
+                        white-space: nowrap;
+                    }
+
+                    .vh-pill-btn:hover {
+                        border-color: var(--accent-color);
+                        color: var(--text-primary);
+                    }
+
+                    .vh-pill-btn.active {
+                        border-color: var(--accent-color);
+                        background: rgba(var(--accent-rgb, 239, 68, 68), 0.2);
+                        color: #ffffff;
+                        font-weight: 600;
+                    }
+
+                    .vh-timeline {
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 30px;
+                    }
+
+                    /* Simple Clean Connecting Line */
+                    .vh-simple-line {
+                        position: absolute;
+                        left: 23px;
+                        top: 24px;
+                        bottom: 24px;
+                        width: 2px;
+                        background: linear-gradient(
+                            180deg,
+                            var(--accent-color) 0%,
+                            rgba(255, 255, 255, 0.08) 100%
+                        );
+                        transform: translateX(-50%);
+                        z-index: 0;
+                        pointer-events: none;
+                        opacity: 0.6;
+                    }
+
+                    .vh-loading {
+                        padding: 3rem;
+                        text-align: center;
+                        color: var(--accent-color);
+                        font-family: var(--font-mono, monospace);
+                    }
+
+                    .vh-empty {
+                        padding: 4rem 2rem;
+                        text-align: center;
+                        background: rgba(255, 255, 255, 0.02);
+                        border-radius: 16px;
+                        border: 1px dashed var(--border-color, rgba(255, 255, 255, 0.1));
+                        color: var(--text-secondary);
+                    }
+
+                    .vh-node-wrapper {
+                        position: relative;
+                        z-index: 1;
+                        padding-left: 54px;
+                    }
+
+                    /* Cosmic Orbital Energy Core */
+                    .vh-cosmic-orb {
+                        position: absolute;
+                        left: 13px;
+                        top: 24px;
+                        width: 22px;
+                        height: 22px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 2;
+                    }
+
+                    .vh-orb-core {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 50%;
+                        background: #0a0a0a;
+                        border: 2px solid rgba(255, 255, 255, 0.4);
+                        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+                        transition: all 0.3s ease;
+                    }
+
+                    .vh-orb-ring {
+                        position: absolute;
+                        width: 22px;
+                        height: 22px;
+                        border-radius: 50%;
+                        border: 1px dashed rgba(255, 255, 255, 0.2);
+                        animation: spinRing 12s infinite linear;
+                    }
+
+                    @keyframes spinRing {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+
+                    .vh-cosmic-orb.latest .vh-orb-core {
+                        background: var(--accent-color);
+                        border: 2px solid #ffffff;
+                        box-shadow: 0 0 18px var(--accent-color), inset 0 0 8px #ffffff;
+                    }
+
+                    .vh-cosmic-orb.latest .vh-orb-ring {
+                        border: 1.5px solid var(--accent-color);
+                        box-shadow: 0 0 12px rgba(var(--accent-rgb, 239, 68, 68), 0.5);
+                        animation: spinRing 6s infinite linear;
+                    }
+
+                    /* Floating Cosmic Glass Card */
+                    .vh-card {
+                        background: rgba(15, 15, 22, 0.6);
+                        border-radius: 18px;
+                        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+                        backdrop-filter: blur(16px);
+                        overflow: hidden;
+                        transition: border-color 0.3s ease, background 0.3s ease;
+                        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                    }
+
+                    .vh-card.latest {
+                        border-color: rgba(var(--accent-rgb, 239, 68, 68), 0.4);
+                        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(var(--accent-rgb, 239, 68, 68), 0.08);
+                    }
+
+                    .vh-card-header {
+                        padding: 1.25rem 1.5rem;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        cursor: pointer;
+                        user-select: none;
+                        transition: background 0.2s ease;
+                    }
+
+                    .vh-card-header.latest {
+                        background: rgba(var(--accent-rgb, 239, 68, 68), 0.06);
+                    }
+
+                    .vh-card-header-left {
+                        display: flex;
+                        align-items: center;
+                        gap: 1rem;
+                        flex-wrap: wrap;
+                    }
+
+                    .vh-tags-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                    }
+
+                    .vh-ver-tag {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.4rem;
+                        padding: 4px 12px;
+                        border-radius: 8px;
+                        background: rgba(255, 255, 255, 0.08);
+                        color: #fff;
+                        font-size: 0.9rem;
+                        font-weight: 700;
+                        font-family: var(--font-mono, monospace);
+                        letter-spacing: 0.5px;
+                    }
+
+                    .vh-ver-tag.latest {
+                        background: var(--accent-color);
+                    }
+
+                    .vh-latest-badge {
+                        font-size: 0.7rem;
+                        font-weight: 700;
+                        padding: 2px 8px;
+                        border-radius: 12px;
+                        background: rgba(34, 197, 94, 0.15);
+                        color: #4ade80;
+                        border: 1px solid rgba(34, 197, 94, 0.3);
+                        letter-spacing: 0.5px;
+                    }
+
+                    .vh-card-title {
+                        margin: 0;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                        color: var(--text-primary);
+                    }
+
+                    .vh-card-header-right {
+                        display: flex;
+                        align-items: center;
+                        gap: 1.25rem;
+                    }
+
+                    .vh-date-desktop {
+                        font-size: 0.85rem;
+                        color: var(--text-secondary);
+                        display: flex;
+                        align-items: center;
+                        gap: 0.4rem;
+                        font-family: var(--font-mono, monospace);
+                    }
+
+                    .vh-date-mobile {
+                        display: none;
+                        font-size: 0.8rem;
+                        color: var(--text-secondary);
+                        font-family: var(--font-mono, monospace);
+                    }
+
+                    .vh-toggle-btn {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--text-secondary);
+                        font-size: 0.85rem;
+                        flex-shrink: 0;
+                    }
+
+                    .vh-card-body {
+                        padding: 0 1.5rem 1.5rem 1.5rem;
+                        border-top: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+                    }
+
+                    .vh-highlights {
+                        margin: 1.2rem 0 1.25rem 0;
+                        color: var(--text-primary);
+                        font-size: 0.95rem;
+                        line-height: 1.6;
+                        background: rgba(0, 0, 0, 0.3);
+                        padding: 0.85rem 1.1rem;
+                        border-radius: 10px;
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                        border-left: 3px solid var(--accent-color);
+                    }
+
+                    .vh-changes-list {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.75rem;
+                    }
+
+                    .vh-change-item {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 0.85rem;
+                        font-size: 0.925rem;
+                        color: var(--text-secondary);
+                    }
+
+                    .vh-change-text {
+                        line-height: 1.5;
+                        flex: 1;
+                        color: rgba(255, 255, 255, 0.88);
+                    }
+
+                    /* Tablet & Mobile Responsiveness */
+                    @media (max-width: 768px) {
+                        .version-history-page {
+                            padding: calc(90px + env(safe-area-inset-top)) 16px 60px;
+                        }
+
+                        .back-nav {
+                            position: fixed;
+                            top: calc(82px + env(safe-area-inset-top));
+                            left: 16px;
+                            z-index: 100;
+                        }
+
+                        .back-nav-btn {
+                            padding: 6px 14px;
+                            font-size: 0.85rem;
+                        }
+
+                        .vh-header {
+                            margin-top: 10px;
+                            margin-bottom: 2.5rem;
+                        }
+
+                        .vh-controls {
+                            margin-bottom: 2.5rem;
+                            gap: 15px;
+                        }
+
+                        .vh-filter-row {
+                            width: 100%;
+                            flex-direction: column;
+                            align-items: flex-start;
+                        }
+
+                        .vh-pills-container {
+                            width: 100%;
+                            justify-content: flex-start;
+                            overflow-x: auto;
+                            padding-bottom: 8px;
+                            -webkit-overflow-scrolling: touch;
+                            scrollbar-width: none;
+                        }
+
+                        .vh-pills-container::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .vh-pill-btn {
+                            padding: 6px 16px;
+                            font-size: 0.8rem;
+                        }
+                    }
+
+                    @media (max-width: 640px) {
+                        .vh-node-wrapper {
+                            padding-left: 32px;
+                        }
+
+                        .vh-simple-line {
+                            left: 11px;
+                            top: 20px;
+                            bottom: 20px;
+                        }
+
+                        .vh-cosmic-orb {
+                            left: 0px;
+                            top: 20px;
+                            width: 18px;
+                            height: 18px;
+                        }
+
+                        .vh-orb-core {
+                            width: 10px;
+                            height: 10px;
+                        }
+
+                        .vh-orb-ring {
+                            width: 18px;
+                            height: 18px;
+                        }
+
+                        .vh-card-header {
+                            padding: 1rem 1.1rem;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 0.75rem;
+                            position: relative;
+                        }
+
+                        .vh-card-header-left {
+                            width: 100%;
+                            flex-direction: column;
+                            align-items: flex-start;
+                            gap: 0.5rem;
+                            padding-right: 36px;
+                        }
+
+                        .vh-card-title {
+                            font-size: 1.05rem;
+                            line-height: 1.4;
+                        }
+
+                        .vh-card-header-right {
+                            width: 100%;
+                            justify-content: space-between;
+                        }
+
+                        .vh-date-desktop {
+                            display: none;
+                        }
+
+                        .vh-date-mobile {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.3rem;
+                        }
+
+                        .vh-toggle-btn {
+                            position: absolute;
+                            right: 1.1rem;
+                            top: 1rem;
+                        }
+
+                        .vh-card-body {
+                            padding: 0 1.1rem 1.1rem 1.1rem;
+                        }
+
+                        .vh-highlights {
+                            font-size: 0.875rem;
+                            padding: 0.75rem 0.9rem;
+                            margin: 0.9rem 0 1rem 0;
+                        }
+
+                        .vh-change-item {
+                            gap: 0.6rem;
+                            font-size: 0.875rem;
+                        }
+                    }
+                `}
+            </style>
         </section>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock, FaCodeBranch } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
@@ -25,6 +25,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
     useEffect(() => {
         setMobileMenuOpen(false);
     }, [location]);
+
     useEffect(() => {
         if (mobileMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -119,7 +120,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
 
                     {/* Desktop Navigation */}
                     <nav className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                        <ul className="nav-links" style={{ display: 'flex', gap: '2rem' }}>
+                        <ul className="nav-links" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
                             {navItems.map((item, index) => (
                                 <motion.li
                                     key={item}
@@ -212,7 +213,6 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                                     Beyond Work
                                 </Link>
                             </motion.li>
-
                         </ul>
 
                         <motion.div
@@ -421,7 +421,27 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                                     >
                                         Beyond Work
                                     </Link>
-
+                                </motion.li>
+                                <motion.li
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.4 }}
+                                >
+                                    <Link
+                                        to="/changelog"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        style={{
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            color: location.pathname === '/changelog' ? 'var(--accent-color)' : 'var(--text-secondary)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                            padding: '0.5rem 0',
+                                        }}
+                                    >
+                                        <FaCodeBranch style={{ fontSize: '1rem' }} /> Version History
+                                    </Link>
                                 </motion.li>
                             </ul>
                         </nav>
@@ -430,7 +450,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.4 }}
+                            transition={{ delay: 0.45 }}
                             style={{
                                 marginTop: 'auto',
                                 display: 'flex',
@@ -463,7 +483,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                             )}
                         </motion.div>
 
-                        {/* Version Info */}
+                        {/* Simple Clean Version Hyperlink */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -471,13 +491,31 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                             style={{
                                 marginTop: '1rem',
                                 textAlign: 'center',
-                                fontSize: '0.75rem',
-                                color: 'var(--text-secondary)',
-                                opacity: 0.5,
-                                fontFamily: 'var(--font-mono)',
                             }}
                         >
-                            v{packageJson.version}
+                            <Link
+                                to="/changelog"
+                                onClick={() => setMobileMenuOpen(false)}
+                                title="View Version History & System Changelog"
+                                style={{
+                                    fontSize: '0.75rem',
+                                    fontFamily: 'var(--font-mono, monospace)',
+                                    color: location.pathname === '/changelog' ? 'var(--accent-color)' : 'var(--text-secondary)',
+                                    textDecoration: 'none',
+                                    opacity: 0.6,
+                                    transition: 'all 0.2s ease',
+                                }}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.color = 'var(--accent-color)';
+                                    e.currentTarget.style.opacity = '1';
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.color = location.pathname === '/changelog' ? 'var(--accent-color)' : 'var(--text-secondary)';
+                                    e.currentTarget.style.opacity = '0.6';
+                                }}
+                            >
+                                v{packageJson.version}
+                            </Link>
                         </motion.div>
                     </motion.div>
                 )}
@@ -520,16 +558,13 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                         header {
                             padding: 0.25rem 1rem !important;
                         }
-                        /* Scale down logo directly using the anchor tag */
                         header a[href="/"] {
                             font-size: 1.1rem !important;
                         }
-                        /* Scale down mobile menu button */
                         .mobile-menu-btn {
                             font-size: 1.2rem !important;
                             padding: 0.25rem !important;
                         }
-                        /* Hide desktop nav if height is really small to save space, or just scale it */
                         .desktop-nav {
                              transform: scale(0.9);
                              transform-origin: right center;

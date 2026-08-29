@@ -13,6 +13,8 @@ All notable changes to this project from Day One are documented in this file.
 - **FEAT**: release version 4.5.3 with GitHub API-integrated version history generation
 - **REFACTOR**: automate version history generation using chronological git log parsing and improve deduplication logic
 - **REFACTOR**: automate version history generation using chronological git log parsing and improved deduplication logic
+- **FEAT**: add latest refactor entry to version history and changelog
+- **FEAT**: add version history link to header and update VersionHistory styling
 
 ---
 
