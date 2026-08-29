@@ -12,6 +12,7 @@ All notable changes to this project from Day One are documented in this file.
 
 - **FEAT**: add version history link to header, update VersionHistory component styling, and bump version to 4.5.4
 - **FEAT**: revamp version history UI, add header link, and update version to 4.5.4
+- **FEAT**: add scroll progress toggle to settings and implement comprehensive performance monitoring dashboard in admin panel
 
 ---
 

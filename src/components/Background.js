@@ -18,8 +18,9 @@ const Background = () => {
         let mouse = { x: null, y: null };
 
         const resize = () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            const rect = canvas.getBoundingClientRect();
+            width = canvas.width = rect.width || window.innerWidth;
+            height = canvas.height = rect.height || window.innerHeight;
         };
 
         class Star {
@@ -45,22 +46,25 @@ const Background = () => {
                 this.y += this.vy;
 
                 if (mouse.x != null) {
-                    const parallaxX = (mouse.x - width / 2) * 0.0002 * (1 - this.z);
-                    const parallaxY = (mouse.y - height / 2) * 0.0002 * (1 - this.z);
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (this.z < 0.3 && dist < mouseDistance) {
+                        const force = (mouseDistance - dist) / mouseDistance;
+                        this.vx += (dx / dist) * force * 0.025;
+                        this.vy += (dy / dist) * force * 0.025;
+                    }
+
+                    // Parallax factor smoothly scales down to 0 at the cursor center (dist -> 0)
+                    // so the attraction equilibrium stays 100% centered on the cursor dot everywhere on screen,
+                    // while retaining the full 3D parallax depth effect for all background stars.
+                    const parallaxFactor = dist < mouseDistance ? (dist / mouseDistance) : 1;
+                    const parallaxX = (mouse.x - width / 2) * 0.00015 * (1 - this.z) * parallaxFactor;
+                    const parallaxY = (mouse.y - height / 2) * 0.00015 * (1 - this.z) * parallaxFactor;
 
                     this.x += -parallaxX;
                     this.y += -parallaxY;
-
-                    if (this.z < 0.3) {
-                        let dx = mouse.x - this.x;
-                        let dy = mouse.y - this.y;
-                        let dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < mouseDistance) {
-                            const force = (mouseDistance - dist) / mouseDistance;
-                            this.vx += (dx / dist) * force * 0.02;
-                            this.vy += (dy / dist) * force * 0.02;
-                        }
-                    }
                 }
 
                 this.vx += (this.baseVx - this.vx) * 0.05;
@@ -103,8 +107,9 @@ const Background = () => {
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
 
         const handleMouseMove = (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
         };
 
         const animate = () => {

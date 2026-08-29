@@ -15,6 +15,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "revamp version history UI, add header link, and update version to 4.5.4",
                 "hash": "a2123b97"
+            },
+            {
+                "type": "feat",
+                "description": "add scroll progress toggle to settings and implement comprehensive performance monitoring dashboard in admin panel",
+                "hash": "afb2506b"
             }
         ],
         "isLatest": true
