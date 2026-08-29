@@ -10,6 +10,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add version history link to header, update VersionHistory component styling, and bump version to 4.5.4",
                 "hash": "aa1455dc"
+            },
+            {
+                "type": "feat",
+                "description": "revamp version history UI, add header link, and update version to 4.5.4",
+                "hash": "a2123b97"
             }
         ],
         "isLatest": true

@@ -56,6 +56,7 @@ export const SettingsProvider = ({ children }) => {
         enableCustomCursor: true,
         enableBackground: true,
         enableCommandPalette: true,
+        enableScrollProgress: true,
         debugMode: false,
         defaultTheme: 'Void Purple',
         accentColor: '#6366f1'

@@ -11,6 +11,7 @@ All notable changes to this project from Day One are documented in this file.
 *Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.*
 
 - **FEAT**: add version history link to header, update VersionHistory component styling, and bump version to 4.5.4
+- **FEAT**: revamp version history UI, add header link, and update version to 4.5.4
 
 ---
 

@@ -1,13 +1,19 @@
 import React from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 
 const ScrollProgress = () => {
+    const { settings } = useSettings();
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
         stiffness: 200,
         damping: 30,
         restDelta: 0.001
     });
+
+    if (settings?.enableScrollProgress === false) {
+        return null;
+    }
 
     return (
         <motion.div

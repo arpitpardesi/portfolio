@@ -93,7 +93,7 @@ function AppContent() {
         <MotionConfig transition={settings.enableAnimations ? undefined : { duration: 0 }}>
             <Router>
                 <ScrollToTop />
-                <ScrollProgress />
+                {settings.enableScrollProgress !== false && <ScrollProgress />}
                 {settings.enableCommandPalette !== false && (
                     <CommandPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
                 )}
