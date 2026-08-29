@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.5.1] - 2026-08-29
+
+### Added
+- **Dynamic SemVer Sorting**: Implemented multi-part semantic version comparison algorithm (`compareSemVer`) supporting version tags like `4.5.1`, `4.5`, `4.4`, `4.3.1`.
+- **Firebase Admin Integration**: Integrated Version History collection management into Admin Dashboard for live release logging.
+
+### Chores
+- **Version Bump**: Updated project version to 4.5.1 in `package.json`.
+
+---
+
+## [4.5.0] - 2026-08-29
+
+### Added
+- **Version History Page**: Built dedicated `/changelog` route with glassmorphic layout, category filter pills, search input, and expandable release items.
+- **Footer & Command Palette**: Linked `v4.5` version tag in Footer and added search action to Command Palette (`Cmd+K`).
+
+---
+
 ## [4.4.0] - 2026-08-29
 
 ### Refactored

@@ -1,9 +1,33 @@
 export const versionHistory = [
     {
+        version: "4.5.1",
+        date: "2026-08-29",
+        title: "Dynamic Versioning & SemVer Alignment",
+        isLatest: true,
+        highlights: "Enhanced version release tracking with dynamic package.json auto-detection, SemVer sorting, and Firestore sync.",
+        changes: [
+            { type: "feat", description: "Implemented dynamic version auto-detection and SemVer sorting algorithm" },
+            { type: "feat", description: "Integrated version release history management into Firebase Admin Dashboard" },
+            { type: "chore", description: "Bumped project version to 4.5.1 in package.json" }
+        ]
+    },
+    {
+        version: "4.5",
+        date: "2026-08-29",
+        title: "Version History & System Evolution Release",
+        isLatest: false,
+        highlights: "Introduced dedicated Version History & Changelog page with filterable categories, search bar, and interactive timeline.",
+        changes: [
+            { type: "feat", description: "Built interactive Version History page (/changelog) with Framer Motion timeline and category filters" },
+            { type: "feat", description: "Added clickable version badge in Footer and Command Palette search integration" },
+            { type: "doc", description: "Created CHANGELOG.md adhering to Keep a Changelog standards" }
+        ]
+    },
+    {
         version: "4.4",
         date: "2026-08-29",
         title: "UI Polish & Navigation Refactor",
-        isLatest: true,
+        isLatest: false,
         highlights: "Refactored button styling with sleek glassmorphism hover interactions, spring motion dynamics, and clean routing handlers.",
         changes: [
             { type: "refactor", description: "Updated UI button styles with improved aesthetics and glassmorphic glow" },

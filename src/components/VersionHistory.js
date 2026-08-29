@@ -27,6 +27,44 @@ const getTypeBadgeStyle = (type) => {
     }
 };
 
+const compareSemVer = (v1, v2) => {
+    const p1 = String(v1 || '0').replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
+    const p2 = String(v2 || '0').replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
+    const len = Math.max(p1.length, p2.length);
+    for (let i = 0; i < len; i++) {
+        const num1 = p1[i] || 0;
+        const num2 = p2[i] || 0;
+        if (num1 > num2) return -1;
+        if (num1 < num2) return 1;
+    }
+    return 0;
+};
+
+const normalizeChanges = (item) => {
+    if (Array.isArray(item.changes) && item.changes.length > 0) {
+        return item.changes.map(c => {
+            if (typeof c === 'string') return { type: 'feat', description: c };
+            return { type: c.type || 'feat', description: c.description || c.desc || c.title || '' };
+        });
+    }
+
+    const text = item.fullDesc || item.description || item.details || '';
+    if (text) {
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        return lines.map(line => {
+            const clean = line.replace(/^[-*•\d.]+\s*/, '');
+            let type = 'feat';
+            if (/refactor/i.test(line)) type = 'refactor';
+            else if (/fix|bug/i.test(line)) type = 'fix';
+            else if (/style|ui|css/i.test(line)) type = 'style';
+            else if (/chore|bump|build/i.test(line)) type = 'chore';
+            return { type, description: clean || line };
+        });
+    }
+
+    return [];
+};
+
 const VersionHistory = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
@@ -50,7 +88,6 @@ const VersionHistory = () => {
                     })).filter(v => v.isVisible !== false);
 
                     if (dbVersions.length > 0) {
-                        // Merge DB versions over static matching ones
                         const dbVersionNumbers = new Set(dbVersions.map(v => String(v.version)));
                         const remainingStatic = staticVersionHistory.filter(s => !dbVersionNumbers.has(String(s.version)));
                         combined = [...dbVersions, ...remainingStatic];
@@ -60,7 +97,6 @@ const VersionHistory = () => {
                 console.error("Firestore versionHistory fetch error, using local fallback:", err);
             }
 
-            // Check if current packageJson.version (e.g. 4.5) is present in the list
             const currentPkgVer = String(packageJson.version);
             const hasCurrentVer = combined.some(v => String(v.version) === currentPkgVer);
 
@@ -71,31 +107,25 @@ const VersionHistory = () => {
                     date: today,
                     title: `Version ${currentPkgVer} Release`,
                     isLatest: true,
-                    highlights: `Production deployment of Version ${currentPkgVer}. Updated version configurations and system stability.`,
+                    highlights: `Production deployment of Version ${currentPkgVer}. Updated system configurations and performance optimizations.`,
                     changes: [
                         { type: 'feat', description: `Deployed production build for version ${currentPkgVer}` },
                         { type: 'chore', description: `Updated project package version tag to ${currentPkgVer}` }
                     ]
                 };
 
-                // Unset isLatest on previous entries
-                combined = combined.map(v => ({ ...v, isLatest: false }));
                 combined.unshift(dynamicCurrentEntry);
-            } else {
-                // Ensure only the top version is marked as latest unless explicitly specified
-                combined = combined.map((v, i) => ({
-                    ...v,
-                    isLatest: String(v.version) === currentPkgVer || (i === 0 && !combined.some(item => String(item.version) === currentPkgVer))
-                }));
             }
 
-            // Sort descending by version or date
-            combined.sort((a, b) => {
-                const verA = parseFloat(a.version) || 0;
-                const verB = parseFloat(b.version) || 0;
-                if (verB !== verA) return verB - verA;
-                return new Date(b.date || '1900') - new Date(a.date || '1900');
-            });
+            combined.sort((a, b) => compareSemVer(a.version, b.version));
+
+            if (combined.length > 0) {
+                const topVer = String(combined[0].version);
+                combined = combined.map(v => ({
+                    ...v,
+                    isLatest: String(v.version) === topVer
+                }));
+            }
 
             setVersionsList(combined);
             setLoading(false);
@@ -121,8 +151,10 @@ const VersionHistory = () => {
 
     const filteredHistory = useMemo(() => {
         return versionsList.filter(item => {
+            const changesList = normalizeChanges(item);
+
             if (selectedCategory !== 'all') {
-                const hasMatchingType = (item.changes || []).some(c => c.type === selectedCategory);
+                const hasMatchingType = changesList.some(c => c.type === selectedCategory);
                 if (!hasMatchingType) return false;
             }
 
@@ -130,8 +162,8 @@ const VersionHistory = () => {
                 const q = searchQuery.toLowerCase();
                 const matchesVersion = String(item.version).toLowerCase().includes(q);
                 const matchesTitle = (item.title || '').toLowerCase().includes(q);
-                const matchesHighlights = (item.highlights || '').toLowerCase().includes(q);
-                const matchesChanges = (item.changes || []).some(c => (c.description || '').toLowerCase().includes(q));
+                const matchesHighlights = (item.highlights || item.description || item.fullDesc || '').toLowerCase().includes(q);
+                const matchesChanges = changesList.some(c => (c.description || '').toLowerCase().includes(q));
 
                 return matchesVersion || matchesTitle || matchesHighlights || matchesChanges;
             }
@@ -378,6 +410,8 @@ const VersionHistory = () => {
                         ) : (
                             filteredHistory.map((item, index) => {
                                 const isExpanded = expandedVersions[item.version] ?? (index === 0);
+                                const summaryText = item.highlights || item.description || item.desc || item.fullDesc;
+                                const changesList = normalizeChanges(item);
 
                                 return (
                                     <motion.div
@@ -514,8 +548,8 @@ const VersionHistory = () => {
                                                             padding: '0 1.5rem 1.5rem 1.5rem',
                                                             borderTop: '1px solid var(--border-color, rgba(255, 255, 255, 0.05))'
                                                         }}>
-                                                            {/* Highlights Callout */}
-                                                            {item.highlights && (
+                                                            {/* Highlights & Description Callout */}
+                                                            {summaryText && (
                                                                 <p style={{
                                                                     margin: '1.2rem 0 1.25rem 0',
                                                                     color: 'var(--text-primary)',
@@ -529,49 +563,51 @@ const VersionHistory = () => {
                                                                     borderLeftWidth: '3px',
                                                                     borderLeftColor: 'var(--accent-color)'
                                                                 }}>
-                                                                    {item.highlights}
+                                                                    {summaryText}
                                                                 </p>
                                                             )}
 
-                                                            {/* Changes List */}
-                                                            <div style={{
-                                                                display: 'flex',
-                                                                flexDirection: 'column',
-                                                                gap: '0.75rem'
-                                                            }}>
-                                                                {(item.changes || []).map((change, cIdx) => {
-                                                                    const style = getTypeBadgeStyle(change.type);
+                                                            {/* Detailed Changes List */}
+                                                            {changesList.length > 0 && (
+                                                                <div style={{
+                                                                    display: 'flex',
+                                                                    flexDirection: 'column',
+                                                                    gap: '0.75rem'
+                                                                }}>
+                                                                    {changesList.map((change, cIdx) => {
+                                                                        const style = getTypeBadgeStyle(change.type);
 
-                                                                    return (
-                                                                        <div key={cIdx} style={{
-                                                                            display: 'flex',
-                                                                            alignItems: 'flex-start',
-                                                                            gap: '0.85rem',
-                                                                            fontSize: '0.925rem',
-                                                                            color: 'var(--text-secondary)'
-                                                                        }}>
-                                                                            <span style={{
-                                                                                fontSize: '0.65rem',
-                                                                                fontWeight: '700',
-                                                                                padding: '2px 6px',
-                                                                                borderRadius: '4px',
-                                                                                background: style.bg,
-                                                                                color: style.color,
-                                                                                border: `1px solid ${style.border}`,
-                                                                                fontFamily: 'var(--font-mono, monospace)',
-                                                                                letterSpacing: '0.5px',
-                                                                                marginTop: '2px',
-                                                                                flexShrink: 0
+                                                                        return (
+                                                                            <div key={cIdx} style={{
+                                                                                display: 'flex',
+                                                                                alignItems: 'flex-start',
+                                                                                gap: '0.85rem',
+                                                                                fontSize: '0.925rem',
+                                                                                color: 'var(--text-secondary)'
                                                                             }}>
-                                                                                {style.label}
-                                                                            </span>
-                                                                            <span style={{ lineHeight: '1.5', flex: 1, color: 'rgba(255, 255, 255, 0.88)' }}>
-                                                                                {change.description}
-                                                                            </span>
-                                                                        </div>
-                                                                    );
-                                                                })}
-                                                            </div>
+                                                                                <span style={{
+                                                                                    fontSize: '0.65rem',
+                                                                                    fontWeight: '700',
+                                                                                    padding: '2px 6px',
+                                                                                    borderRadius: '4px',
+                                                                                    background: style.bg,
+                                                                                    color: style.color,
+                                                                                    border: `1px solid ${style.border}`,
+                                                                                    fontFamily: 'var(--font-mono, monospace)',
+                                                                                    letterSpacing: '0.5px',
+                                                                                    marginTop: '2px',
+                                                                                    flexShrink: 0
+                                                                                }}>
+                                                                                    {style.label}
+                                                                                </span>
+                                                                                <span style={{ lineHeight: '1.5', flex: 1, color: 'rgba(255, 255, 255, 0.88)' }}>
+                                                                                    {change.description}
+                                                                                </span>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </motion.div>
                                                 )}
