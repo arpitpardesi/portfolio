@@ -4,14 +4,24 @@ All notable changes to this project from Day One are documented in this file.
 
 ---
 
+## [4.5.3] - 2026-08-29
+
+### Initial Portfolio Launch
+
+*Initial release of React portfolio website featuring hero section, project grid, custom header/footer, and GitHub Pages deployment.*
+
+- **FEAT**: automate version history generation via GitHub API integration and smart commit parsing
+- **FEAT**: automate version history generation using Git log data and sync with project releases
+- **FEAT**: add versionHistory Firestore rules and implement multiline change log parsing
+
+---
+
 ## [4.5.2] - 2026-08-29
 
 ### Firestore Security Rules & Multi-Format Description Parsing
 
 *Configured public read permissions for versionHistory in firestore.rules, added firebase.json workspace configuration, and implemented flexible description parsers.*
 
-- **FEAT**: automate version history generation using Git log data and sync with project releases
-- **FEAT**: add versionHistory Firestore rules and implement multiline change log parsing
 - **FEAT**: implement semver sorting and robust change normalization in VersionHistory component, and bump app version to 4.5.2
 
 ---

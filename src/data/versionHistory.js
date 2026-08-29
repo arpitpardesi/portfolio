@@ -1,11 +1,16 @@
 // Auto-generated from Day One Git Log history by scripts/generate-version-history.js
 export const versionHistory = [
     {
-        "version": "4.5.2",
+        "version": "4.5.3",
         "date": "2026-08-29",
-        "title": "Firestore Security Rules & Multi-Format Description Parsing",
-        "highlights": "Configured public read permissions for versionHistory in firestore.rules, added firebase.json workspace configuration, and implemented flexible description parsers.",
+        "title": "Initial Portfolio Launch",
+        "highlights": "Initial release of React portfolio website featuring hero section, project grid, custom header/footer, and GitHub Pages deployment.",
         "changes": [
+            {
+                "type": "feat",
+                "description": "automate version history generation via GitHub API integration and smart commit parsing",
+                "hash": "5a4667e3"
+            },
             {
                 "type": "feat",
                 "description": "automate version history generation using Git log data and sync with project releases",
@@ -15,14 +20,23 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add versionHistory Firestore rules and implement multiline change log parsing",
                 "hash": "9d789b80"
-            },
+            }
+        ],
+        "isLatest": true
+    },
+    {
+        "version": "4.5.2",
+        "date": "2026-08-29",
+        "title": "Firestore Security Rules & Multi-Format Description Parsing",
+        "highlights": "Configured public read permissions for versionHistory in firestore.rules, added firebase.json workspace configuration, and implemented flexible description parsers.",
+        "changes": [
             {
                 "type": "feat",
                 "description": "implement semver sorting and robust change normalization in VersionHistory component, and bump app version to 4.5.2",
                 "hash": "f2a1b43a"
             }
         ],
-        "isLatest": true
+        "isLatest": false
     },
     {
         "version": "4.5.1",
