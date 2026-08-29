@@ -15,6 +15,11 @@ export const versionHistory = [
                 "type": "refactor",
                 "description": "automate version history generation using chronological git log parsing and improve deduplication logic",
                 "hash": "2ed2df6b"
+            },
+            {
+                "type": "refactor",
+                "description": "automate version history generation using chronological git log parsing and improved deduplication logic",
+                "hash": "0fba35dd"
             }
         ],
         "isLatest": true
