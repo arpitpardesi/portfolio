@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode, FaCog, FaBookOpen } from 'react-icons/fa';
+import { FaSignOutAlt, FaFolder, FaCamera, FaMicrochip, FaBrain, FaRaspberryPi, FaChartLine, FaTimes, FaClock, FaCode, FaCog, FaBookOpen, FaHistory } from 'react-icons/fa';
 import CollectionManager from './admin/CollectionManager';
 import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
@@ -48,6 +48,8 @@ const AdminDashboard = () => {
                 return <SkillsManager />;
             case 'settings':
                 return <SettingsManager />;
+            case 'versionHistory':
+                return <CollectionManager key="versionHistory" collectionName="versionHistory" title="Version Release History" />;
             default:
                 return <div>Select a section</div>;
         }
@@ -64,6 +66,7 @@ const AdminDashboard = () => {
         { id: 'iot', label: 'IOT', icon: <FaMicrochip /> },
         { id: 'ai', label: 'AI', icon: <FaBrain /> },
         { id: 'rpi', label: 'Raspberry Pi', icon: <FaRaspberryPi /> },
+        { id: 'versionHistory', label: 'Version History', icon: <FaHistory /> },
         { id: 'settings', label: 'Settings', icon: <FaCog /> },
     ];
 

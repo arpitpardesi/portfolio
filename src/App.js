@@ -35,6 +35,7 @@ const Blog = lazy(() => import('./components/Blog'));
 const BlogPostDetail = lazy(() => import('./components/BlogPostDetail'));
 const Login = lazy(() => import('./components/Login'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const VersionHistory = lazy(() => import('./components/VersionHistory'));
 
 const RouteLoader = () => (
     <div style={{
@@ -133,6 +134,7 @@ function AppContent() {
                             <Route path="/playground" element={<PhysicsPlayground />} />
                             <Route path="/about" element={<DetailedAbout />} />
                             <Route path="/resume" element={<Resume />} />
+                            <Route path="/changelog" element={<VersionHistory />} />
 
                             <Route path="/login" element={<Login />} />
                             <Route path="/admin" element={

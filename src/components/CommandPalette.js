@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import {
     FaSearch, FaHome, FaUser, FaFolder, FaGamepad, FaCopy, FaCheck,
     FaTimes, FaCamera, FaRobot, FaLaptopCode, FaPalette, FaGithub,
-    FaLinkedin, FaTwitter, FaFilePdf, FaMicrochip, FaAdjust, FaBookOpen
+    FaLinkedin, FaTwitter, FaFilePdf, FaMicrochip, FaAdjust, FaBookOpen,
+    FaHistory
 } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -106,6 +107,14 @@ const CommandPalette = ({ isOpen, onClose }) => {
             icon: <FaBookOpen />,
             category: 'Navigation',
             action: () => { navigate('/blog'); onClose(); }
+        },
+        {
+            id: 'changelog-page',
+            title: 'Version History & Changelog',
+            subtitle: 'View release history, features, and change log (v4.4)',
+            icon: <FaHistory />,
+            category: 'Information',
+            action: () => { navigate('/changelog'); onClose(); }
         },
         {
             id: 'playground',

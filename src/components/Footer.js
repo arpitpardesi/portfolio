@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import VisitorCounter from './VisitorCounter';
 import { useSettings } from '../context/SettingsContext';
 import packageJson from '../../package.json';
@@ -59,9 +60,30 @@ const Footer = () => {
                     {settings.footerText || `© ${new Date().getFullYear()} All rights reserved.`}
                 </span>
                 <span className="footer-divider footer-version-divider" style={{ opacity: 0.5 }}>|</span>
-                <span className="footer-version" style={{ fontSize: '0.75rem', opacity: 0.5, fontFamily: 'var(--font-mono)' }}>
+                <Link
+                    to="/changelog"
+                    className="footer-version"
+                    title="View Changelog & Version History"
+                    style={{
+                        fontSize: '0.75rem',
+                        opacity: 0.7,
+                        fontFamily: 'var(--font-mono)',
+                        color: 'var(--text-secondary)',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                    }}
+                    onMouseOver={(e) => {
+                        e.currentTarget.style.color = 'var(--accent-color)';
+                        e.currentTarget.style.opacity = '1';
+                    }}
+                    onMouseOut={(e) => {
+                        e.currentTarget.style.color = 'var(--text-secondary)';
+                        e.currentTarget.style.opacity = '0.7';
+                    }}
+                >
                     v{packageJson.version}
-                </span>
+                </Link>
             </div>
 
             <VisitorCounter />
