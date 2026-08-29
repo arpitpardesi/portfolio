@@ -41,6 +41,11 @@ function detectVersionBump(message) {
 
 function getVersionMetadata(ver) {
     switch (ver) {
+        case '4.5.4':
+            return {
+                title: "Header Navigation & Version History UI Revamp",
+                highlights: "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration."
+            };
         case '4.5.3':
             return {
                 title: "Git Commit Automation & Dynamic Version Sync",
@@ -102,10 +107,14 @@ function getVersionMetadata(ver) {
                 highlights: "Built dynamic multi-theme switcher, Firebase Auth admin dashboard, Cloudinary multi-media uploads, and Beyond Work explore sections."
             };
         case '1.0':
-        default:
             return {
                 title: "Initial Portfolio Launch",
                 highlights: "Initial release of React portfolio website featuring hero section, project grid, custom header/footer, and GitHub Pages deployment."
+            };
+        default:
+            return {
+                title: `Version ${ver} Update`,
+                highlights: `Production updates, UI refinements, and feature enhancements in Version ${ver}.`
             };
     }
 }

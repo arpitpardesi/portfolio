@@ -4,6 +4,16 @@ All notable changes to this project from Day One are documented in this file.
 
 ---
 
+## [4.5.4] - 2026-08-29
+
+### Header Navigation & Version History UI Revamp
+
+*Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.*
+
+- **FEAT**: add version history link to header, update VersionHistory component styling, and bump version to 4.5.4
+
+---
+
 ## [4.5.3] - 2026-08-29
 
 ### Git Commit Automation & Dynamic Version Sync

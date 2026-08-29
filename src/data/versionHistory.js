@@ -1,6 +1,20 @@
 // Auto-generated from Day One Git Log history by scripts/generate-version-history.js
 export const versionHistory = [
     {
+        "version": "4.5.4",
+        "date": "2026-08-29",
+        "title": "Header Navigation & Version History UI Revamp",
+        "highlights": "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.",
+        "changes": [
+            {
+                "type": "feat",
+                "description": "add version history link to header, update VersionHistory component styling, and bump version to 4.5.4",
+                "hash": "aa1455dc"
+            }
+        ],
+        "isLatest": true
+    },
+    {
         "version": "4.5.3",
         "date": "2026-08-29",
         "title": "Git Commit Automation & Dynamic Version Sync",
@@ -32,7 +46,7 @@ export const versionHistory = [
                 "hash": "c58610bb"
             }
         ],
-        "isLatest": true
+        "isLatest": false
     },
     {
         "version": "4.5.2",
