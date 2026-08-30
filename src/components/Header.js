@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock, FaCodeBranch } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaBars, FaTimes, FaUserLock } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { Link, useLocation } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
@@ -422,27 +422,7 @@ const Header = ({ showLogo = true, onOpenCommandPalette }) => {
                                         Beyond Work
                                     </Link>
                                 </motion.li>
-                                <motion.li
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.4 }}
-                                >
-                                    <Link
-                                        to="/changelog"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        style={{
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            color: location.pathname === '/changelog' ? 'var(--accent-color)' : 'var(--text-secondary)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            padding: '0.5rem 0',
-                                        }}
-                                    >
-                                        <FaCodeBranch style={{ fontSize: '1rem' }} /> Version History
-                                    </Link>
-                                </motion.li>
+
                             </ul>
                         </nav>
 

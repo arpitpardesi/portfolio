@@ -2,7 +2,7 @@
 export const versionHistory = [
     {
         "version": "4.5.4",
-        "date": "2026-08-29",
+        "date": "2026-08-30",
         "title": "Header Navigation & Version History UI Revamp",
         "highlights": "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.",
         "changes": [
@@ -25,6 +25,11 @@ export const versionHistory = [
                 "type": "fix",
                 "description": "fixed background star parallax mechanics",
                 "hash": "8eea2133"
+            },
+            {
+                "type": "refactor",
+                "description": "simplify Framer Motion hover animations and styles across components to improve visual consistency.",
+                "hash": "ca852153"
             }
         ],
         "isLatest": true

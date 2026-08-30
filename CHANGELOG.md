@@ -4,7 +4,7 @@ All notable changes to this project from Day One are documented in this file.
 
 ---
 
-## [4.5.4] - 2026-08-29
+## [4.5.4] - 2026-08-30
 
 ### Header Navigation & Version History UI Revamp
 
@@ -14,6 +14,7 @@ All notable changes to this project from Day One are documented in this file.
 - **FEAT**: revamp version history UI, add header link, and update version to 4.5.4
 - **FEAT**: add scroll progress toggle to settings and implement comprehensive performance monitoring dashboard in admin panel
 - **FIX**: fixed background star parallax mechanics
+- **REFACTOR**: simplify Framer Motion hover animations and styles across components to improve visual consistency.
 
 ---
 
