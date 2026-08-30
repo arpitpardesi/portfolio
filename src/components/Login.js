@@ -358,7 +358,7 @@ const Login = () => {
                     <motion.button
                         type="submit"
                         disabled={loading || success || retryCountDown > 0}
-                        whileHover={!loading && !success && retryCountDown === 0 ? { scale: 1.02, boxShadow: '0 6px 25px rgba(var(--accent-rgb), 0.4)' } : {}}
+                        whileHover={!loading && !success && retryCountDown === 0 ? { scale: 1.02 } : {}}
                         whileTap={!loading && !success && retryCountDown === 0 ? { scale: 0.98 } : {}}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}

@@ -57,9 +57,6 @@ const CustomCursor = () => {
             y: mousePosition.y - 20,
             height: 40,
             width: 40,
-            backgroundColor: "rgba(var(--accent-rgb), 0.1)",
-            border: "1px solid rgba(var(--accent-rgb), 0.8)",
-            boxShadow: "0 0 15px rgba(var(--accent-rgb), 0.5)", // Glow
             scale: 1,
         },
         text: {
@@ -67,9 +64,6 @@ const CustomCursor = () => {
             y: mousePosition.y - 30,
             height: 60,
             width: 60,
-            backgroundColor: "rgba(var(--accent-rgb), 0.2)",
-            border: "2px solid rgba(255, 255, 255, 0.8)",
-            boxShadow: "0 0 20px rgba(var(--accent-rgb), 0.8)", // Intentser glow
             scale: 1.1,
             mixBlendMode: "difference"
         }
@@ -133,6 +127,7 @@ const CustomCursor = () => {
             <motion.div
                 variants={variants}
                 animate={cursorVariant}
+                className={`custom-cursor-follower ${cursorVariant}`}
                 transition={{
                     type: "spring",
                     stiffness: 150,
@@ -172,8 +167,19 @@ const CustomCursor = () => {
                     a, button, input, textarea, label {
                         cursor: none; /* Ensure interactive elements don't show default cursor */
                     }
+                    .custom-cursor-follower {
+                        background-color: rgba(var(--accent-rgb), 0.1);
+                        border: 1px solid rgba(var(--accent-rgb), 0.8);
+                        box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.5);
+                        transition: background-color 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+                    }
+                    .custom-cursor-follower.text {
+                        background-color: rgba(var(--accent-rgb), 0.2);
+                        border: 2px solid rgba(255, 255, 255, 0.8);
+                        box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.8);
+                    }
                     @media (hover: none) and (pointer: coarse) {
-                        .cursor-follower { display: none; }
+                        .custom-cursor-follower { display: none; }
                         body, a, button, input, textarea, label { cursor: auto; }
                     }
                 `}

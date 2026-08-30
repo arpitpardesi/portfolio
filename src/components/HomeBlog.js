@@ -144,7 +144,7 @@ const HomeBlog = () => {
                                 transition={{ delay: i * 0.1, duration: 0.5 }}
                                 whileHover={{
                                     y: -8,
-                                    boxShadow: '0 20px 40px -15px rgba(var(--accent-rgb), 0.3), 0 0 20px rgba(0,0,0,0.5)'
+                                    boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.5)'
                                 }}
                                 style={{ height: '100%', borderRadius: '16px' }}
                             >
@@ -317,11 +317,7 @@ const HomeBlog = () => {
                         }}
                     >
                         <motion.div
-                            whileHover={{
-                                scale: 1.04,
-                                boxShadow: "0px 0px 22px rgba(var(--accent-rgb), 0.35)",
-                                backgroundColor: "rgba(var(--accent-rgb), 0.15)"
-                            }}
+                            whileHover={{ scale: 1.04 }}
                             whileTap={{ scale: 0.96 }}
                             style={{ borderRadius: '10px' }}
                         >

@@ -250,11 +250,7 @@ const VersionHistory = () => {
                     className="back-nav"
                 >
                     <motion.div
-                        whileHover={{
-                            scale: 1.05,
-                            boxShadow: "0px 0px 8px var(--accent-color)",
-                            backgroundColor: "rgba(var(--accent-rgb, 239, 68, 68), 0.1)"
-                        }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         style={{ borderRadius: '50px', display: 'inline-block' }}
                     >

@@ -20,6 +20,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add scroll progress toggle to settings and implement comprehensive performance monitoring dashboard in admin panel",
                 "hash": "afb2506b"
+            },
+            {
+                "type": "fix",
+                "description": "fixed background star parallax mechanics",
+                "hash": "8eea2133"
             }
         ],
         "isLatest": true

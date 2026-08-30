@@ -92,7 +92,7 @@ const BlogPostDetail = () => {
                     The requested blog post could not be found or has not been published.
                 </p>
                 <motion.div
-                    whileHover={{ scale: 1.05, boxShadow: "0px 0px 8px var(--accent-color)", backgroundColor: "rgba(var(--accent-rgb), 0.1)" }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     style={{ borderRadius: '50px', display: 'inline-block' }}
                 >
@@ -141,11 +141,7 @@ const BlogPostDetail = () => {
                 className="back-nav"
             >
                 <motion.div
-                    whileHover={{
-                        scale: 1.05,
-                        boxShadow: "0px 0px 8px var(--accent-color)",
-                        backgroundColor: "rgba(var(--accent-rgb), 0.1)"
-                    }}
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     style={{ borderRadius: '50px', display: 'inline-block' }}
                 >
@@ -318,7 +314,7 @@ const BlogPostDetail = () => {
                     alignItems: 'center'
                 }}>
                     <motion.div
-                        whileHover={{ scale: 1.05, boxShadow: "0px 0px 8px var(--accent-color)", backgroundColor: "rgba(var(--accent-rgb), 0.1)" }}
+                        whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         style={{ borderRadius: '50px', display: 'inline-block' }}
                     >

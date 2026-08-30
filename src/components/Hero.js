@@ -202,11 +202,7 @@ const Hero = ({ startAnimation = true }) => {
                             position: 'relative',
                             overflow: 'hidden'
                         }}
-                        whileHover={{
-                            scale: 1.04,
-                            boxShadow: "0px 0px 22px rgba(var(--accent-rgb), 0.35)",
-                            backgroundColor: "rgba(var(--accent-rgb), 0.15)"
-                        }}
+                        whileHover={{ scale: 1.04 }}
                         whileTap={{ scale: 0.96 }}
                     >
                         {settings.heroCtaText || "Explore My Journey"}
