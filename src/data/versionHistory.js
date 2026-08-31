@@ -30,6 +30,11 @@ export const versionHistory = [
                 "type": "refactor",
                 "description": "simplify Framer Motion hover animations and styles across components to improve visual consistency.",
                 "hash": "ca852153"
+            },
+            {
+                "type": "refactor",
+                "description": "remove Version History navigation link from header and update changelog metadata",
+                "hash": "5ac8649c"
             }
         ],
         "isLatest": true

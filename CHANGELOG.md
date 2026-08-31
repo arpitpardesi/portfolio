@@ -15,6 +15,7 @@ All notable changes to this project from Day One are documented in this file.
 - **FEAT**: add scroll progress toggle to settings and implement comprehensive performance monitoring dashboard in admin panel
 - **FIX**: fixed background star parallax mechanics
 - **REFACTOR**: simplify Framer Motion hover animations and styles across components to improve visual consistency.
+- **REFACTOR**: remove Version History navigation link from header and update changelog metadata
 
 ---
 
