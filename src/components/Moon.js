@@ -32,31 +32,47 @@ const Moon = () => {
         };
     }, []);
 
-    const size = 100;
-    const { phase, stage, illumination } = moonData;
-
-    const reflections = {
-        "New Moon": "The silent observer, waiting in the shadows.",
-        "Waxing Crescent": "A sliver of hope, emerging from the dark.",
-        "First Quarter": "Balanced in the void, half-seen, half-dreamed.",
-        "Waxing Gibbous": "Swelling with the light of ancient stars.",
-        "Full Moon": "A beacon of silver, illuminating the digital aether.",
-        "Waning Gibbous": "A gentle retreat, returning to the silence.",
-        "Last Quarter": "A fading echo of the peak, yet steady and strong.",
-        "Waning Crescent": "Preparing to sleep, the cycle prepares to restart."
-    };
-
-    const allPhases = [
-        { name: "New Moon", icon: "🌑" },
-        { name: "Waxing Crescent", icon: "🌒" },
-        { name: "First Quarter", icon: "🌓" },
-        { name: "Waxing Gibbous", icon: "🌔" },
-        { name: "Full Moon", icon: "🌕" },
-        { name: "Waning Gibbous", icon: "🌖" },
-        { name: "Last Quarter", icon: "🌗" },
-        { name: "Waning Crescent", icon: "🌘" }
+    const LUNAR_QUOTES = [
+        "The moon is a loyal companion. It never leaves.",
+        "Shoot for the moon. Even if you miss, you'll land among the stars.",
+        "The moon does not fight. It attacks no one. It simply shines.",
+        "We are all like the bright moon, we still have our darker side.",
+        "Stay wild, moon child.",
+        "Even the darkest night will end and the sun will rise.",
+        "The wisdom of the moon is greater than the wisdom of the earth.",
+        "There is something haunting and beautiful in the moon's quiet glow.",
+        "Be like the moon in someone's sky and show them light in darkness.",
+        "Three things cannot be long hidden: the sun, the moon, and the truth.",
+        "In the silence of the night, the moon whispers secrets of the cosmos.",
+        "A reminder that you are whole no matter what phase you are in.",
+        "Like the moon, you also have the ability to shine in the dark.",
+        "The moon will guide you through the night with her brightness.",
+        "Every phase is a part of your becoming.",
+        "Even in pieces, the moon is still beautiful.",
+        "The moon sees all, remembers all, and still shines softly.",
+        "We are all travelers in the cosmic wilderness.",
+        "The cosmos is within us. We are made of star-stuff.",
+        "Always remember, the moon reflects the light that created it.",
+        "Silent voyager through the ocean of stars.",
+        "Embrace your cycles; even the moon waxes and wanes.",
+        "Soft light in a world of harsh shadows.",
+        "The night is not empty; it is filled with ancient light."
     ];
 
+    const [activeQuote, setActiveQuote] = useState(() => 
+        LUNAR_QUOTES[Math.floor(Math.random() * LUNAR_QUOTES.length)]
+    );
+
+    const handleMouseEnter = () => {
+        setActiveQuote(prev => {
+            const filtered = LUNAR_QUOTES.filter(q => q !== prev);
+            return filtered[Math.floor(Math.random() * filtered.length)] || LUNAR_QUOTES[0];
+        });
+        setIsHovered(true);
+    };
+
+    const size = 100;
+    const { phase, stage, illumination } = moonData;
     const lunarAge = (phase * 29.53).toFixed(1);
 
     // Hide moon on admin pages
@@ -66,7 +82,7 @@ const Moon = () => {
         <>
             <motion.div
                 className="moon-container"
-                onMouseEnter={() => setIsHovered(true)}
+                onMouseEnter={handleMouseEnter}
                 onMouseLeave={() => setIsHovered(false)}
                 animate={{
                     y: [0, -15, 0],
@@ -120,179 +136,71 @@ const Moon = () => {
                     {isHovered && (
                         <motion.div
                             className="moon-tooltip"
-                            initial={{ opacity: 0, scale: 0.94, x: 8 }}
+                            initial={{ opacity: 0, scale: 0.95, x: 6 }}
                             animate={{ opacity: 1, scale: 1, x: 0 }}
-                            exit={{ opacity: 0, scale: 0.94, x: 6 }}
-                            transition={{ type: "spring", stiffness: 350, damping: 26 }}
+                            exit={{ opacity: 0, scale: 0.95, x: 4 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
                             style={{
                                 position: 'absolute',
-                                background: 'linear-gradient(135deg, rgba(16, 22, 36, 0.88), rgba(10, 14, 26, 0.94))',
-                                backdropFilter: 'blur(20px)',
-                                WebkitBackdropFilter: 'blur(20px)',
-                                borderRadius: '16px',
-                                border: '1px solid rgba(var(--accent-rgb), 0.28)',
+                                background: 'rgba(10, 14, 26, 0.78)',
+                                backdropFilter: 'blur(16px)',
+                                WebkitBackdropFilter: 'blur(16px)',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
                                 color: 'var(--text-primary)',
                                 pointerEvents: 'none',
                                 textAlign: 'left',
-                                boxShadow: '0 25px 50px -15px rgba(0, 0, 0, 0.85), 0 0 25px rgba(var(--accent-rgb), 0.15)',
+                                boxShadow: '0 16px 36px -6px rgba(0, 0, 0, 0.65)',
                                 zIndex: 110,
-                                boxSizing: 'border-box',
-                                overflow: 'hidden'
+                                boxSizing: 'border-box'
                             }}
                         >
-                            {/* Subtle Top Specular Edge Beam matching theme */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: '10%',
-                                right: '10%',
-                                height: '1px',
-                                background: 'linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.6), transparent)',
-                                opacity: 0.85
-                            }} />
-
-                            {/* Header Status Row */}
+                            {/* Phase Name & Illumination Row */}
                             <div style={{
                                 display: 'flex',
-                                alignItems: 'center',
+                                alignItems: 'baseline',
                                 justifyContent: 'space-between',
-                                marginBottom: '10px',
-                                paddingBottom: '8px',
-                                borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
+                                gap: '8px',
+                                marginBottom: '3px'
                             }}>
-                                <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px',
-                                    color: 'var(--accent-color)',
-                                    fontSize: '0.66rem',
-                                    fontWeight: '700',
-                                    letterSpacing: '0.9px',
-                                    fontFamily: 'var(--font-mono, monospace)',
-                                    textTransform: 'uppercase'
-                                }}>
-                                    <span style={{
-                                        width: '6px',
-                                        height: '6px',
-                                        borderRadius: '50%',
-                                        background: 'var(--accent-color)',
-                                        boxShadow: '0 0 8px var(--accent-color)',
-                                        display: 'inline-block'
-                                    }} />
-                                    Lunar Telemetry
-                                </div>
                                 <span style={{
-                                    fontSize: '0.66rem',
-                                    color: 'var(--accent-color)',
-                                    fontFamily: 'var(--font-mono, monospace)',
-                                    background: 'rgba(var(--accent-rgb), 0.12)',
-                                    padding: '2px 8px',
-                                    borderRadius: '12px',
-                                    border: '1px solid rgba(var(--accent-rgb), 0.25)',
-                                    fontWeight: '600'
+                                    fontSize: '0.86rem',
+                                    fontWeight: '600',
+                                    color: 'var(--text-primary)',
+                                    letterSpacing: '0.2px'
                                 }}>
-                                    {isSouthern ? '🌏 South' : '🌍 North'}
+                                    {stage}
                                 </span>
-                            </div>
-
-                            {/* Phase Title & Icon */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                                <span style={{ fontSize: '1.3rem', lineHeight: 1 }}>
-                                    {allPhases.find(p => p.name === stage)?.icon || '🌕'}
-                                </span>
-                                <div>
-                                    <div style={{ fontSize: '0.95rem', fontWeight: '700', color: 'var(--text-primary)', lineHeight: 1.2 }}>
-                                        {stage}
-                                    </div>
-                                    <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono, monospace)' }}>
-                                        Day {lunarAge} of 29.5
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Subtle 8-Phase Orbit Timeline */}
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                padding: '4px 6px',
-                                marginBottom: '10px',
-                                borderRadius: '8px',
-                                background: 'rgba(0, 0, 0, 0.35)',
-                                border: '1px solid rgba(255, 255, 255, 0.06)'
-                            }}>
-                                {allPhases.map((p, idx) => {
-                                    const isCurrent = p.name === stage;
-                                    return (
-                                        <span
-                                            key={idx}
-                                            style={{
-                                                fontSize: isCurrent ? '0.95rem' : '0.75rem',
-                                                opacity: isCurrent ? 1 : 0.35,
-                                                transform: isCurrent ? 'scale(1.15)' : 'scale(1)',
-                                                filter: isCurrent ? 'drop-shadow(0 0 4px var(--accent-color))' : 'none',
-                                                transition: 'all 0.3s ease'
-                                            }}
-                                            title={p.name}
-                                        >
-                                            {p.icon}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Illumination Progress Bar */}
-                            <div style={{ marginBottom: '12px' }}>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
+                                <span style={{
                                     fontSize: '0.74rem',
-                                    marginBottom: '5px',
+                                    fontWeight: '600',
+                                    color: 'var(--accent-color)',
                                     fontFamily: 'var(--font-mono, monospace)'
                                 }}>
-                                    <span style={{ color: 'var(--text-secondary)' }}>Illumination</span>
-                                    <span style={{ color: 'var(--accent-color)', fontWeight: '700' }}>
-                                        {Math.round(illumination * 100)}%
-                                    </span>
-                                </div>
-                                <div style={{
-                                    width: '100%',
-                                    height: '5px',
-                                    borderRadius: '10px',
-                                    background: 'rgba(255, 255, 255, 0.08)',
-                                    border: '1px solid rgba(255, 255, 255, 0.06)',
-                                    overflow: 'hidden',
-                                    position: 'relative'
-                                }}>
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${Math.round(illumination * 100)}%` }}
-                                        transition={{ duration: 0.5, ease: "easeOut" }}
-                                        style={{
-                                            height: '100%',
-                                            borderRadius: '10px',
-                                            background: 'linear-gradient(90deg, var(--accent-color), rgba(var(--accent-rgb), 0.8))',
-                                            boxShadow: '0 0 10px rgba(var(--accent-rgb), 0.6)'
-                                        }}
-                                    />
-                                </div>
+                                    {Math.round(illumination * 100)}%
+                                </span>
                             </div>
 
-                            {/* Reflection Quote Pill */}
+                            {/* Cycle Progress / Hemisphere Subtitle */}
                             <div style={{
-                                padding: '9px 12px',
-                                borderRadius: '10px',
-                                background: 'rgba(var(--accent-rgb), 0.06)',
-                                border: '1px solid rgba(var(--accent-rgb), 0.18)',
-                                borderLeft: '2.5px solid var(--accent-color)',
-                                backdropFilter: 'blur(10px)',
+                                fontSize: '0.7rem',
+                                color: 'var(--text-secondary)',
+                                fontFamily: 'var(--font-mono, monospace)',
+                                marginBottom: '8px'
+                            }}>
+                                Day {lunarAge}/29.5 · {isSouthern ? 'Southern' : 'Northern'}
+                            </div>
+
+                            {/* Poetic Reflection */}
+                            <div style={{
+                                paddingTop: '8px',
+                                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
                                 fontStyle: 'italic',
                                 color: 'var(--text-secondary)',
-                                fontSize: '0.75rem',
-                                lineHeight: '1.4'
+                                fontSize: '0.74rem',
+                                lineHeight: '1.35'
                             }}>
-                                "{reflections[stage] || "Surrounded by stars."}"
+                                "{activeQuote}"
                             </div>
                         </motion.div>
                     )}
@@ -303,25 +211,25 @@ const Moon = () => {
                 {`
                     .moon-tooltip {
                         top: 50%;
-                        right: calc(100% + 18px);
+                        right: calc(100% + 14px);
                         transform: translateY(-50%);
-                        width: 245px;
-                        padding: 16px 18px;
+                        width: 195px;
+                        padding: 12px 14px;
                     }
 
                     .moon-tooltip::after {
                         content: '';
                         position: absolute;
                         top: 50%;
-                        right: -6px;
+                        right: -5px;
                         transform: translateY(-50%) rotate(45deg);
-                        width: 10px;
-                        height: 10px;
-                        background: rgba(10, 14, 26, 0.94);
-                        backdrop-filter: blur(20px);
-                        -webkit-backdrop-filter: blur(20px);
-                        border-top: 1px solid rgba(var(--accent-rgb), 0.28);
-                        border-right: 1px solid rgba(var(--accent-rgb), 0.28);
+                        width: 9px;
+                        height: 9px;
+                        background: rgba(10, 14, 26, 0.78);
+                        backdrop-filter: blur(16px);
+                        -webkit-backdrop-filter: blur(16px);
+                        border-top: 1px solid rgba(255, 255, 255, 0.08);
+                        border-right: 1px solid rgba(255, 255, 255, 0.08);
                     }
 
                     @keyframes lunarShimmer {
@@ -352,15 +260,15 @@ const Moon = () => {
                             right: 24px !important;
                         }
                         .moon-tooltip {
-                            top: calc(100% + 12px) !important;
+                            top: calc(100% + 10px) !important;
                             right: -10px !important;
                             transform: none !important;
-                            width: 215px !important;
-                            padding: 12px 14px !important;
+                            width: 180px !important;
+                            padding: 10px 12px !important;
                         }
                         .moon-tooltip::after {
-                            top: -6px !important;
-                            right: 28px !important;
+                            top: -5px !important;
+                            right: 24px !important;
                             transform: rotate(-45deg) !important;
                         }
                     }
@@ -374,9 +282,9 @@ const Moon = () => {
                             opacity: 0.85 !important;
                         }
                         .moon-tooltip {
-                            width: 200px !important;
-                            padding: 10px 12px !important;
-                            font-size: 0.75rem !important;
+                            width: 170px !important;
+                            padding: 9px 11px !important;
+                            font-size: 0.72rem !important;
                         }
                     }
                 `}

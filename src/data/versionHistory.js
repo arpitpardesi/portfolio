@@ -10,7 +10,7 @@ export const versionHistory = [
     },
     {
         "version": "4.5.4",
-        "date": "2026-08-31",
+        "date": "2026-09-01",
         "title": "Header Navigation & Version History UI Revamp",
         "highlights": "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.",
         "changes": [
@@ -48,6 +48,11 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add About page navigation link in header",
                 "hash": "6f617cd5"
+            },
+            {
+                "type": "feat",
+                "description": "enhance moon component with interactive design updates and detailed lunar telemetry tooltip",
+                "hash": "253e204a"
             }
         ],
         "isLatest": false

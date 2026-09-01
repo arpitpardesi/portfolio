@@ -13,7 +13,7 @@ All notable changes to this project from Day One are documented in this file.
 
 ---
 
-## [4.5.4] - 2026-08-31
+## [4.5.4] - 2026-09-01
 
 ### Header Navigation & Version History UI Revamp
 
@@ -26,6 +26,7 @@ All notable changes to this project from Day One are documented in this file.
 - **REFACTOR**: simplify Framer Motion hover animations and styles across components to improve visual consistency.
 - **REFACTOR**: remove Version History navigation link from header and update changelog metadata
 - **FEAT**: add About page navigation link in header
+- **FEAT**: enhance moon component with interactive design updates and detailed lunar telemetry tooltip
 
 ---
 
