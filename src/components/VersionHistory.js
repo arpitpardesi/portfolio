@@ -124,22 +124,53 @@ const VersionHistory = () => {
                             combined.unshift(latestBucket);
                         }
 
-                        // Collect all existing commit hashes and descriptions across ALL version buckets to prevent past commit leaks
+                        // Collect all existing commit hashes and normalized descriptions across ALL version buckets to prevent past commit leaks
                         const allExistingHashes = new Set();
                         const allExistingDescs = new Set();
                         combined.forEach(bucket => {
                             (bucket.changes || []).forEach(c => {
-                                if (c.hash) allExistingHashes.add(c.hash);
-                                if (c.description) allExistingDescs.add(c.description.toLowerCase());
+                                if (c.hash) {
+                                    allExistingHashes.add(c.hash);
+                                    allExistingHashes.add(c.hash.substring(0, 7));
+                                }
+                                if (c.description) {
+                                    const norm = c.description.toLowerCase().replace(/[^a-z0-9]/g, '');
+                                    if (norm) allExistingDescs.add(norm);
+                                }
                             });
                         });
 
                         ghCommits.forEach(item => {
                             const hash = item.sha ? item.sha.substring(0, 8) : '';
                             const rawMsg = item.commit?.message ? item.commit.message.split('\n')[0] : '';
-                            const cleanMsg = rawMsg.replace(/^(feat|fix|refactor|style|chore|docs)(\([^)]+\))?:\s*/i, '').trim();
+                            const commitDate = item.commit?.committer?.date ? item.commit.committer.date.split('T')[0] : '';
+                            
+                            // Skip commits from prior release dates or explicit older version bumps
+                            if (commitDate && latestBucket.date && commitDate < latestBucket.date) {
+                                return;
+                            }
 
-                            if (cleanMsg && !allExistingHashes.has(hash) && !allExistingDescs.has(cleanMsg.toLowerCase())) {
+                            const verInMsg = rawMsg.match(/(?:bump|version|release|v)\s*(?:to\s*)?v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i);
+                            if (verInMsg && String(verInMsg[1]) !== currentPkgVer) {
+                                return;
+                            }
+
+                            const cleanMsg = rawMsg.replace(/^(feat|fix|refactor|style|chore|docs)(\([^)]+\))?:\s*/i, '').trim();
+                            const normMsg = cleanMsg.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+                            let isDuplicate = allExistingHashes.has(hash) || 
+                                              (item.sha && allExistingHashes.has(item.sha.substring(0, 7)));
+
+                            if (!isDuplicate && normMsg.length > 5) {
+                                for (const existingNorm of allExistingDescs) {
+                                    if (existingNorm === normMsg || existingNorm.includes(normMsg) || normMsg.includes(existingNorm)) {
+                                        isDuplicate = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (cleanMsg && !isDuplicate) {
                                 const type = parseCommitType(rawMsg);
                                 latestBucket.changes.unshift({
                                     type,
@@ -147,7 +178,8 @@ const VersionHistory = () => {
                                     hash
                                 });
                                 allExistingHashes.add(hash);
-                                allExistingDescs.add(cleanMsg.toLowerCase());
+                                if (item.sha) allExistingHashes.add(item.sha.substring(0, 7));
+                                allExistingDescs.add(normMsg);
                             }
                         });
                     }

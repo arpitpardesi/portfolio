@@ -39,8 +39,18 @@ function detectVersionBump(message) {
     return null;
 }
 
-function getVersionMetadata(ver) {
+function capitalize(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function getVersionMetadata(ver, changes = []) {
     switch (ver) {
+        case '4.5.5':
+            return {
+                title: "Interactive Moon Telemetry Tooltip & Header Nav Enhancements",
+                highlights: "Enhanced Moon component with interactive quote generator and lunar telemetry tooltip UI, added About page link in header, and refined Framer Motion animations."
+            };
         case '4.5.4':
             return {
                 title: "Header Navigation & Version History UI Revamp",
@@ -111,11 +121,21 @@ function getVersionMetadata(ver) {
                 title: "Initial Portfolio Launch",
                 highlights: "Initial release of React portfolio website featuring hero section, project grid, custom header/footer, and GitHub Pages deployment."
             };
-        default:
+        default: {
+            if (changes && changes.length > 0) {
+                const topFeat = changes.find(c => c.type === 'feat') || changes[0];
+                const cleanTitle = capitalize(topFeat.description);
+                const descList = changes.slice(0, 3).map(c => c.description).join('. ');
+                return {
+                    title: cleanTitle,
+                    highlights: `System updates: ${descList}.`
+                };
+            }
             return {
-                title: `Version ${ver} Update`,
-                highlights: `Production updates, UI refinements, and feature enhancements in Version ${ver}.`
+                title: `Version ${ver} Release`,
+                highlights: `Production updates and feature enhancements in Version ${ver}.`
             };
+        }
     }
 }
 
@@ -129,6 +149,18 @@ function generateCompleteVersionHistory() {
         // Fetch complete git log from day one in CHRONOLOGICAL order (oldest to newest)
         const gitOutput = execSync('git log --reverse --format="%h|%ad|%s" --date=short', { cwd: rootDir, encoding: 'utf8' });
         const lines = gitOutput.split('\n').filter(l => l.trim() !== '');
+
+        // Find the highest version explicitly tagged/bumped in Git log history
+        let highestGitVersion = '1.0';
+        for (const line of lines) {
+            const parts = line.split('|');
+            if (parts.length < 3) continue;
+            const message = parts.slice(2).join('|');
+            const detected = detectVersionBump(message);
+            if (detected && compareSemVer(detected, highestGitVersion) < 0) {
+                highestGitVersion = detected;
+            }
+        }
 
         const versionBuckets = new Map();
         let currentActiveVersion = '1.0';
@@ -157,6 +189,8 @@ function generateCompleteVersionHistory() {
             const detectedVer = detectVersionBump(message);
             if (detectedVer) {
                 currentActiveVersion = detectedVer;
+            } else if (date >= '2026-09-01') {
+                currentActiveVersion = currentVersion;
             } else if (date.startsWith('2022')) {
                 currentActiveVersion = '1.0';
             } else if (date.startsWith('2025')) {
@@ -185,6 +219,13 @@ function generateCompleteVersionHistory() {
         ensureBucket(currentVersion, new Date().toISOString().split('T')[0]);
 
         let sortedVersions = Array.from(versionBuckets.values());
+
+        // Refresh metadata dynamically for all versions based on parsed changes
+        sortedVersions.forEach(v => {
+            const meta = getVersionMetadata(v.version, v.changes);
+            v.title = meta.title;
+            v.highlights = meta.highlights;
+        });
 
         // Sort descending using strict SemVer
         sortedVersions.sort((a, b) => compareSemVer(a.version, b.version));

@@ -6,14 +6,16 @@ All notable changes to this project from Day One are documented in this file.
 
 ## [4.5.5] - 2026-09-01
 
-### Version 4.5.5 Update
+### Interactive Moon Telemetry Tooltip & Header Nav Enhancements
 
-*Production updates, UI refinements, and feature enhancements in Version 4.5.5.*
+*Enhanced Moon component with interactive quote generator and lunar telemetry tooltip UI, added About page link in header, and refined Framer Motion animations.*
 
+- **FEAT**: enhance moon component with interactive design updates and detailed lunar telemetry tooltip
+- **FEAT**: enhance Moon component with interactive quote generator and updated telemetry tooltip UI
 
 ---
 
-## [4.5.4] - 2026-09-01
+## [4.5.4] - 2026-08-31
 
 ### Header Navigation & Version History UI Revamp
 
@@ -26,7 +28,6 @@ All notable changes to this project from Day One are documented in this file.
 - **REFACTOR**: simplify Framer Motion hover animations and styles across components to improve visual consistency.
 - **REFACTOR**: remove Version History navigation link from header and update changelog metadata
 - **FEAT**: add About page navigation link in header
-- **FEAT**: enhance moon component with interactive design updates and detailed lunar telemetry tooltip
 
 ---
 

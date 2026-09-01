@@ -3,14 +3,25 @@ export const versionHistory = [
     {
         "version": "4.5.5",
         "date": "2026-09-01",
-        "title": "Version 4.5.5 Update",
-        "highlights": "Production updates, UI refinements, and feature enhancements in Version 4.5.5.",
-        "changes": [],
+        "title": "Interactive Moon Telemetry Tooltip & Header Nav Enhancements",
+        "highlights": "Enhanced Moon component with interactive quote generator and lunar telemetry tooltip UI, added About page link in header, and refined Framer Motion animations.",
+        "changes": [
+            {
+                "type": "feat",
+                "description": "enhance moon component with interactive design updates and detailed lunar telemetry tooltip",
+                "hash": "253e204a"
+            },
+            {
+                "type": "feat",
+                "description": "enhance Moon component with interactive quote generator and updated telemetry tooltip UI",
+                "hash": "958b38bf"
+            }
+        ],
         "isLatest": true
     },
     {
         "version": "4.5.4",
-        "date": "2026-09-01",
+        "date": "2026-08-31",
         "title": "Header Navigation & Version History UI Revamp",
         "highlights": "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.",
         "changes": [
@@ -48,11 +59,6 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "add About page navigation link in header",
                 "hash": "6f617cd5"
-            },
-            {
-                "type": "feat",
-                "description": "enhance moon component with interactive design updates and detailed lunar telemetry tooltip",
-                "hash": "253e204a"
             }
         ],
         "isLatest": false
