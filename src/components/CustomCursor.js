@@ -29,6 +29,12 @@ const CustomCursor = () => {
         };
 
         const handleMouseOver = (e) => {
+            const isHelp = e.target.closest('[data-cursor="help"]') || e.target.closest('.moon-container');
+            if (isHelp) {
+                setCursorVariant("help");
+                return;
+            }
+
             const tagName = e.target.tagName;
             if (tagName === 'A' || tagName === 'BUTTON' ||
                 tagName === 'INPUT' || tagName === 'TEXTAREA' ||
@@ -66,6 +72,13 @@ const CustomCursor = () => {
             width: 60,
             scale: 1.1,
             mixBlendMode: "difference"
+        },
+        help: {
+            x: mousePosition.x - 22,
+            y: mousePosition.y - 22,
+            height: 44,
+            width: 44,
+            scale: 1.15,
         }
     };
 
@@ -81,10 +94,20 @@ const CustomCursor = () => {
         text: {
             x: mousePosition.x - 3,
             y: mousePosition.y - 3,
+            width: 6,
+            height: 6,
+            backgroundColor: "transparent",
+            boxShadow: "none"
+        },
+        help: {
+            x: mousePosition.x - 8,
+            y: mousePosition.y - 12,
+            width: 16,
+            height: 24,
             backgroundColor: "transparent",
             boxShadow: "none"
         }
-    }
+    };
 
     const glowVariants = {
         default: {
@@ -98,6 +121,12 @@ const CustomCursor = () => {
             y: mousePosition.y - 200,
             scale: 1.5,
             opacity: 0.8
+        },
+        help: {
+            x: mousePosition.x - 200,
+            y: mousePosition.y - 200,
+            scale: 1.4,
+            opacity: 0.9
         }
     };
 
@@ -157,15 +186,26 @@ const CustomCursor = () => {
                     borderRadius: "50%",
                     pointerEvents: "none",
                     zIndex: 99999999,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--accent-color)",
+                    fontWeight: "700",
+                    fontSize: "14px",
+                    fontFamily: "var(--font-mono, monospace)",
+                    userSelect: "none",
+                    textShadow: "0 0 10px rgba(var(--accent-rgb), 0.8)"
                 }}
-            />
+            >
+                {cursorVariant === "help" ? "?" : null}
+            </motion.div>
             <style>
                 {`
                     body {
                         cursor: none; /* Hide default cursor */
                     }
-                    a, button, input, textarea, label {
-                        cursor: none; /* Ensure interactive elements don't show default cursor */
+                    a, button, input, textarea, label, [data-cursor="help"], .moon-container {
+                        cursor: none !important; /* Ensure interactive elements don't show default cursor */
                     }
                     .custom-cursor-follower {
                         background-color: rgba(var(--accent-rgb), 0.1);
@@ -177,6 +217,11 @@ const CustomCursor = () => {
                         background-color: rgba(var(--accent-rgb), 0.2);
                         border: 2px solid rgba(255, 255, 255, 0.8);
                         box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.8);
+                    }
+                    .custom-cursor-follower.help {
+                        background-color: rgba(var(--accent-rgb), 0.18);
+                        border: 1.5px solid var(--accent-color);
+                        box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.6);
                     }
                     @media (hover: none) and (pointer: coarse) {
                         .custom-cursor-follower { display: none; }

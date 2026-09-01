@@ -1,8 +1,16 @@
 // Auto-generated from Day One Git Log history by scripts/generate-version-history.js
 export const versionHistory = [
     {
+        "version": "4.5.5",
+        "date": "2026-09-01",
+        "title": "Version 4.5.5 Update",
+        "highlights": "Production updates, UI refinements, and feature enhancements in Version 4.5.5.",
+        "changes": [],
+        "isLatest": true
+    },
+    {
         "version": "4.5.4",
-        "date": "2026-08-30",
+        "date": "2026-08-31",
         "title": "Header Navigation & Version History UI Revamp",
         "highlights": "Optimized Version History page UI with floating levitation cards, simple connector lines, and mobile menu integration.",
         "changes": [
@@ -35,9 +43,14 @@ export const versionHistory = [
                 "type": "refactor",
                 "description": "remove Version History navigation link from header and update changelog metadata",
                 "hash": "5ac8649c"
+            },
+            {
+                "type": "feat",
+                "description": "add About page navigation link in header",
+                "hash": "6f617cd5"
             }
         ],
-        "isLatest": true
+        "isLatest": false
     },
     {
         "version": "4.5.3",
