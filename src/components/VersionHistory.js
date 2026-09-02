@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import packageJson from '../../package.json';
 import { 
@@ -23,7 +23,7 @@ const getTypeBadgeStyle = (type) => {
             return { bg: 'rgba(168, 85, 247, 0.12)', color: '#c084fc', border: 'rgba(168, 85, 247, 0.3)', label: 'STYLE' };
         case 'chore':
         default:
-            return { bg: 'rgba(156, 163, 175, 0.12)', color: '#9ca3af', border: 'rgba(156, 163, 175, 0.3)', label: 'CHORE' };
+            return { bg: 'rgba(107, 114, 128, 0.12)', color: '#9ca3af', border: 'rgba(107, 114, 128, 0.3)', label: 'CHORE' };
     }
 };
 
@@ -79,154 +79,91 @@ const VersionHistory = () => {
     const [expandedVersions, setExpandedVersions] = useState({ [packageJson.version]: true });
 
     useEffect(() => {
-        const fetchVersions = async () => {
+        let unsubscribe = () => {};
+
+        const setupRealtimeSync = () => {
             setLoading(true);
-            let combined = [...staticVersionHistory];
-
-            // 1. Fetch Firestore Version History if configured
             try {
-                const snapshot = await getDocs(collection(db, 'versionHistory'));
-                if (!snapshot.empty) {
-                    const dbVersions = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    })).filter(v => v.isVisible !== false);
+                unsubscribe = onSnapshot(collection(db, 'versionHistory'), (snapshot) => {
+                    let combined = [...staticVersionHistory];
 
-                    if (dbVersions.length > 0) {
-                        const dbVersionNumbers = new Set(dbVersions.map(v => String(v.version)));
-                        const remainingStatic = staticVersionHistory.filter(s => !dbVersionNumbers.has(String(s.version)));
-                        combined = [...dbVersions, ...remainingStatic];
+                    if (!snapshot.empty) {
+                        const dbVersions = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+
+                        const dbMap = new Map();
+                        dbVersions.forEach(v => {
+                            dbMap.set(String(v.version), v);
+                        });
+
+                        const mergedStatic = staticVersionHistory.filter(s => {
+                            const dbItem = dbMap.get(String(s.version));
+                            return !dbItem || dbItem.isVisible !== false;
+                        }).map(s => {
+                            const dbItem = dbMap.get(String(s.version));
+                            return dbItem ? { ...s, ...dbItem } : s;
+                        });
+
+                        const newDbItems = dbVersions.filter(d => 
+                            d.isVisible !== false && 
+                            !staticVersionHistory.some(s => String(s.version) === String(d.version))
+                        );
+
+                        combined = [...newDbItems, ...mergedStatic];
+                    } else {
+                        combined = staticVersionHistory.filter(v => v.isVisible !== false);
                     }
-                }
+
+                    // Ensure current package.version exists in combined list
+                    const currentPkgVer = String(packageJson.version);
+                    const hasCurrentVer = combined.some(v => String(v.version) === currentPkgVer);
+
+                    if (!hasCurrentVer) {
+                        const today = new Date().toISOString().split('T')[0];
+                        const dynamicCurrentEntry = {
+                            version: currentPkgVer,
+                            date: today,
+                            title: `Version ${currentPkgVer} Release`,
+                            isLatest: true,
+                            highlights: `Production deployment of Version ${currentPkgVer}. Updated system configurations and performance optimizations.`,
+                            changes: [
+                                { type: 'feat', description: `Deployed production build for version ${currentPkgVer}` }
+                            ]
+                        };
+                        combined.unshift(dynamicCurrentEntry);
+                    }
+
+                    // Sort descending using strict SemVer
+                    combined.sort((a, b) => compareSemVer(a.version, b.version));
+
+                    // Respect explicit isLatest set in Firestore, or set top version as isLatest if none set
+                    const hasExplicitLatest = combined.some(v => v.isLatest === true);
+                    if (!hasExplicitLatest && combined.length > 0) {
+                        combined[0].isLatest = true;
+                    }
+
+                    setVersionsList(combined);
+                    setLoading(false);
+                }, (err) => {
+                    console.error("Firestore onSnapshot error, falling back to static dataset: ", err);
+                    setVersionsList(staticVersionHistory);
+                    setLoading(false);
+                });
             } catch (err) {
-                // Graceful fallback if firestore permissions or table pending
+                console.error("Failed setting up real-time listener: ", err);
+                setVersionsList(staticVersionHistory);
+                setLoading(false);
             }
-
-            // 2. Fetch live commits from GitHub API directly
-            try {
-                const ghRes = await fetch('https://api.github.com/repos/arpitpardesi/portfolio/commits?per_page=30');
-                if (ghRes.ok) {
-                    const ghCommits = await ghRes.json();
-                    if (Array.isArray(ghCommits) && ghCommits.length > 0) {
-                        const currentPkgVer = String(packageJson.version);
-                        let latestBucket = combined.find(v => String(v.version) === currentPkgVer);
-
-                        if (!latestBucket) {
-                            const today = new Date().toISOString().split('T')[0];
-                            latestBucket = {
-                                version: currentPkgVer,
-                                date: today,
-                                title: `Version ${currentPkgVer} Release`,
-                                isLatest: true,
-                                highlights: `Live production build for Version ${currentPkgVer} synced with GitHub repo.`,
-                                changes: []
-                            };
-                            combined.unshift(latestBucket);
-                        }
-
-                        // Collect all existing commit hashes and normalized descriptions across ALL version buckets to prevent past commit leaks
-                        const allExistingHashes = new Set();
-                        const allExistingDescs = new Set();
-                        combined.forEach(bucket => {
-                            (bucket.changes || []).forEach(c => {
-                                if (c.hash) {
-                                    allExistingHashes.add(c.hash);
-                                    allExistingHashes.add(c.hash.substring(0, 7));
-                                }
-                                if (c.description) {
-                                    const norm = c.description.toLowerCase().replace(/[^a-z0-9]/g, '');
-                                    if (norm) allExistingDescs.add(norm);
-                                }
-                            });
-                        });
-
-                        ghCommits.forEach(item => {
-                            const hash = item.sha ? item.sha.substring(0, 8) : '';
-                            const rawMsg = item.commit?.message ? item.commit.message.split('\n')[0] : '';
-                            const commitDate = item.commit?.committer?.date ? item.commit.committer.date.split('T')[0] : '';
-                            
-                            // Skip commits from prior release dates or explicit older version bumps
-                            if (commitDate && latestBucket.date && commitDate < latestBucket.date) {
-                                return;
-                            }
-
-                            const verInMsg = rawMsg.match(/(?:bump|version|release|v)\s*(?:to\s*)?v?([0-9]+\.[0-9]+(?:\.[0-9]+)?)/i);
-                            if (verInMsg && String(verInMsg[1]) !== currentPkgVer) {
-                                return;
-                            }
-
-                            const cleanMsg = rawMsg.replace(/^(feat|fix|refactor|style|chore|docs)(\([^)]+\))?:\s*/i, '').trim();
-                            const normMsg = cleanMsg.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-                            let isDuplicate = allExistingHashes.has(hash) || 
-                                              (item.sha && allExistingHashes.has(item.sha.substring(0, 7)));
-
-                            if (!isDuplicate && normMsg.length > 5) {
-                                for (const existingNorm of allExistingDescs) {
-                                    if (existingNorm === normMsg || existingNorm.includes(normMsg) || normMsg.includes(existingNorm)) {
-                                        isDuplicate = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (cleanMsg && !isDuplicate) {
-                                const type = parseCommitType(rawMsg);
-                                latestBucket.changes.unshift({
-                                    type,
-                                    description: cleanMsg,
-                                    hash
-                                });
-                                allExistingHashes.add(hash);
-                                if (item.sha) allExistingHashes.add(item.sha.substring(0, 7));
-                                allExistingDescs.add(normMsg);
-                            }
-                        });
-                    }
-                }
-            } catch (ghErr) {
-                // Graceful fallback to static data if offline or rate limited
-            }
-
-            // Ensure current package.version exists in combined list
-            const currentPkgVer = String(packageJson.version);
-            const hasCurrentVer = combined.some(v => String(v.version) === currentPkgVer);
-
-            if (!hasCurrentVer) {
-                const today = new Date().toISOString().split('T')[0];
-                const dynamicCurrentEntry = {
-                    version: currentPkgVer,
-                    date: today,
-                    title: `Version ${currentPkgVer} Release`,
-                    isLatest: true,
-                    highlights: `Production deployment of Version ${currentPkgVer}. Updated system configurations and performance optimizations.`,
-                    changes: [
-                        { type: 'feat', description: `Deployed production build for version ${currentPkgVer}` }
-                    ]
-                };
-                combined.unshift(dynamicCurrentEntry);
-            }
-
-            // Sort descending using strict SemVer
-            combined.sort((a, b) => compareSemVer(a.version, b.version));
-
-            // Set isLatest strictly on top version
-            if (sortedVersionsHaveItems(combined)) {
-                const topVer = String(combined[0].version);
-                combined = combined.map(v => ({
-                    ...v,
-                    isLatest: String(v.version) === topVer
-                }));
-            }
-
-            setVersionsList(combined);
-            setLoading(false);
         };
 
-        fetchVersions();
-    }, []);
+        setupRealtimeSync();
 
-    const sortedVersionsHaveItems = (arr) => Array.isArray(arr) && arr.length > 0;
+        return () => {
+            if (typeof unsubscribe === 'function') unsubscribe();
+        };
+    }, []);
 
     const toggleExpand = (ver) => {
         setExpandedVersions(prev => ({

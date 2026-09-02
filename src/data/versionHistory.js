@@ -1,10 +1,10 @@
 // Auto-generated from Day One Git Log history by scripts/generate-version-history.js
 export const versionHistory = [
     {
-        "version": "4.5.5",
-        "date": "2026-09-01",
-        "title": "Interactive Moon Telemetry Tooltip & Header Nav Enhancements",
-        "highlights": "Enhanced Moon component with interactive quote generator and lunar telemetry tooltip UI, added About page link in header, and refined Framer Motion animations.",
+        "version": "4.5.6",
+        "date": "2026-09-02",
+        "title": "Admin Version History Manager & Real-Time Sync",
+        "highlights": "Built full CRUD Version Release History manager in Admin Dashboard with Tile/List view modes and real-time Git history sync.",
         "changes": [
             {
                 "type": "feat",
@@ -15,6 +15,16 @@ export const versionHistory = [
                 "type": "feat",
                 "description": "enhance Moon component with interactive quote generator and updated telemetry tooltip UI",
                 "hash": "958b38bf"
+            },
+            {
+                "type": "refactor",
+                "description": "automate version history metadata generation and improve change deduplication logic",
+                "hash": "6eafba14"
+            },
+            {
+                "type": "feat",
+                "description": "add VersionHistoryManager component for CRUD operations on Firestore version history",
+                "hash": "31de1dc5"
             }
         ],
         "isLatest": true

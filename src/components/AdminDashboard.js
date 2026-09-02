@@ -7,6 +7,7 @@ import TimelineManager from './admin/TimelineManager';
 import SkillsManager from './admin/SkillsManager';
 import AnalyticsDashboard from './admin/AnalyticsDashboard';
 import SettingsManager from './admin/SettingsManager';
+import VersionHistoryManager from './admin/VersionHistoryManager';
 import './admin/Admin.css';
 
 const AdminDashboard = () => {
@@ -49,7 +50,7 @@ const AdminDashboard = () => {
             case 'settings':
                 return <SettingsManager />;
             case 'versionHistory':
-                return <CollectionManager key="versionHistory" collectionName="versionHistory" title="Version Release History" />;
+                return <VersionHistoryManager />;
             default:
                 return <div>Select a section</div>;
         }

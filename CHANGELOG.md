@@ -4,14 +4,16 @@ All notable changes to this project from Day One are documented in this file.
 
 ---
 
-## [4.5.5] - 2026-09-01
+## [4.5.6] - 2026-09-02
 
-### Interactive Moon Telemetry Tooltip & Header Nav Enhancements
+### Admin Version History Manager & Real-Time Sync
 
-*Enhanced Moon component with interactive quote generator and lunar telemetry tooltip UI, added About page link in header, and refined Framer Motion animations.*
+*Built full CRUD Version Release History manager in Admin Dashboard with Tile/List view modes and real-time Git history sync.*
 
 - **FEAT**: enhance moon component with interactive design updates and detailed lunar telemetry tooltip
 - **FEAT**: enhance Moon component with interactive quote generator and updated telemetry tooltip UI
+- **REFACTOR**: automate version history metadata generation and improve change deduplication logic
+- **FEAT**: add VersionHistoryManager component for CRUD operations on Firestore version history
 
 ---
 

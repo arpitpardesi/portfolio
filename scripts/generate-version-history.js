@@ -46,6 +46,11 @@ function capitalize(str) {
 
 function getVersionMetadata(ver, changes = []) {
     switch (ver) {
+        case '4.5.6':
+            return {
+                title: "Admin Version History Manager & Real-Time Sync",
+                highlights: "Built full CRUD Version Release History manager in Admin Dashboard with Tile/List view modes and real-time Git history sync."
+            };
         case '4.5.5':
             return {
                 title: "Interactive Moon Telemetry Tooltip & Header Nav Enhancements",
