@@ -10,10 +10,8 @@ All notable changes to this project from Day One are documented in this file.
 
 *Built full CRUD Version Release History manager in Admin Dashboard with Tile/List view modes and real-time Git history sync.*
 
-- **FEAT**: enhance moon component with interactive design updates and detailed lunar telemetry tooltip
-- **FEAT**: enhance Moon component with interactive quote generator and updated telemetry tooltip UI
-- **REFACTOR**: automate version history metadata generation and improve change deduplication logic
 - **FEAT**: add VersionHistoryManager component for CRUD operations on Firestore version history
+- **FEAT**: implement VersionHistoryManager for admin CRUD and migrate version history to real-time Firestore sync
 
 ---
 

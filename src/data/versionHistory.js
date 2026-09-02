@@ -8,23 +8,13 @@ export const versionHistory = [
         "changes": [
             {
                 "type": "feat",
-                "description": "enhance moon component with interactive design updates and detailed lunar telemetry tooltip",
-                "hash": "253e204a"
-            },
-            {
-                "type": "feat",
-                "description": "enhance Moon component with interactive quote generator and updated telemetry tooltip UI",
-                "hash": "958b38bf"
-            },
-            {
-                "type": "refactor",
-                "description": "automate version history metadata generation and improve change deduplication logic",
-                "hash": "6eafba14"
-            },
-            {
-                "type": "feat",
                 "description": "add VersionHistoryManager component for CRUD operations on Firestore version history",
                 "hash": "31de1dc5"
+            },
+            {
+                "type": "feat",
+                "description": "implement VersionHistoryManager for admin CRUD and migrate version history to real-time Firestore sync",
+                "hash": "bda777a8"
             }
         ],
         "isLatest": true
